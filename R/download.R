@@ -54,7 +54,7 @@ vigiar_esquema <- function(tabela = NULL) {
 #' @return A [tibble::tibble()] with the downloaded data.
 #' @export
 vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
-                           limite = NULL, timeout = 120, uf = NULL,
+                           limite = NULL, timeout = 120, uf = "RJ",
                            direcao = c("asc", "desc")) {
   if (is.null(.vigiar_env$sessao)) {
     stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
@@ -77,13 +77,20 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
   )
   dados <- .vigiar_parse_dados(resposta, tabela)
 
-  # Client-side UF filter
+  # Client-side UF filter (default: RJ)
   if (!is.null(uf)) {
+    # Try UF column first (more reliable than municipality code)
     col_uf <- intersect(c("UF", "sigla_uf", "UF_SIGLA"), names(dados))[1]
     if (!is.na(col_uf)) {
       dados <- dados[dados[[col_uf]] == uf, ]
-      message(sprintf("  Filtrado para UF='%s': %d linhas.", uf, nrow(dados)))
+    } else {
+      # Fall back to municipality code range
+      col_muni <- intersect(c("muni", "cod_municipio", "ID_MUNI"), names(dados))[1]
+      if (!is.na(col_muni) && uf == "RJ") {
+        dados <- dados[dados[[col_muni]] >= 330010 & dados[[col_muni]] <= 330620, ]
+      }
     }
+    message(sprintf("  Filtro UF='%s': %d linhas.", uf, nrow(dados)))
   }
 
   # Warn if data might be truncated by API limit
