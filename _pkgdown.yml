@@ -117,10 +117,16 @@ reference:
   - vigiar_exportar_rds
   - vigiar_exportar_parquet
 
-- title: "Package"
-  desc: "Package overview and documentation."
+- title: "Rio de Janeiro"
+  desc: "RJ-specific functions: municipalities, health regions, validation."
   contents:
-  - vigiar.rj-package
+  - vigiar_baixar_rj
+  - vigiar_rj_municipios
+  - vigiar_rj_macrorregioes
+  - vigiar_rj_regioes_saude
+  - vigiar_rj_resumo
+  - vigiar_rj_series
+  - vigiar_validar_rj
 
 - title: "S3 Classes and Methods"
   desc: "Typed data objects for VIGIAR domains."
