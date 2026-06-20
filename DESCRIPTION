@@ -6,10 +6,10 @@ Authors@R: c(
     person(given = "Ryan",
            family = "Santos",
            role = c("aut", "cre"),
-           email = "santosry@protonmail.com",
-           comment = NULL))
+           email = "ryan.paulo@gsuite.iff.edu.br",
+           comment = c(ORCID = "0009-0005-6770-2001")))
 Author: Ryan Santos
-Maintainer: Ryan Santos <santosry@protonmail.com>
+Maintainer: Ryan Santos <ryan.paulo@gsuite.iff.edu.br>
 Description: Provides a programmatic interface to download, process,
     and explore the complete dataset from Brazil's VIGIAR (Vigilancia
     em Saude Ambiental) public Power BI dashboard, maintained by the
@@ -21,7 +21,8 @@ Description: Provides a programmatic interface to download, process,
     variable dictionary, descriptive time series, choropleth maps via
     geobr, and export to CSV/RDS/Parquet. Data covers PM2.5 air quality,
     population exposure, health indicators, attributable fractions,
-    and indoor solid fuel exposure.
+    and indoor solid fuel exposure. Package architecture inspired by
+    microdatasus (Saldanha et al.). Built on httr2, dplyr, and tibble.
 License: MIT + file LICENSE
 URL: https://github.com/santosry/vigiar-download
 BugReports: https://github.com/santosry/vigiar-download/issues

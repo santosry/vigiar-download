@@ -3,7 +3,9 @@ citHeader("Para citar o pacote vigiar em publicações, use:")
 bibentry(
   bibtype    = "Manual",
   title      = "vigiar: Download and Process VIGIAR Environmental Health Surveillance Data",
-  author     = c(person("Ryan", "Santos")),
+  author     = c(person(given = "Ryan", family = "Santos",
+                         email = "ryan.paulo@gsuite.iff.edu.br",
+                         comment = c(ORCID = "0009-0005-6770-2001"))),
   year       = "2026",
   note       = "R package version 0.3.0, https://github.com/santosry/vigiar-download",
   textVersion = paste(
