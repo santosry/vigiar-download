@@ -1,5 +1,5 @@
 # Package: vigiar
-# Time series helpers (descriptive only — no DLNM, GAM, or causal models)
+# Time series helpers (descriptive only -- no DLNM, GAM, or causal models)
 #
 # These functions aggregate VIGIAR data along the time dimension
 # and compute simple descriptive statistics.  They do NOT fit models.
@@ -27,13 +27,13 @@ vigiar_agregar_tempo <- function(dados,
                                   funcoes = list(media = function(x) mean(x, na.rm = TRUE),
                                                  n     = length)) {
   if (!"ano" %in% names(dados)) {
-    stop("A coluna 'ano' é obrigatória para agregação temporal.")
+    stop("A coluna 'ano' e obrigatoria para agregacao temporal.")
   }
 
   # Validate grouping columns
   validas <- intersect(agregar_por, names(dados))
   if (length(validas) == 0) {
-    stop("Nenhuma coluna de agregação encontrada nos dados.")
+    stop("Nenhuma coluna de agregacao encontrada nos dados.")
   }
 
   # Auto-detect variable
@@ -41,7 +41,7 @@ vigiar_agregar_tempo <- function(dados,
     variavel <- .vigiar_detectar_variavel_numerica(dados)
   }
   if (is.null(variavel) || !variavel %in% names(dados)) {
-    stop("Nenhuma variável numérica encontrada para sumarizar.")
+    stop("Nenhuma variavel numerica encontrada para sumarizar.")
   }
 
   # Ensure grouping columns are the right type
@@ -68,7 +68,7 @@ vigiar_agregar_tempo <- function(dados,
 #' Compute descriptive temporal trends
 #'
 #' Calculates year-over-year changes and simple moving averages.
-#' This is purely descriptive — no model is fitted.
+#' This is purely descriptive -- no model is fitted.
 #'
 #' @param dados A VIGIAR tibble with \code{ano} and a numeric variable.
 #' @param variavel Numeric column to analyse.
@@ -82,7 +82,7 @@ vigiar_tendencia_descritiva <- function(dados, variavel = NULL,
     variavel <- .vigiar_detectar_variavel_numerica(dados)
   }
   if (is.null(variavel)) {
-    stop("Nenhuma variável numérica encontrada.")
+    stop("Nenhuma variavel numerica encontrada.")
   }
 
   anual <- vigiar_agregar_tempo(
@@ -134,7 +134,7 @@ vigiar_serie_temporal <- function(dados,
 
   variavel <- .vigiar_detectar_variavel_numerica(dados)
   if (is.null(variavel)) {
-    stop("Nenhuma variável numérica detectada para série temporal.")
+    stop("Nenhuma variavel numerica detectada para serie temporal.")
   }
 
   vigiar_agregar_tempo(
@@ -151,7 +151,7 @@ vigiar_serie_temporal <- function(dados,
   )
 }
 
-# ── Helper ────────────────────────────────────────────────────────────────────
+# -- Helper --------------------------------------------------------------------
 
 .vigiar_detectar_variavel_numerica <- function(dados) {
   candidates <- c(

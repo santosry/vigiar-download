@@ -1,5 +1,5 @@
 # Package: vigiar
-# User‑facing download and inspection functions
+# User-facing download and inspection functions
 
 #' List available tables
 #'
@@ -7,7 +7,7 @@
 #' @export
 vigiar_tabelas <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
   names(.vigiar_env$esquema)
 }
@@ -21,7 +21,7 @@ vigiar_tabelas <- function() {
 #' @export
 vigiar_esquema <- function(tabela = NULL) {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   if (!is.null(tabela)) {
@@ -56,7 +56,7 @@ vigiar_esquema <- function(tabela = NULL) {
 vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
                            limite = NULL, timeout = 120) {
   if (is.null(.vigiar_env$sessao)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
   .vigiar_check_tabela(tabela)
 
@@ -91,7 +91,7 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
 #' @export
 vigiar_baixar_tudo <- function(tabelas = NULL, progress = TRUE) {
   if (is.null(.vigiar_env$sessao)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   if (is.null(tabelas)) {
@@ -100,7 +100,7 @@ vigiar_baixar_tudo <- function(tabelas = NULL, progress = TRUE) {
     invalidas <- setdiff(tabelas, names(.vigiar_env$esquema))
     if (length(invalidas) > 0) {
       warning(
-        "Tabelas não encontradas: ",
+        "Tabelas nao encontradas: ",
         paste(invalidas, collapse = ", ")
       )
       tabelas <- intersect(tabelas, names(.vigiar_env$esquema))
@@ -126,7 +126,7 @@ vigiar_baixar_tudo <- function(tabelas = NULL, progress = TRUE) {
 
   n_ok <- sum(!vapply(resultado, is.null, logical(1)))
   message(sprintf(
-    "Download concluído: %d/%d tabelas baixadas com sucesso.",
+    "Download concluido: %d/%d tabelas baixadas com sucesso.",
     n_ok, length(tabelas)
   ))
 
@@ -160,7 +160,7 @@ vigiar_baixar_principais <- function() {
 #' @export
 vigiar_info <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   catalogo <- .vigiar_catalogo()
@@ -212,7 +212,7 @@ vigiar_checar_dados <- function(dados, tabela = NULL) {
   checks$is_empty <- nrow(dados) == 0
 
   if (!is.null(tabela)) {
-    cat(sprintf("\nDiagnóstico: %s\n", tabela))
+    cat(sprintf("\nDiagnostico: %s\n", tabela))
     cat(strrep("-", 40), "\n")
   }
   cat(sprintf("Linhas:  %d\n", checks$n_rows))
@@ -244,7 +244,7 @@ vigiar_checar_dados <- function(dados, tabela = NULL) {
 #' @export
 vigiar_diagnostico <- function(amostra = 100) {
   if (is.null(.vigiar_env$sessao)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   tabelas <- names(.vigiar_env$esquema)
@@ -265,13 +265,13 @@ vigiar_diagnostico <- function(amostra = 100) {
   invisible(resultados)
 }
 
-# ── Internal helpers ──────────────────────────────────────────────────────────
+# -- Internal helpers ----------------------------------------------------------
 
 .vigiar_check_tabela <- function(tabela) {
   if (!tabela %in% names(.vigiar_env$esquema)) {
     stop(
-      sprintf("Tabela '%s' não encontrada.", tabela),
-      " Use vigiar_tabelas() para ver as disponíveis."
+      sprintf("Tabela '%s' nao encontrada.", tabela),
+      " Use vigiar_tabelas() para ver as disponiveis."
     )
   }
 }
@@ -290,42 +290,42 @@ vigiar_diagnostico <- function(amostra = 100) {
       "aux_uf", "dados_ate", "last_update", "att_em"
     ),
     descricao = c(
-      "Médias anuais PM2.5 por município",
-      "Médias mensais PM2.5 por município (com LAT/LON)",
-      "Dias acima do limite OMS (PM2.5 > 15 µg/m³)",
-      "Dias acima do limite CONAMA (PM2.5 > 50 µg/m³)",
-      "População residente por município, ano e categoria de exposição",
-      "Cadastro de municípios: região, UF, coordenadas, nomes",
-      "Tabela auxiliar: meses (número → nome)",
-      "Anos disponíveis na base",
-      "Indicadores de saúde agregados — BRASIL",
-      "Indicadores de saúde agregados — UF",
-      "Indicadores de saúde por MUNICÍPIO (com código IBGE, lat, long)",
-      "Fração atribuível por indicador e desfecho",
+      "Medias anuais PM2.5 por municipio",
+      "Medias mensais PM2.5 por municipio (com LAT/LON)",
+      "Dias acima do limite OMS (PM2.5 > 15 ug/m3)",
+      "Dias acima do limite CONAMA (PM2.5 > 50 ug/m3)",
+      "Populacao residente por municipio, ano e categoria de exposicao",
+      "Cadastro de municipios: regiao, UF, coordenadas, nomes",
+      "Tabela auxiliar: meses (numero -> nome)",
+      "Anos disponiveis na base",
+      "Indicadores de saude agregados -- BRASIL",
+      "Indicadores de saude agregados -- UF",
+      "Indicadores de saude por MUNICIPIO (com codigo IBGE, lat, long)",
+      "Fracao atribuivel por indicador e desfecho",
       "Quartis dos indicadores (q1, q2, q3)",
-      "Exposição a combustíveis sólidos em domicílios (indoor)",
-      "Desfechos de saúde associados à poluição indoor",
-      "Medidas calculadas: rankings, médias, alertas, proporções (61 colunas)",
+      "Exposicao a combustiveis solidos em domicilios (indoor)",
+      "Desfechos de saude associados a poluicao indoor",
+      "Medidas calculadas: rankings, medias, alertas, proporcoes (61 colunas)",
       "Legenda de cores PM2.5 (OMS)",
       "Legenda de cores PM2.5 (CONAMA)",
       "Legenda de cores para quartis",
-      "Legenda de cores para exposição indoor",
+      "Legenda de cores para exposicao indoor",
       "Seletor de ano (filtro do dashboard)",
       "Seletor de categoria (filtro do dashboard)",
-      "Valores de referência OMS",
-      "Valores de referência CONAMA",
-      "Seletor de indicador de saúde",
-      "Código UF → nome",
-      "Data dos últimos dados disponíveis",
-      "Última atualização do banco",
-      "Timestamp de atualização"
+      "Valores de referencia OMS",
+      "Valores de referencia CONAMA",
+      "Seletor de indicador de saude",
+      "Codigo UF -> nome",
+      "Data dos ultimos dados disponiveis",
+      "Ultima atualizacao do banco",
+      "Timestamp de atualizacao"
     ),
     categoria = c(
       "Qualidade do Ar", "Qualidade do Ar", "Qualidade do Ar", "Qualidade do Ar",
-      "População", "Cadastro", "Auxiliar", "Auxiliar",
-      "Indicadores de Saúde", "Indicadores de Saúde", "Indicadores de Saúde",
-      "Indicadores de Saúde", "Indicadores de Saúde",
-      "Exposição Indoor", "Exposição Indoor",
+      "Populacao", "Cadastro", "Auxiliar", "Auxiliar",
+      "Indicadores de Saude", "Indicadores de Saude", "Indicadores de Saude",
+      "Indicadores de Saude", "Indicadores de Saude",
+      "Exposicao Indoor", "Exposicao Indoor",
       "Medidas",
       "Auxiliar", "Auxiliar", "Auxiliar", "Auxiliar",
       "Filtros", "Filtros", "Filtros", "Filtros", "Filtros",

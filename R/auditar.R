@@ -22,7 +22,7 @@ vigiar_tabelas_documentadas <- function() {
 #' @export
 vigiar_variaveis_nao_documentadas <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   dict <- vigiar_dicionario()
@@ -37,7 +37,7 @@ vigiar_variaveis_nao_documentadas <- function() {
         undocumented[[length(undocumented) + 1]] <- data.frame(
           tabela   = tab,
           coluna   = col,
-          problema = "Variável presente nos dados mas ausente no dicionário",
+          problema = "Variavel presente nos dados mas ausente no dicionario",
           stringsAsFactors = FALSE
         )
       }
@@ -60,7 +60,7 @@ vigiar_variaveis_nao_documentadas <- function() {
 #' @export
 vigiar_variaveis_orfas <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   dict <- vigiar_dicionario()
@@ -72,7 +72,7 @@ vigiar_variaveis_orfas <- function() {
       orfaos[[length(orfaos) + 1]] <- data.frame(
         tabela   = tab,
         coluna   = "(tabela inteira)",
-        problema = "Tabela documentada não existe no esquema atual",
+        problema = "Tabela documentada nao existe no esquema atual",
         stringsAsFactors = FALSE
       )
       next
@@ -85,7 +85,7 @@ vigiar_variaveis_orfas <- function() {
         orfaos[[length(orfaos) + 1]] <- data.frame(
           tabela   = tab,
           coluna   = col,
-          problema = "Variável documentada não existe nos dados atuais",
+          problema = "Variavel documentada nao existe nos dados atuais",
           stringsAsFactors = FALSE
         )
       }
@@ -111,7 +111,7 @@ vigiar_variaveis_orfas <- function() {
 #' @export
 vigiar_validar_dicionario <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   nao_doc <- vigiar_variaveis_nao_documentadas()
@@ -125,17 +125,17 @@ vigiar_validar_dicionario <- function() {
   n_covered <- n_dict_cols - nrow(orfas)
   coverage <- if (n_live > 0) round(100 * n_covered / n_live, 1) else 100
 
-  cat(sprintf("Cobertura do dicionário: %.1f%%\n", coverage))
-  cat(sprintf("Variáveis documentadas: %d\n", n_dict_cols))
-  cat(sprintf("Variáveis não documentadas: %d\n", nrow(nao_doc)))
-  cat(sprintf("Variáveis órfãs (documentadas mas ausentes): %d\n", nrow(orfas)))
+  cat(sprintf("Cobertura do dicionario: %.1f%%\n", coverage))
+  cat(sprintf("Variaveis documentadas: %d\n", n_dict_cols))
+  cat(sprintf("Variaveis nao documentadas: %d\n", nrow(nao_doc)))
+  cat(sprintf("Variaveis orfas (documentadas mas ausentes): %d\n", nrow(orfas)))
 
   if (nrow(nao_doc) > 0) {
-    cat("\n⚠  Variáveis não documentadas:\n")
+    cat("\n[!]  Variaveis nao documentadas:\n")
     print(nao_doc)
   }
   if (nrow(orfas) > 0) {
-    cat("\n⚠  Variáveis órfãs:\n")
+    cat("\n[!]  Variaveis orfas:\n")
     print(orfas)
   }
 
@@ -152,7 +152,7 @@ vigiar_validar_dicionario <- function() {
 #' @export
 vigiar_comparar_schema <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
 
   dict <- vigiar_dicionario()

@@ -39,8 +39,8 @@ vigiar_padronizar_colunas <- function(dados, tabela) {
 
 #' Validate IBGE municipality codes
 #'
-#' Checks that municipality codes are 6‑ or 7‑digit integers
-#' within the valid Brazilian range (110001–530010).
+#' Checks that municipality codes are 6- or 7-digit integers
+#' within the valid Brazilian range (110001-530010).
 #'
 #' @param dados A data frame.
 #' @param col_codigo Name of the column containing IBGE codes.
@@ -55,7 +55,7 @@ vigiar_validar_ibge <- function(dados, col_codigo = "cod_municipio") {
   n_invalid <- sum(is.na(codigos) | codigos < 110001 | codigos > 530010)
   if (n_invalid > 0) {
     warning(sprintf(
-      "%d código(s) IBGE fora do intervalo esperado (110001–530010)",
+      "%d codigo(s) IBGE fora do intervalo esperado (110001-530010)",
       n_invalid
     ))
   }
@@ -79,7 +79,7 @@ vigiar_validar_datas <- function(dados) {
     n_bad <- sum(is.na(anos) | anos < 2000 | anos > current_year)
     if (n_bad > 0) {
       warning(sprintf(
-        "%d valor(es) de ano fora do intervalo 2000–%d", n_bad, current_year
+        "%d valor(es) de ano fora do intervalo 2000-%d", n_bad, current_year
       ))
     }
   }
@@ -89,7 +89,7 @@ vigiar_validar_datas <- function(dados) {
     n_bad <- sum(is.na(meses) | meses < 1 | meses > 12)
     if (n_bad > 0) {
       warning(sprintf(
-        "%d valor(es) de mês fora do intervalo 1–12", n_bad
+        "%d valor(es) de mes fora do intervalo 1-12", n_bad
       ))
     }
   }
@@ -100,7 +100,7 @@ vigiar_validar_datas <- function(dados) {
 #' Validate PM2.5 units
 #'
 #' Checks that PM2.5 values are within a plausible range
-#' (0–1000 µg/m³).
+#' (0-1000 ug/m3).
 #'
 #' @param dados A data frame.
 #' @param col_pm25 Name of the PM2.5 column.
@@ -113,7 +113,7 @@ vigiar_validar_unidades <- function(dados, col_pm25 = "pm25_media") {
   n_implausible <- sum(!is.na(valores) & (valores < 0 | valores > 1000))
   if (n_implausible > 0) {
     warning(sprintf(
-      "%d valor(es) de PM2.5 fora do intervalo plausível (0–1000 µg/m³)",
+      "%d valor(es) de PM2.5 fora do intervalo plausivel (0-1000 ug/m3)",
       n_implausible
     ))
   }

@@ -2,7 +2,7 @@
 # S3 classes for typed VIGIAR data
 #
 # Following the microdatasus pattern, each data domain gets its own
-# S3 class that inherits from vigiar_tbl → tibble → data.frame.
+# S3 class that inherits from vigiar_tbl -> tibble -> data.frame.
 
 #' Create a typed VIGIAR tibble
 #'
@@ -22,7 +22,7 @@ new_vigiar_tbl <- function(x, subclass = character(0), tabela = NULL,
   x
 }
 
-# ── Print method ──────────────────────────────────────────────────────────────
+# -- Print method --------------------------------------------------------------
 
 #' @export
 print.vigiar_tbl <- function(x, ...) {
@@ -42,7 +42,7 @@ print.vigiar_tbl <- function(x, ...) {
   NextMethod()
 }
 
-# ── Summary method ────────────────────────────────────────────────────────────
+# -- Summary method ------------------------------------------------------------
 
 #' @export
 summary.vigiar_tbl <- function(object, ...) {
@@ -67,7 +67,7 @@ summary.vigiar_tbl <- function(object, ...) {
   invisible(object)
 }
 
-# ── Validation method ─────────────────────────────────────────────────────────
+# -- Validation method ---------------------------------------------------------
 
 #' @export
 validate.vigiar_tbl <- function(x, ...) {
@@ -84,7 +84,7 @@ validate.vigiar_tbl <- function(x, ...) {
   }
 
   if (length(issues) > 0) {
-    warning("Problemas de validação encontrados: ",
+    warning("Problemas de validacao encontrados: ",
             paste(names(issues), collapse = ", "))
   }
 

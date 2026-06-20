@@ -7,7 +7,7 @@ utils::globalVariables(".data")
 # Copyright (C) 2026 Ryan Santos
 # Licensed under MIT
 
-# ── Dashboard constants ───────────────────────────────────────────────────────
+# -- Dashboard constants -------------------------------------------------------
 
 VIGIAR_BASE_URL <- paste0(
   "https://app.powerbi.com/view?r=",
@@ -24,15 +24,15 @@ VIGIAR_API_CLUSTER <- paste0(
   "https://wabi-brazil-south-b-primary-api.analysis.windows.net/"
 )
 
-# ── Internal package environment ──────────────────────────────────────────────
+# -- Internal package environment ----------------------------------------------
 
 .vigiar_env <- new.env(parent = emptyenv())
 
-# ── NULL-coalesce operator ────────────────────────────────────────────────────
+# -- NULL-coalesce operator ----------------------------------------------------
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
-# ── UUID v4 generator (no external dependency) ────────────────────────────────
+# -- UUID v4 generator (no external dependency) --------------------------------
 
 uuid_v4 <- function() {
   hex <- c(0:9, "a", "b", "c", "d", "e", "f")
@@ -48,7 +48,7 @@ uuid_v4 <- function() {
   paste(parts, collapse = "-")
 }
 
-# ── Gzip decompression (base R only, streaming for large payloads) ────────────
+# -- Gzip decompression (base R only, streaming for large payloads) ------------
 
 .vigiar_gunzip <- function(raw_body) {
   if (length(raw_body) < 2) return(raw_body)
@@ -70,7 +70,7 @@ uuid_v4 <- function() {
   do.call(c, chunks)
 }
 
-# ── Power BI data type mapping ────────────────────────────────────────────────
+# -- Power BI data type mapping ------------------------------------------------
 
 .vigiar_tipo_dado <- function(code) {
   switch(as.character(code),
@@ -86,7 +86,7 @@ uuid_v4 <- function() {
   )
 }
 
-# ── Cookie extraction from set-cookie header ──────────────────────────────────
+# -- Cookie extraction from set-cookie header ----------------------------------
 
 .vigiar_extrair_cookies <- function(set_cookie) {
   if (is.null(set_cookie) || length(set_cookie) == 0) {
@@ -111,7 +111,7 @@ uuid_v4 <- function() {
   unique(cookies)
 }
 
-# ── Retry logic with exponential backoff ──────────────────────────────────────
+# -- Retry logic with exponential backoff --------------------------------------
 
 .vigiar_retry <- function(expr, max_tries = 3L, initial_delay = 1,
                            max_delay = 30, backoff = 2, context = "") {
@@ -122,11 +122,11 @@ uuid_v4 <- function() {
     result <- tryCatch(
       expr,
       httr2_http_403 = function(e) {
-        # Session expired — do not retry
+        # Session expired -- do not retry
         stop(e)
       },
       httr2_http_429 = function(e) {
-        # Rate limited — retry with longer delay
+        # Rate limited -- retry with longer delay
         last_error <<- e
         NULL
       },
@@ -159,7 +159,7 @@ uuid_v4 <- function() {
   }
 
   stop(sprintf(
-    "[%s] Todas as %d tentativas falharam. Último erro: %s",
+    "[%s] Todas as %d tentativas falharam. Ultimo erro: %s",
     context, max_tries,
     conditionMessage(last_error) %||% "desconhecido"
   ))

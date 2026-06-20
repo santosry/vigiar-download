@@ -1,13 +1,13 @@
 # Package: vigiar
-# Processing family — data standardisation and validation
+# Processing family -- data standardisation and validation
 #
 # Follows the microdatasus architecture:
-#   1. Download raw data    → vigiar_baixar()
-#   2. Process / standardise → process_*() or process_vigiar()
-#   3. Validate              → vigiar_checar_dados() / validate()
-#   4. Use                   → analysis-ready tibble
+#   1. Download raw data    -> vigiar_baixar()
+#   2. Process / standardise -> process_*() or process_vigiar()
+#   3. Validate              -> vigiar_checar_dados() / validate()
+#   4. Use                   -> analysis-ready tibble
 
-#' Process VIGIAR data — generic dispatcher
+#' Process VIGIAR data -- generic dispatcher
 #'
 #' Automatically detects the table type and applies the appropriate
 #' processing pipeline: standardises column names, converts types,
@@ -43,7 +43,7 @@ process_vigiar <- function(dados, tabela = NULL, ...) {
   )
 }
 
-# ── PM2.5 processor ──────────────────────────────────────────────────────────
+# -- PM2.5 processor ----------------------------------------------------------
 
 #' Process PM2.5 air quality data
 #'
@@ -60,7 +60,7 @@ process_pm25 <- function(dados, tipo = c("anual", "mensal", "dias", "dias_conama
   tipo <- match.arg(tipo)
   dados <- tibble::as_tibble(dados)
 
-  # ── Standardise column names ─────────────────────────────────────────────
+  # -- Standardise column names ---------------------------------------------
   rename_map <- list(
     muni              = "cod_municipio",
     ID_MUNI           = "cod_municipio",
@@ -90,7 +90,7 @@ process_pm25 <- function(dados, tipo = c("anual", "mensal", "dias", "dias_conama
     }
   }
 
-  # ── Type conversion ─────────────────────────────────────────────────────
+  # -- Type conversion -----------------------------------------------------
   if ("cod_municipio" %in% names(dados)) {
     dados$cod_municipio <- as.integer(dados$cod_municipio)
   }
@@ -110,15 +110,15 @@ process_pm25 <- function(dados, tipo = c("anual", "mensal", "dias", "dias_conama
     }
   }
 
-  # ── Validation ──────────────────────────────────────────────────────────
+  # -- Validation ----------------------------------------------------------
   dados <- vigiar_validar_ibge(dados, col_codigo = "cod_municipio")
   dados <- vigiar_validar_datas(dados)
   dados <- vigiar_validar_unidades(dados, col_pm25 = "pm25_media")
 
-  # ── Build return object ─────────────────────────────────────────────────
+  # -- Build return object -------------------------------------------------
   metadados <- list(
     tipo         = tipo,
-    fonte        = "VIGIAR — Ministério da Saúde",
+    fonte        = "VIGIAR -- Ministerio da Saude",
     tabela_raw   = switch(tipo,
       anual       = "df_anual",
       mensal      = "df_mensal",
@@ -137,7 +137,7 @@ process_pm25 <- function(dados, tipo = c("anual", "mensal", "dias", "dias_conama
   )
 }
 
-# ── Population processor ──────────────────────────────────────────────────────
+# -- Population processor ------------------------------------------------------
 
 #' Process population exposure data
 #'
@@ -179,14 +179,14 @@ process_populacao_exposta <- function(dados, ...) {
     subclass  = c("vigiar_population"),
     tabela    = "pop",
     metadados = list(
-      fonte       = "VIGIAR — Ministério da Saúde",
+      fonte       = "VIGIAR -- Ministerio da Saude",
       tabela_raw  = "pop",
       processador = "process_populacao_exposta"
     )
   )
 }
 
-# ── Health indicators processor ───────────────────────────────────────────────
+# -- Health indicators processor -----------------------------------------------
 
 #' Process health indicators data
 #'
@@ -252,7 +252,7 @@ process_indicadores_saude <- function(dados,
     subclass  = c("vigiar_health"),
     tabela    = tabela_raw,
     metadados = list(
-      fonte       = "VIGIAR — Ministério da Saúde",
+      fonte       = "VIGIAR -- Ministerio da Saude",
       tabela_raw  = tabela_raw,
       agregacao   = agregacao,
       processador = "process_indicadores_saude"
@@ -260,7 +260,7 @@ process_indicadores_saude <- function(dados,
   )
 }
 
-# ── Attributable fraction processor ───────────────────────────────────────────
+# -- Attributable fraction processor -------------------------------------------
 
 #' Process attributable fraction data
 #'
@@ -298,14 +298,14 @@ process_fracao_atribuivel <- function(dados, ...) {
     subclass  = c("vigiar_attributable_fraction", "vigiar_health"),
     tabela    = "tb_fracao",
     metadados = list(
-      fonte       = "VIGIAR — Ministério da Saúde",
+      fonte       = "VIGIAR -- Ministerio da Saude",
       tabela_raw  = "tb_fracao",
       processador = "process_fracao_atribuivel"
     )
   )
 }
 
-# ── Indoor exposure processor ─────────────────────────────────────────────────
+# -- Indoor exposure processor -------------------------------------------------
 
 #' Process indoor exposure data
 #'
@@ -364,7 +364,7 @@ process_exposicao_indoor <- function(dados, tipo = c("exposicao", "desfecho"), .
     subclass  = c("vigiar_indoor", "vigiar_health"),
     tabela    = tabela_raw,
     metadados = list(
-      fonte       = "VIGIAR — Ministério da Saúde",
+      fonte       = "VIGIAR -- Ministerio da Saude",
       tabela_raw  = tabela_raw,
       tipo        = tipo,
       processador = "process_exposicao_indoor"
@@ -372,7 +372,7 @@ process_exposicao_indoor <- function(dados, tipo = c("exposicao", "desfecho"), .
   )
 }
 
-# ── Municipality registry processor ───────────────────────────────────────────
+# -- Municipality registry processor -------------------------------------------
 
 #' Process municipality registry data
 #'
@@ -423,14 +423,14 @@ process_municipios <- function(dados, ...) {
     subclass  = c("vigiar_municipios"),
     tabela    = "df_muni",
     metadados = list(
-      fonte       = "VIGIAR — Ministério da Saúde",
+      fonte       = "VIGIAR -- Ministerio da Saude",
       tabela_raw  = "df_muni",
       processador = "process_municipios"
     )
   )
 }
 
-# ── Generic UF processor ──────────────────────────────────────────────────────
+# -- Generic UF processor ------------------------------------------------------
 
 #' Process UF-level data
 #'
@@ -452,7 +452,7 @@ process_ufs <- function(dados, contexto = "uf") {
     subclass  = c("vigiar_uf"),
     tabela    = contexto,
     metadados = list(
-      fonte       = "VIGIAR — Ministério da Saúde",
+      fonte       = "VIGIAR -- Ministerio da Saude",
       processador = "process_ufs"
     )
   )

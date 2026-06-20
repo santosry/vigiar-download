@@ -4,8 +4,8 @@
 # Decodes the Power BI compressed data format:
 #   - DM0: array of data blocks.  First block carries the schema (S)
 #          and the first row (C).  Subsequent blocks carry reference
-#          count (R, 1‑based) + new column values (C).
-#   - ValueDicts: string dictionaries (index → text) for Text columns.
+#          count (R, 1-based) + new column values (C).
+#   - ValueDicts: string dictionaries (index -> text) for Text columns.
 #   - Gzip: response body may be gzipped (already handled by api.R).
 
 #' Parse a queryData response into a data.frame
@@ -17,13 +17,13 @@
 #'
 #' @param resposta API response list from `queryData`.
 #' @param tabela  Table name (for warning messages).
-#' @return A `data.frame` with decoded, type‑converted columns.
+#' @return A `data.frame` with decoded, type-converted columns.
 #' @keywords internal
 .vigiar_parse_dados <- function(resposta, tabela) {
   data_section <- resposta$results[[1L]]$result$data
 
   if (is.null(data_section$dsr)) {
-    warning("Tabela '", tabela, "' não contém dados (dsr ausente).")
+    warning("Tabela '", tabela, "' nao contem dados (dsr ausente).")
     return(data.frame())
   }
 
@@ -63,7 +63,7 @@
 
   value_dicts <- ds$ValueDicts %||% list()
 
-  # ── Row reconstruction ──────────────────────────────────────────────────
+  # -- Row reconstruction --------------------------------------------------
   prev_row <- NULL
   rows     <- vector("list", length(dm0))
 
@@ -71,10 +71,10 @@
     entry <- dm0[[i]]
 
     if (!is.null(entry$S)) {
-      # First / schema‑carrying entry — full row
+      # First / schema-carrying entry -- full row
       values <- entry$C
     } else {
-      r        <- entry$R        # 1‑based: keep (R - 1) columns from prev
+      r        <- entry$R        # 1-based: keep (R - 1) columns from prev
       new_vals <- entry$C
       keep     <- as.integer(r) - 1L
 
@@ -108,7 +108,7 @@
     rows[[i]] <- values
   }
 
-  # ── Build data.frame ────────────────────────────────────────────────────
+  # -- Build data.frame ----------------------------------------------------
   n_rows <- length(rows)
   df <- as.data.frame(
     matrix(nrow = n_rows, ncol = n_cols),
@@ -131,7 +131,7 @@
   df
 }
 
-#' Resolve a single dictionary‑encoded value
+#' Resolve a single dictionary-encoded value
 #' @keywords internal
 .vigiar_resolve_dict <- function(val, col_idx, col_types, value_dicts) {
   dn <- col_types[[col_idx]]$dn

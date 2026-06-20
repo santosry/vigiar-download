@@ -22,13 +22,13 @@ vigiar_join_geobr <- function(dados, nivel = c("municipio", "uf"),
 
   if (!requireNamespace("geobr", quietly = TRUE)) {
     stop(
-      "O pacote 'geobr' é necessário para mapas. Instale com:\n",
+      "O pacote 'geobr' e necessario para mapas. Instale com:\n",
       "  install.packages(\"geobr\")"
     )
   }
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop(
-      "O pacote 'sf' é necessário para mapas. Instale com:\n",
+      "O pacote 'sf' e necessario para mapas. Instale com:\n",
       "  install.packages(\"sf\")"
     )
   }
@@ -75,15 +75,15 @@ vigiar_mapa_pm25 <- function(dados, nivel = c("municipio", "uf"),
   variavel <- variavel %||%
     intersect(c("pm25_media_anual", "pm25_media"),
               names(dados))[1] %||%
-    stop("Variável de PM2.5 não encontrada nos dados.")
+    stop("Variavel de PM2.5 nao encontrada nos dados.")
 
   if (!is.null(ano) && "ano" %in% names(dados)) {
     dados <- dplyr::filter(dados, ano == !!ano)
   }
 
   titulo <- titulo %||% sprintf(
-    "PM2.5 — %s (%s)",
-    if (nivel == "municipio") "Municípios" else "Unidades Federativas",
+    "PM2.5 -- %s (%s)",
+    if (nivel == "municipio") "Municipios" else "Unidades Federativas",
     if (!is.null(ano)) ano else "todos os anos"
   )
 
@@ -91,7 +91,7 @@ vigiar_mapa_pm25 <- function(dados, nivel = c("municipio", "uf"),
     ggplot2::geom_sf(ggplot2::aes(fill = .data[[variavel]]),
                      colour = NA, size = 0.05) +
     ggplot2::scale_fill_viridis_c(
-      name = "PM2.5 (µg/m³)",
+      name = "PM2.5 (ug/m3)",
       option = "plasma", na.value = "grey90"
     ) +
     ggplot2::labs(title = titulo) +
@@ -113,13 +113,13 @@ vigiar_mapa_populacao_exposta <- function(dados, nivel = c("municipio", "uf"),
   if (!inherits(dados, "sf")) dados <- vigiar_join_geobr(dados, nivel = nivel)
   if (!is.null(ano) && "ano" %in% names(dados)) dados <- dplyr::filter(dados, ano == !!ano)
 
-  titulo <- titulo %||% "População Exposta por Concentração de PM2.5"
+  titulo <- titulo %||% "Populacao Exposta por Concentracao de PM2.5"
 
   ggplot2::ggplot(dados) +
     ggplot2::geom_sf(ggplot2::aes(fill = .data[[variavel]]),
                      colour = NA, size = 0.05) +
     ggplot2::scale_fill_viridis_c(option = "rocket", na.value = "grey90") +
-    ggplot2::labs(title = titulo, fill = "População") +
+    ggplot2::labs(title = titulo, fill = "Populacao") +
     ggplot2::theme_minimal() +
     ggplot2::theme(axis.text = ggplot2::element_blank(),
                    axis.ticks = ggplot2::element_blank(),
@@ -138,9 +138,9 @@ vigiar_mapa_indicadores_saude <- function(dados, nivel = c("uf", "municipio"),
 
   variavel <- variavel %||%
     intersect("estimativa", names(dados))[1] %||%
-    stop("Variável de estimativa não encontrada.")
+    stop("Variavel de estimativa nao encontrada.")
 
-  titulo <- titulo %||% "Indicadores de Saúde — Estimativas"
+  titulo <- titulo %||% "Indicadores de Saude -- Estimativas"
 
   ggplot2::ggplot(dados) +
     ggplot2::geom_sf(ggplot2::aes(fill = .data[[variavel]]),
@@ -163,7 +163,7 @@ vigiar_mapa_fracao_atribuivel <- function(dados, nivel = c("uf", "municipio"),
   if (!inherits(dados, "sf")) dados <- vigiar_join_geobr(dados, nivel = nivel)
   if (!is.null(ano) && "ano" %in% names(dados)) dados <- dplyr::filter(dados, ano == !!ano)
 
-  titulo <- titulo %||% "Fração Atribuível (%)"
+  titulo <- titulo %||% "Fracao Atribuivel (%)"
 
   ggplot2::ggplot(dados) +
     ggplot2::geom_sf(ggplot2::aes(fill = .data[[variavel]]),
@@ -189,9 +189,9 @@ vigiar_mapa_indoor <- function(dados, nivel = c("uf", "municipio"),
   variavel <- variavel %||%
     intersect(c("perc_combustiveis_solidos", "percentual_combustiveis"),
               names(dados))[1] %||%
-    stop("Variável de exposição indoor não encontrada.")
+    stop("Variavel de exposicao indoor nao encontrada.")
 
-  titulo <- titulo %||% "Exposição a Combustíveis Sólidos (%)"
+  titulo <- titulo %||% "Exposicao a Combustiveis Solidos (%)"
 
   ggplot2::ggplot(dados) +
     ggplot2::geom_sf(ggplot2::aes(fill = .data[[variavel]]),

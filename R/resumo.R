@@ -4,7 +4,7 @@
 # Each vigiar_resumo_*() returns a tibble with descriptive statistics
 # appropriate for the data domain.
 
-#' Summarise a VIGIAR tibble — generic dispatcher
+#' Summarise a VIGIAR tibble -- generic dispatcher
 #'
 #' @param x A processed VIGIAR tibble.
 #' @param ... Additional arguments passed to specific summarisers.
@@ -45,7 +45,7 @@ vigiar_resumo.default <- function(x, ...) {
   .vigiar_resumo_generico(x, ...)
 }
 
-# ── PM2.5 summary ─────────────────────────────────────────────────────────────
+# -- PM2.5 summary -------------------------------------------------------------
 
 #' Summarise PM2.5 data
 #'
@@ -78,7 +78,7 @@ vigiar_resumo_pm25 <- function(x, ...) {
   res
 }
 
-# ── Health indicators summary ─────────────────────────────────────────────────
+# -- Health indicators summary -------------------------------------------------
 
 #' @rdname vigiar_resumo_pm25
 #' @export
@@ -143,7 +143,7 @@ vigiar_resumo_indoor <- function(x, ...) {
   res
 }
 
-# ── Generic summary ───────────────────────────────────────────────────────────
+# -- Generic summary -----------------------------------------------------------
 
 .vigiar_resumo_generico <- function(x) {
   n_rows <- nrow(x)
