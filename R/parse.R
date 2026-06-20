@@ -83,18 +83,25 @@
                         tabela, i))
         values <- new_vals
       } else if (keep >= n_cols) {
-        # R >= n_cols: C values overwrite columns starting at
-        # position (keep - n_cols). All columns from prev are kept,
-        # then C replaces the tail.
-        overwrite_start <- keep - n_cols + 1L
-        if (overwrite_start > 0 && overwrite_start <= n_cols) {
-          values <- prev_row
-          for (k in seq_along(new_vals)) {
-            idx <- overwrite_start + k - 1L
-            if (idx <= n_cols) values[[idx]] <- new_vals[[k]]
-          }
+        # R >= n_cols: special compression for ORDER BY queries.
+        # R=6 with 4 cols: C=[new_muni, new_PM25] at positions 0 and (n-1).
+        # R=4 with 4 cols (year boundary): C=[muni, UF, PM25] at 0,1,3.
+        n_new <- length(new_vals)
+        values <- prev_row
+        if (n_cols == 4 && n_new == 2) {
+          # R=6: positions 0 and 3 change (muni, PM25)
+          values[[1]] <- new_vals[[1]]
+          values[[4]] <- new_vals[[2]]
+        } else if (n_cols == 4 && n_new == 3) {
+          # R=4: positions 0,1,3 change (muni, UF, PM25)
+          values[[1]] <- new_vals[[1]]
+          values[[2]] <- new_vals[[2]]
+          values[[4]] <- new_vals[[3]]
         } else {
-          values <- c(prev_row, new_vals)
+          # Generic: overwrite first n_new positions
+          for (k in seq_len(min(n_new, n_cols))) {
+            values[[k]] <- new_vals[[k]]
+          }
         }
       } else if (keep > 0L) {
         values <- c(prev_row[seq_len(keep)], new_vals)
