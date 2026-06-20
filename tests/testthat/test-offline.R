@@ -406,3 +406,209 @@ test_that("validate.vigiar_tbl detects issues", {
   attr(out, "vigiar_tabela") <- NULL
   expect_warning(validate(out), "vigiar_tabela")
 })
+
+# ── Summary functions ─────────────────────────────────────────────────────────
+
+test_that("vigiar_resumo_pm25 returns stats", {
+  pm25 <- data.frame(
+    cod_municipio = c(355030L, 110001L, 530010L),
+    sigla_uf = c("SP", "RO", "DF"),
+    ano = c(2022L, 2022L, 2022L),
+    pm25_media_anual = c(22.5, 18.3, 15.7),
+    stringsAsFactors = FALSE
+  )
+  out <- new_vigiar_tbl(pm25, subclass = "vigiar_pm25", tabela = "df_anual")
+  res <- vigiar_resumo_pm25(out)
+  expect_s3_class(res, "tbl_df")
+  expect_true("media" %in% names(res))
+  expect_equal(res$n_observacoes, 3)
+})
+
+test_that("vigiar_resumo_saude returns stats", {
+  saude <- data.frame(
+    indicador = c("Fração atribuível (%)", "Óbitos"),
+    estimativa = c(4.5, 12000),
+    desfecho = c("Mortalidade", "Câncer"),
+    ano = c(2022L, 2022L),
+    stringsAsFactors = FALSE
+  )
+  out <- new_vigiar_tbl(saude, subclass = "vigiar_health", tabela = "tb_brasil")
+  res <- vigiar_resumo_saude(out)
+  expect_s3_class(res, "tbl_df")
+  expect_equal(res$n_indicadores, 2)
+  expect_equal(res$n_desfechos, 2)
+})
+
+test_that("vigiar_resumo_populacao returns total pop", {
+  pop <- data.frame(
+    cod_municipio = c(355030L, 110001L),
+    ano = c(2022L, 2022L),
+    populacao = c(12e6, 2e6),
+    stringsAsFactors = FALSE
+  )
+  out <- new_vigiar_tbl(pop, subclass = "vigiar_population", tabela = "pop")
+  res <- vigiar_resumo_populacao(out)
+  expect_equal(res$pop_total, 14e6)
+})
+
+test_that("vigiar_resumo_fracao_atribuivel returns stats", {
+  frac <- data.frame(
+    indicador = "Fração (%)", fracao_atribuivel = c(4.5, 12.3),
+    ano = c(2022L, 2022L), stringsAsFactors = FALSE
+  )
+  out <- new_vigiar_tbl(frac, subclass = "vigiar_attributable_fraction", tabela = "tb_fracao")
+  res <- vigiar_resumo_fracao_atribuivel(out)
+  expect_true("media" %in% names(res))
+})
+
+test_that("vigiar_resumo_indoor returns stats", {
+  indoor <- data.frame(
+    cod_uf = c(35L, 11L), ano = c(2022L, 2022L),
+    perc_combustiveis_solidos = c(19.4, 25.1),
+    stringsAsFactors = FALSE
+  )
+  out <- new_vigiar_tbl(indoor, subclass = "vigiar_indoor", tabela = "df_indoor")
+  res <- vigiar_resumo_indoor(out)
+  expect_true("media" %in% names(res))
+})
+
+test_that("vigiar_resumo S3 generic dispatches", {
+  pm25 <- new_vigiar_tbl(
+    data.frame(ano = 2022L, pm25_media_anual = 18.4),
+    subclass = "vigiar_pm25", tabela = "df_anual"
+  )
+  res <- vigiar_resumo(pm25)
+  expect_s3_class(res, "tbl_df")
+})
+
+# ── Time series ───────────────────────────────────────────────────────────────
+
+test_that("vigiar_agregar_tempo aggregates by year", {
+  dados <- data.frame(
+    ano = c(2020L, 2020L, 2021L, 2021L),
+    pm25_media_anual = c(18, 22, 20, 24),
+    stringsAsFactors = FALSE
+  )
+  res <- vigiar_agregar_tempo(dados, agregar_por = "ano", variavel = "pm25_media_anual")
+  expect_equal(nrow(res), 2)
+  expect_true("pm25_media_anual_media" %in% names(res))
+})
+
+test_that("vigiar_agregar_tempo errors without ano", {
+  dados <- data.frame(x = 1:3)
+  expect_error(vigiar_agregar_tempo(dados), "coluna 'ano'")
+})
+
+test_that("vigiar_tendencia_descritiva returns trend columns", {
+  dados <- data.frame(
+    ano = 2018:2022,
+    pm25_media_anual = c(20, 19, 22, 21, 18),
+    stringsAsFactors = FALSE
+  )
+  res <- vigiar_tendencia_descritiva(dados, variavel = "pm25_media_anual")
+  expect_true(all(c("ano", "media", "variacao_anual", "media_movel") %in% names(res)))
+  expect_equal(nrow(res), 5)
+})
+
+test_that("vigiar_serie_temporal aggregates at national level", {
+  dados <- data.frame(
+    ano = c(2020L, 2020L, 2021L),
+    pm25_media_anual = c(18, 22, 20),
+    stringsAsFactors = FALSE
+  )
+  res <- vigiar_serie_temporal(dados, nivel = "nacional")
+  expect_equal(nrow(res), 2)
+})
+
+# ── Export ────────────────────────────────────────────────────────────────────
+
+test_that("vigiar_exportar_csv writes a CSV file", {
+  dados <- data.frame(x = 1:3, y = letters[1:3])
+  tmp <- tempfile(fileext = ".csv")
+  on.exit(unlink(tmp))
+  vigiar_exportar_csv(dados, tmp)
+  expect_true(file.exists(tmp))
+})
+
+test_that("vigiar_exportar_csv refuses to overwrite", {
+  dados <- data.frame(x = 1)
+  tmp <- tempfile(fileext = ".csv")
+  on.exit(unlink(tmp))
+  write.csv(dados, tmp)
+  expect_error(vigiar_exportar_csv(dados, tmp), "já existe")
+})
+
+test_that("vigiar_exportar_rds writes and preserves data", {
+  dados <- data.frame(x = 1:3)
+  tmp <- tempfile(fileext = ".rds")
+  on.exit(unlink(tmp))
+  vigiar_exportar_rds(dados, tmp)
+  expect_true(file.exists(tmp))
+  loaded <- readRDS(tmp)
+  expect_equal(loaded, dados)
+})
+
+test_that("vigiar_exportar_parquet requires arrow", {
+  dados <- data.frame(x = 1)
+  tmp <- tempfile(fileext = ".parquet")
+  on.exit(unlink(tmp))
+  if (requireNamespace("arrow", quietly = TRUE)) {
+    vigiar_exportar_parquet(dados, tmp)
+    expect_true(file.exists(tmp))
+  } else {
+    expect_error(vigiar_exportar_parquet(dados, tmp), "arrow")
+  }
+})
+
+# ── Dictionary validation ─────────────────────────────────────────────────────
+
+test_that("vigiar_tabelas_documentadas returns character vector", {
+  tabs <- vigiar_tabelas_documentadas()
+  expect_type(tabs, "character")
+  expect_true(length(tabs) > 0)
+})
+
+test_that("vigiar_schema returns tibble", {
+  s <- vigiar_schema("pm25")
+  expect_s3_class(s, "tbl_df")
+})
+
+# ── Maps (offline, without geobr) ─────────────────────────────────────────────
+
+test_that("vigiar_join_geobr errors gracefully without geobr", {
+  dados <- data.frame(cod_municipio = 355030L, ano = 2022L)
+  if (!requireNamespace("geobr", quietly = TRUE)) {
+    expect_error(vigiar_join_geobr(dados, "municipio"), "geobr")
+  }
+})
+
+test_that("vigiar_mapa_pm25 errors gracefully without sf", {
+  dados <- data.frame(cod_municipio = 355030L, pm25_media_anual = 22.5)
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    expect_error(vigiar_mapa_pm25(dados, "municipio"), "geobr")
+  }
+})
+
+# ── process_vigiar dispatcher ─────────────────────────────────────────────────
+
+test_that("process_vigiar dispatches to correct processor", {
+  dados <- data.frame(
+    muni = 355030L, UF = "SP", ano = 2022L,
+    Media_pm25 = 22.5, Categoria_pm25 = "> 35 µg/m³",
+    stringsAsFactors = FALSE
+  )
+  result <- process_vigiar(dados, tabela = "df_anual")
+  expect_s3_class(result, "vigiar_pm25")
+})
+
+test_that("process_vigiar errors without tabela", {
+  dados <- data.frame(x = 1)
+  expect_error(process_vigiar(dados), "Informe o nome da tabela")
+})
+
+test_that("process_ufs standardises UF column", {
+  dados <- data.frame(UF = c("SP", "RJ"), stringsAsFactors = FALSE)
+  result <- process_ufs(dados)
+  expect_s3_class(result, "vigiar_uf")
+  expect_true("sigla_uf" %in% names(result))
+})
