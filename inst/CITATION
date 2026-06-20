@@ -1,19 +1,19 @@
-citHeader("Para citar o pacote vigiar em publicações, use:")
+citHeader("Para citar o pacote vigiar.rj em publicacoes, use:")
 
 bibentry(
   bibtype    = "Manual",
-  title      = "vigiar: Download and Process VIGIAR Environmental Health Surveillance Data",
+  title      = "vigiar.rj: VIGIAR Environmental Health Data for Rio de Janeiro",
   author     = c(person(given = "Ryan", family = "Santos",
                          email = "ryan.paulo@gsuite.iff.edu.br",
                          comment = c(ORCID = "0009-0005-6770-2001"))),
   year       = "2026",
-  note       = "R package version 0.3.0, https://github.com/santosry/vigiar-download",
+  note       = "R package version 0.4.0, https://github.com/santosry/vigiar.rj",
   textVersion = paste(
     "Ryan Santos (2026).",
-    "vigiar: Download and Process VIGIAR Environmental Health Surveillance Data.",
-    "R package version 0.3.0.",
-    "https://github.com/santosry/vigiar-download"
+    "vigiar.rj: VIGIAR Environmental Health Data for Rio de Janeiro.",
+    "R package version 0.4.0.",
+    "https://github.com/santosry/vigiar.rj"
   )
 )
 
-citFooter("Dados: Ministério da Saúde — VIGIAR (Vigilância em Saúde Ambiental).")
+citFooter("Dados: Ministerio da Saude — VIGIAR (Vigilancia em Saude Ambiental).")

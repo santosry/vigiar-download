@@ -1,6 +1,6 @@
-# vigiar — Dados do Rio de Janeiro
+# vigiar.rj — Dados do Rio de Janeiro
 
-[![R-CMD-check](https://github.com/santosry/vigiar-download/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/santosry/vigiar-download/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/santosry/vigiar.rj/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/santosry/vigiar.rj/actions/workflows/R-CMD-check.yaml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![R >= 4.0.0](https://img.shields.io/badge/R-%3E%3D%204.0.0-blue.svg)](https://cran.r-project.org/)
 
@@ -12,13 +12,13 @@ especializado para o **estado do Rio de Janeiro**.
 ## Instalacao
 
 ```r
-remotes::install_github("santosry/vigiar-download")
+remotes::install_github("santosry/vigiar.rj")
 ```
 
 ## Uso rapido
 
 ```r
-library(vigiar)
+library(vigiar.rj)
 library(ggplot2)
 
 vigiar_conectar()

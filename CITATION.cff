@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-title: "vigiar: Download Data from the VIGIAR Environmental Health Surveillance Dashboard"
-version: 0.1.0
+title: "vigiar.rj: VIGIAR Environmental Health Data for Rio de Janeiro"
+version: 0.4.0
 date-released: 2026-06-20
 authors:
   - family-names: Santos
