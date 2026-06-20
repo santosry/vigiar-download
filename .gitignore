@@ -1,4 +1,6 @@
-# R
+# R CMD check
+*.Rcheck/
+..Rcheck/
 .Rproj.user/
 .Rhistory
 .RData
