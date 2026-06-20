@@ -84,4 +84,4 @@ importFrom(dplyr, across, all_of, filter, group_by, summarise,
 importFrom(jsonlite, fromJSON, toJSON)
 importFrom(tibble, as_tibble)
 importFrom(utils, write.csv, read.csv, browseURL)
-importFrom(stats, median, sd, quantile, filter)
+importFrom(stats, median, sd, quantile)
