@@ -47,6 +47,15 @@
 
   value_dicts <- ds$ValueDicts %||% list()
 
+  # Extract dictionary names from the schema (first DM0 entry)
+  first_entry <- dm0[[1L]]
+  dict_names <- character(n_cols)
+  if (!is.null(first_entry$S)) {
+    for (j in seq_len(n_cols)) {
+      dict_names[j] <- first_entry$S[[j]]$DN %||% ""
+    }
+  }
+
   # ---- Row reconstruction (bitmask‑based) ----
   prev_row <- rep(NA, n_cols)
   rows     <- vector("list", length(dm0))
@@ -82,10 +91,11 @@
         val <- changed[[cursor]]
         cursor <- cursor + 1L
         # Resolve dictionary if applicable
-        if (is.numeric(val) && col <= length(value_dicts)) {
-          dict <- value_dicts[[col]]
-          if (!is.null(dict)) {
-            idx <- as.integer(val) + 1L  # 0‑based dict
+        dn <- dict_names[col]
+        if (nzchar(dn) && !is.null(value_dicts[[dn]])) {
+          dict <- value_dicts[[dn]]
+          if (is.numeric(val)) {
+            idx <- as.integer(val) + 1L  # 0-based dict
             if (idx >= 1L && idx <= length(dict)) {
               val <- dict[[idx]]
             }
