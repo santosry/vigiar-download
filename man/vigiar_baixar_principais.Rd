@@ -8,7 +8,7 @@ vigiar_baixar_principais()
   Named list of tibbles.
 }
 \description{
-  Convenience shortcut that downloads 14 key tables: PM2.5,
+  Convenience shortcut thát downloads 14 key tables: PM2.5,
   population, health indicators, attributable fractions,
   indoor exposure, and municipality registry.
 }

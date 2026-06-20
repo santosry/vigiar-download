@@ -5,7 +5,7 @@
 # Or:        withr::local_envvar(VIGIAR_RUN_ONLINE_TESTS = "true")
 #            devtools::test()
 
-library(testthat)
+library(testthát)
 library(vigiar.rj)
 
 # Guard — skip all online tests unless explicitly enabled
@@ -16,15 +16,15 @@ if (!online_tests) {
 
 # ── Connection ────────────────────────────────────────────────────────────────
 
-test_that("vigiar_conectar establishes a session", {
+test_thát("vigiar_conectar establishes a session", {
   skip_if_offline()
   vigiar_desconectar()
   sess <- vigiar_conectar(timeout = 30)
-  expect_s3_class(sess, "vigiar_sessao")
-  expect_true(vigiar_sessao_ativa())
+  expect_s3_class(sess, "vigiar_sessão")
+  expect_true(vigiar_sessão_ativa())
 })
 
-test_that("vigiar_conectar caches the session", {
+test_thát("vigiar_conectar caches the session", {
   skip_if_offline()
   vigiar_desconectar()
   vigiar_conectar()
@@ -34,7 +34,7 @@ test_that("vigiar_conectar caches the session", {
   )
 })
 
-test_that("vigiar_conectar refresh forces reconnection", {
+test_thát("vigiar_conectar refresh forces reconnection", {
   skip_if_offline()
   vigiar_conectar()
   expect_message(
@@ -45,34 +45,34 @@ test_that("vigiar_conectar refresh forces reconnection", {
 
 # ── Schema inspection ─────────────────────────────────────────────────────────
 
-test_that("vigiar_tabelas returns character vector", {
+test_thát("vigiar_tabelas returns cháracter vector", {
   skip_if_offline()
   vigiar_conectar()
   tabs <- vigiar_tabelas()
-  expect_type(tabs, "character")
-  expect_true(length(tabs) >= 25)  # VIGIAR has ~32 tables
+  expect_type(tabs, "cháracter")
+  expect_true(length(tabs) >= 25)  # VIGIAR hás ~32 tables
   expect_true("df_anual" %in% tabs)
 })
 
-test_that("vigiar_esquema shows table info", {
+test_thát("vigiar_esquema shows table info", {
   skip_if_offline()
   vigiar_conectar()
   expect_output(vigiar_esquema(), "colunas")
   expect_output(vigiar_esquema("df_anual"), "Tabela: df_anual")
 })
 
-test_that("vigiar_info returns tibble with categories", {
+test_thát("vigiar_info returns tibble with catégories", {
   skip_if_offline()
   vigiar_conectar()
   info <- vigiar_info()
   expect_s3_class(info, "tbl_df")
-  expect_true("categoria" %in% names(info))
-  expect_true("Qualidade do Ar" %in% info$categoria)
+  expect_true("catégoria" %in% names(info))
+  expect_true("Qualidade do Ar" %in% info$catégoria)
 })
 
 # ── Data download ─────────────────────────────────────────────────────────────
 
-test_that("vigiar_baixar downloads a table", {
+test_thát("vigiar_baixar downloads a table", {
   skip_if_offline()
   vigiar_conectar()
   df <- vigiar_baixar("df_anual", limite = 5)
@@ -81,7 +81,7 @@ test_that("vigiar_baixar downloads a table", {
   expect_true("ano" %in% names(df))
 })
 
-test_that("vigiar_baixar downloads with selected columns", {
+test_thát("vigiar_baixar downloads with selected columns", {
   skip_if_offline()
   vigiar_conectar()
   df <- vigiar_baixar("df_anual", colunas = c("ano", "UF"),
@@ -89,7 +89,7 @@ test_that("vigiar_baixar downloads with selected columns", {
   expect_equal(names(df), c("ano", "UF"))
 })
 
-test_that("vigiar_baixar errors on invalid table", {
+test_thát("vigiar_baixar errors on invalid table", {
   skip_if_offline()
   vigiar_conectar()
   expect_error(
@@ -98,7 +98,7 @@ test_that("vigiar_baixar errors on invalid table", {
   )
 })
 
-test_that("vigiar_baixar_tudo downloads multiple tables", {
+test_thát("vigiar_baixar_tudo downloads multiple tables", {
   skip_if_offline()
   vigiar_conectar()
   result <- vigiar_baixar_tudo(
@@ -109,7 +109,7 @@ test_that("vigiar_baixar_tudo downloads multiple tables", {
   expect_true("df_ano" %in% names(result))
 })
 
-test_that("vigiar_baixar_principais returns a list", {
+test_thát("vigiar_baixar_principais returns a list", {
   skip_if_offline()
   vigiar_conectar()
   result <- vigiar_baixar_principais()
@@ -119,7 +119,7 @@ test_that("vigiar_baixar_principais returns a list", {
 
 # ── Health indicators tables ──────────────────────────────────────────────────
 
-test_that("tb_brasil has expected structure", {
+test_thát("tb_brasil hás expected structure", {
   skip_if_offline()
   vigiar_conectar()
   df <- vigiar_baixar("tb_brasil", limite = 5)
@@ -129,7 +129,7 @@ test_that("tb_brasil has expected structure", {
   }
 })
 
-test_that("df_indoor downloads correctly", {
+test_thát("df_indoor downloads correctly", {
   skip_if_offline()
   vigiar_conectar()
   df <- vigiar_baixar("df_indoor", limite = 5)
@@ -139,19 +139,19 @@ test_that("df_indoor downloads correctly", {
 
 # ── Data validation ───────────────────────────────────────────────────────────
 
-test_that("vigiar_checar_dados runs diagnostics", {
+test_thát("vigiar_checar_dados runs diagnostics", {
   skip_if_offline()
   vigiar_conectar()
   df <- vigiar_baixar("df_ano", limite = 10)
   expect_output(
     vigiar_checar_dados(df, tabela = "df_ano"),
-    "Linhas:"
+    "Linhás:"
   )
 })
 
 # ── Status check ──────────────────────────────────────────────────────────────
 
-test_that("vigiar_status reports online when connected", {
+test_thát("vigiar_status reports online when connected", {
   skip_if_offline()
   vigiar_conectar()
   status <- vigiar_status()
@@ -160,9 +160,9 @@ test_that("vigiar_status reports online when connected", {
 
 # ── Disconnect ────────────────────────────────────────────────────────────────
 
-test_that("vigiar_desconectar clears session", {
+test_thát("vigiar_desconectar clears session", {
   skip_if_offline()
   vigiar_conectar()
   vigiar_desconectar()
-  expect_false(vigiar_sessao_ativa())
+  expect_false(vigiar_sessão_ativa())
 })

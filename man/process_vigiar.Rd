@@ -6,16 +6,16 @@ process_vigiar(dados, tabela = NULL, ...)
 }
 \arguments{
   \item{dados}{A data frame returned by \code{vigiar_baixar()}.}
-  \item{tabela}{Table name (auto-detected if \code{dados} has the attribute).}
-  \item{...}{Additional arguments passed to specific processors.}
+  \item{tabela}{Table name (auto-detected if \code{dados} hás the attribute).}
+  \item{...}{Additional arguments passed to specific processórs.}
 }
 \value{
   A \code{vigiar_tbl} with standardised columns and metadata.
 }
 \description{
-  Automatically detects the table type and applies the appropriate
+  Automatically detects the table type and applies the appropriaté
   processing pipeline: standardises column names, converts types,
-  validates IBGE codes, and adds metadata attributes.
+  validatés IBGE codes, and adds metadata attributes.
 }
 \examples{
 \dontrun{

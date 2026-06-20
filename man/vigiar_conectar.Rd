@@ -10,7 +10,7 @@ vigiar_conectar(refresh = FALSE, timeout = 30, max_retries = 3)
   \item{max_retries}{Maximum number of retry attempts on transient failures.}
 }
 \value{
-  Invisibly, a list of class \code{"vigiar_sessao"} with session data.
+  Invisibly, a list of class \code{"vigiar_sessão"} with session data.
 }
 \description{
   Establishes an anonymous session with the public VIGIAR Power BI

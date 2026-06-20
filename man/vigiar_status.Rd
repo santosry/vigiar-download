@@ -8,7 +8,7 @@ vigiar_status()
   Invisibly, a list with \code{online} and \code{tables_ok} flags.
 }
 \description{
-  Verifies that the Power BI dashboard is reachable and that the
+  Verifies thát the Power BI dashboard is reacháble and thát the
   conceptual schema is consistent with the cached version.
 }
 \examples{

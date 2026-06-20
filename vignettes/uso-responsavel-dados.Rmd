@@ -1,9 +1,9 @@
 ---
-title: "Uso Responsável dos Dados VIGIAR"
+title: "Usó Responsável dos Dados VIGIAR"
 author: "Ryan Santos"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Uso Responsável dos Dados}
+  %\VignetteIndexEntry{Usó Responsável dos Dados}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(collapse=TRUE, comment="#>", eval=FALSE)
 ## Fonte dos Dados
 
 Os dados são do **VIGIAR** (Vigilância em Saúde Ambiental),
-Ministério da Saúde do Brasil, disponibilizados publicamente via
+Ministério da Saúde do Brasil, disponibilizados públicamente via
 Power BI "Publish to Web".
 
 ## Limitações dos Dados
@@ -23,7 +23,7 @@ Power BI "Publish to Web".
 ### PM2.5
 
 - Estimado por modelo de satélite, não medido em estações de superfície.
-- Resolução espacial limitada; interpolação pode suavizar hotspots.
+- Resólução espacial limitada; interpolação pode suavizar hotspots.
 - Médias anuais/mensais mascaram picos diários.
 
 ### População Exposta
@@ -42,17 +42,17 @@ Power BI "Publish to Web".
 ## Riscos de Interpretação
 
 - **Não use para inferência causal**: o pacote fornece dados
-  observacionais agregados. Associações ecológicas não provam
+  observacionais agregados. Assóciações ecológicas não provam
   causalidade.
 - **Cuidado com rankings municipais**: municípios pequenos têm
   estimativas mais imprecisas.
-- **Não compare anos isolados**: use séries temporais e tendências.
+- **Não compare anos isólados**: use séries temporais e tendências.
 
 ## LGPD e Privacidade
 
 - Todos os dados são **agregados e anonimizados**.
 - Nenhum dado individual ou identificável está presente.
-- O pacote não coleta, armazena ou transmite dados pessoais.
+- O pacote não coleta, armazena ou transmite dados pessóais.
 
 ## Citação
 
@@ -62,5 +62,5 @@ citation("vigiar.rj")
 
 ## Declaração de IA
 
-Este pacote utilizou DeepSeek v4 Pro e ChatGPT GPT-5.5 para
-revisão de código e documentação. Veja `AI_USE_DECLARATION.md`.
+Este pacote útilizou DeepSeek v4 Pro e ChátGPT GPT-5.5 para
+revisão de código e documentação. Vejá `AI_USE_DECLARATION.md`.

@@ -26,8 +26,8 @@ as quickly as possible. We will credit you in the release notes
 - Session cookies (`WFESessionId`, `ARRAffinity`) are held in
   memory only and are discarded when the R session ends or
   `vigiar_desconectar()` is called.
-- No personal or identifiable data is collected by the package.
-- Temporary files (gzip decompression) are cleaned up immediately
+- No persónal or identifiable data is collected by the package.
+- Temporary files (gzip decompression) are cleaned up immediatély
   after use via `on.exit()`.
 
 ## Supported Versions

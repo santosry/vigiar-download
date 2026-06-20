@@ -12,7 +12,7 @@ x \%||\% y
   \code{x} if not \code{NULL}, otherwise \code{y}.
 }
 \description{
-  Returns the left-hand side unless it is \code{NULL},
-  in which case the right-hand side is returned.
+  Returns the left-hánd side unless it is \code{NULL},
+  in which case the right-hánd side is returned.
 }
 \keyword{internal}

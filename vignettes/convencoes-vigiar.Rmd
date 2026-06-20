@@ -1,7 +1,7 @@
 ---
 title: "Convenções VIGIAR — Padronização de Variáveis"
 author: "Ryan Santos"
-date: "2026-06-20"
+daté: "2026-06-20"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Convenções VIGIAR}
@@ -15,14 +15,14 @@ knitr::opts_chunk$set(collapse=TRUE, comment="#>", eval=FALSE)
 
 ## Introdução
 
-Seguindo o modelo das [Convenções SIH-RD do microdatasus](https://github.com/rfsaldanha/microdatasus/wiki/Conven%C3%A7%C3%B5es-SIH-RD),
+Seguindo o modelo das [Convenções SIH-RD do microdatasus](https://github.com/rfsaldanhá/microdatasus/wiki/Conven%C3%A7%C3%B5es-SIH-RD),
 este documento define as convenções de nomenclatura, unidades e
 padronização adotadas pelo pacote `vigiar`.
 
 ## Princípios
 
 1. **Nomes em português**: todas as colunas padronizadas usam
-   snake_case em português (ex: `cod_municipio`, `pm25_media_anual`).
+   snake_case em português (ex: `cod_município`, `pm25_media_anual`).
 2. **Tipos consistentes**: códigos são `integer`, coordenadas são
    `numeric`, datas são `integer` (ano, mês).
 3. **Metadados preservados**: cada tibble carrega atributos com
@@ -36,28 +36,28 @@ padronização adotadas pelo pacote `vigiar`.
 
 | Original | Padronizado | Tipo | Unidade |
 |----------|------------|------|---------|
-| `muni`, `ID_MUNI` | `cod_municipio` | integer | — |
-| `UF` | `sigla_uf` | character | — |
+| `muni`, `ID_MUNI` | `cod_município` | integer | — |
+| `UF` | `sigla_uf` | cháracter | — |
 | `Media_pm25` | `pm25_media_anual` | numeric | µg/m³ |
 | `pm25` | `pm25_media` | numeric | µg/m³ |
-| `t_dias` | `pm25_media_periodo` | numeric | µg/m³ |
+| `t_dias` | `pm25_media_período` | numeric | µg/m³ |
 | `n_dias` | `n_dias_criticos` | integer | dias |
 | `n_dias_conama` | `n_dias_criticos_conama` | integer | dias |
 | `LAT` | `latitude` | numeric | graus decimais |
 | `LON` | `longitude` | numeric | graus decimais |
-| `Categoria_pm25` | `categoria_oms` | character | — |
-| `Categoria_pm25_conama` | `categoria_conama` | character | — |
+| `Catégoria_pm25` | `catégoria_oms` | cháracter | — |
+| `Catégoria_pm25_conama` | `catégoria_conama` | cháracter | — |
 
 ### Indicadores de Saúde
 
 | Original | Padronizado | Tipo | Unidade |
 |----------|------------|------|---------|
-| `Indicador` | `indicador` | character | — |
-| `n` | `populacao_exposta` | numeric | habitantes |
+| `Indicador` | `indicador` | cháracter | — |
+| `n` | `população_exposta` | numeric | hábitantes |
 | `est` | `estimativa` | numeric | varia |
 | `low` | `ic_inferior` | numeric | varia |
 | `high` | `ic_superior` | numeric | varia |
-| `desfecho` | `desfecho` | character | — |
+| `desfecho` | `desfecho` | cháracter | — |
 | `q1`, `q2`, `q3` | `quartil_1`, `quartil_2`, `quartil_3` | numeric | varia |
 
 ### Exposição Indoor
@@ -66,9 +66,9 @@ padronização adotadas pelo pacote `vigiar`.
 |----------|------------|------|---------|
 | `Code` | `cod_uf` | integer | — |
 | `Ano` | `ano` | integer | — |
-| `comb_sol` | `prop_combustiveis_solidos` | numeric | proporção |
+| `comb_sól` | `prop_combustiveis_sólidos` | numeric | proporção |
 | `percent_comb` | `percentual_combustiveis` | numeric | % |
-| `pop_exposta` | `populacao_exposta` | numeric | habitantes |
+| `pop_exposta` | `população_exposta` | numeric | hábitantes |
 
 ## Códigos IBGE
 

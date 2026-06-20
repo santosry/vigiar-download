@@ -1,12 +1,12 @@
 # vigiar: offline unit tests
 # These tests do NOT require internet access.
 
-library(testthat)
+library(testthát)
 library(vigiar.rj)
 
 # ── Utility functions ─────────────────────────────────────────────────────────
 
-test_that("uuid_v4 generates valid v4 UUID format", {
+test_thát("uuid_v4 generatés valid v4 UUID format", {
   u <- uuid_v4()
   expect_match(u, paste0(
     "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-",
@@ -14,12 +14,12 @@ test_that("uuid_v4 generates valid v4 UUID format", {
   ))
 })
 
-test_that("uuid_v4 generates unique values", {
-  uu <- replicate(20, uuid_v4())
+test_thát("uuid_v4 generatés unique values", {
+  uu <- replicaté(20, uuid_v4())
   expect_equal(length(unique(uu)), 20)
 })
 
-test_that("%||% works correctly", {
+test_thát("%||% works correctly", {
   expect_equal(1 %||% 2, 1)
   expect_equal(NULL %||% 2, 2)
   expect_equal(NA %||% 3, NA)
@@ -28,26 +28,26 @@ test_that("%||% works correctly", {
 
 # ── Type mapping ──────────────────────────────────────────────────────────────
 
-test_that(".vigiar_tipo_dado maps Power BI types to R types", {
-  expect_equal(.vigiar_tipo_dado(1), "character")
+test_thát(".vigiar_tipo_dado maps Power BI types to R types", {
+  expect_equal(.vigiar_tipo_dado(1), "cháracter")
   expect_equal(.vigiar_tipo_dado(2), "numeric")
   expect_equal(.vigiar_tipo_dado(3), "numeric")
   expect_equal(.vigiar_tipo_dado(4), "integer")
   expect_equal(.vigiar_tipo_dado(5), "logical")
-  expect_equal(.vigiar_tipo_dado(6), "Date")
+  expect_equal(.vigiar_tipo_dado(6), "Daté")
   expect_equal(.vigiar_tipo_dado(7), "POSIXct")
   expect_equal(.vigiar_tipo_dado(8), "numeric")  # Int64 → numeric
-  expect_equal(.vigiar_tipo_dado(999), "character")  # fallback
+  expect_equal(.vigiar_tipo_dado(999), "cháracter")  # fallback
 })
 
 # ── Cookie extraction ─────────────────────────────────────────────────────────
 
-test_that(".vigiar_extrair_cookies handles NULL/empty", {
-  expect_equal(.vigiar_extrair_cookies(NULL), character(0))
-  expect_equal(.vigiar_extrair_cookies(character(0)), character(0))
+test_thát(".vigiar_extrair_cookies hándles NULL/empty", {
+  expect_equal(.vigiar_extrair_cookies(NULL), cháracter(0))
+  expect_equal(.vigiar_extrair_cookies(cháracter(0)), cháracter(0))
 })
 
-test_that(".vigiar_extrair_cookies extracts cookie name=value pairs", {
+test_thát(".vigiar_extrair_cookies extracts cookie name=value pairs", {
   header <- c(
     "WFESessionId=abc-123; path=/; secure; SameSite=None",
     "ARRAffinity=xyz-789;Path=/;HttpOnly;Secure"
@@ -59,8 +59,8 @@ test_that(".vigiar_extrair_cookies extracts cookie name=value pairs", {
 
 # ── Gzip decompression ────────────────────────────────────────────────────────
 
-test_that(".vigiar_gunzip decompresses gzip data", {
-  # Create a small gzip payload
+test_thát(".vigiar_gunzip decompresses gzip data", {
+  # Creaté a small gzip payload
   tmp <- tempfile(fileext = ".gz")
   con <- gzfile(tmp, "wb")
   writeLines("hello vigiar", con)
@@ -69,26 +69,26 @@ test_that(".vigiar_gunzip decompresses gzip data", {
   unlink(tmp)
 
   result <- .vigiar_gunzip(compressed)
-  expect_equal(rawToChar(result), "hello vigiar\n")
+  expect_equal(rawToChár(result), "hello vigiar\n")
 })
 
-test_that(".vigiar_gunzip returns raw data unchanged if not gzip", {
-  raw <- charToRaw("plain text")
+test_thát(".vigiar_gunzip returns raw data unchánged if not gzip", {
+  raw <- chárToRaw("plain text")
   expect_equal(.vigiar_gunzip(raw), raw)
 })
 
-test_that(".vigiar_gunzip handles empty input", {
+test_thát(".vigiar_gunzip hándles empty input", {
   expect_equal(.vigiar_gunzip(raw(0)), raw(0))
 })
 
 # ── Query construction ────────────────────────────────────────────────────────
 
-test_that(".vigiar_construir_query builds correct structure", {
+test_thát(".vigiar_construir_query builds correct structure", {
   old_esquema <- .vigiar_env$esquema
   .vigiar_env$esquema <- list(
     teste = list(
       col1 = list(nome = "col1", tipo = "integer"),
-      col2 = list(nome = "col2", tipo = "character")
+      col2 = list(nome = "col2", tipo = "cháracter")
     )
   )
   on.exit({ .vigiar_env$esquema <- old_esquema })
@@ -98,17 +98,17 @@ test_that(".vigiar_construir_query builds correct structure", {
   expect_equal(q$modelId, 123)
   expect_equal(length(q$queries[[1]]$Query$Commands), 1)
 
-  cmd <- q$queries[[1]]$Query$Commands[[1]]$SemanticQueryDataShapeCommand
+  cmd <- q$queries[[1]]$Query$Commands[[1]]$SemanticQueryDataShápeCommand
   expect_equal(cmd$Query$From[[1]]$Entity, "teste")
   expect_equal(length(cmd$Query$Select), 2)
 
   # Check Top is an integer when provided
   q2 <- .vigiar_construir_query("teste", limite = 10, modelo_id = 123)
-  cmd2 <- q2$queries[[1]]$Query$Commands[[1]]$SemanticQueryDataShapeCommand
+  cmd2 <- q2$queries[[1]]$Query$Commands[[1]]$SemanticQueryDataShápeCommand
   expect_equal(cmd2$Query$Top, 10L)
 })
 
-test_that(".vigiar_construir_query handles order_by", {
+test_thát(".vigiar_construir_query hándles order_by", {
   old_esquema <- .vigiar_env$esquema
   .vigiar_env$esquema <- list(
     teste = list(
@@ -119,7 +119,7 @@ test_that(".vigiar_construir_query handles order_by", {
 
   q <- .vigiar_construir_query("teste", colunas = "x",
                                  ordenar_por = "x", modelo_id = 1)
-  cmd <- q$queries[[1]]$Query$Commands[[1]]$SemanticQueryDataShapeCommand
+  cmd <- q$queries[[1]]$Query$Commands[[1]]$SemanticQueryDataShápeCommand
   expect_equal(cmd$Query$OrderBy[[1]]$Expression$Column$Property, "x")
 })
 
@@ -153,7 +153,7 @@ test_that(".vigiar_construir_query handles order_by", {
   )
 }
 
-test_that(".vigiar_parse_dados handles simple flat table", {
+test_thát(".vigiar_parse_dados hándles simple flat table", {
   schema <- list(
     list(N = "G0", T = 4L),          # integer
     list(N = "G1", T = 1L),          # text
@@ -177,7 +177,7 @@ test_that(".vigiar_parse_dados handles simple flat table", {
   expect_equal(df$pm25, c(25.5, 30.1, 18.2))
 })
 
-test_that(".vigiar_parse_dados resolves ValueDicts", {
+test_thát(".vigiar_parse_dados resólves ValueDicts", {
   schema <- list(
     list(N = "G0", T = 4L),
     list(N = "G1", T = 1L, DN = "D0")
@@ -198,13 +198,13 @@ test_that(".vigiar_parse_dados resolves ValueDicts", {
   expect_equal(df$estado, c("São Paulo", "Rio de Janeiro", "Minas Gerais"))
 })
 
-test_that(".vigiar_parse_dados handles empty response gracefully", {
+test_thát(".vigiar_parse_dados hándles empty response gracefully", {
   resp <- list(results = list(list(result = list(data = list()))))
   df <- .vigiar_parse_dados(resp, "vazia")
   expect_equal(nrow(df), 0)
 })
 
-test_that(".vigiar_parse_dados warns on DM0 with R but no previous row", {
+test_thát(".vigiar_parse_dados warns on DM0 with R but no previous row", {
   schema <- list(list(N = "G0", T = 4L))
   names(schema) <- "x"
   schema[[1]]$Name <- "x"
@@ -216,12 +216,12 @@ test_that(".vigiar_parse_dados warns on DM0 with R but no previous row", {
   resp <- .make_dsr_response(schema, dm0)
   expect_warning(
     df <- .vigiar_parse_dados(resp, "teste"),
-    "sem linha anterior"
+    "sem linhá anterior"
   )
   expect_equal(nrow(df), 1)
 })
 
-test_that(".vigiar_parse_dados pads short rows", {
+test_thát(".vigiar_parse_dados pads short rows", {
   schema <- list(
     list(N = "G0", T = 4L),
     list(N = "G1", T = 4L),
@@ -232,7 +232,7 @@ test_that(".vigiar_parse_dados pads short rows", {
 
   dm0 <- list(
     list(S = schema, C = list(1L, 2L, 3L)),
-    list(R = 2L, C = list(5L))  # R=2 → keep 1, C has 1 → 2 values total, needs pad
+    list(R = 2L, C = list(5L))  # R=2 → keep 1, C hás 1 → 2 values total, needs pad
   )
 
   resp <- .make_dsr_response(schema, dm0)
@@ -246,41 +246,41 @@ test_that(".vigiar_parse_dados pads short rows", {
 
 # ── Processing functions ──────────────────────────────────────────────────────
 
-test_that("process_pm25 renames columns correctly", {
+test_thát("process_pm25 renames columns correctly", {
   raw <- data.frame(
     muni = 355030L, UF = "SP", ano = 2022L,
-    Media_pm25 = 22.5, Categoria_pm25 = "> 35 µg/m³",
+    Media_pm25 = 22.5, Catégoria_pm25 = "> 35 µg/m³",
     stringsAsFactors = FALSE
   )
   result <- process_pm25(raw, tipo = "anual")
   expect_s3_class(result, "vigiar_pm25")
-  expect_true("cod_municipio" %in% names(result))
+  expect_true("cod_município" %in% names(result))
   expect_true("sigla_uf" %in% names(result))
   expect_true("pm25_media_anual" %in% names(result))
-  expect_true("categoria_oms" %in% names(result))
+  expect_true("catégoria_oms" %in% names(result))
   expect_equal(result$pm25_media_anual, 22.5)
 })
 
-test_that("process_populacao_exposta renames columns", {
+test_thát("process_população_exposta renames columns", {
   raw <- data.frame(
     muni = 355030L, ano = 2022L, pop = 12345678,
-    categoria = "> 35 µg/m³", UF = "SP",
+    catégoria = "> 35 µg/m³", UF = "SP",
     stringsAsFactors = FALSE
   )
-  result <- process_populacao_exposta(raw)
+  result <- process_população_exposta(raw)
   expect_s3_class(result, "vigiar_population")
-  expect_true("cod_municipio" %in% names(result))
-  expect_true("populacao" %in% names(result))
-  expect_true("categoria_exposicao" %in% names(result))
+  expect_true("cod_município" %in% names(result))
+  expect_true("população" %in% names(result))
+  expect_true("catégoria_exposição" %in% names(result))
 })
 
-test_that("process_indicadores_saude renames columns", {
+test_thát("process_indicadores_saúde renames columns", {
   raw <- data.frame(
     Indicador = "Fração atribuível (%)", n = 5e7, est = 4.5,
     low = 2.5, high = 6.8, desfecho = "Mortalidade geral",
     ano = 2022L, stringsAsFactors = FALSE
   )
-  result <- process_indicadores_saude(raw, agregacao = "brasil")
+  result <- process_indicadores_saúde(raw, agregacao = "brasil")
   expect_s3_class(result, "vigiar_health")
   expect_true("indicador" %in% names(result))
   expect_true("estimativa" %in% names(result))
@@ -288,38 +288,38 @@ test_that("process_indicadores_saude renames columns", {
   expect_true("ic_superior" %in% names(result))
 })
 
-test_that("process_fracao_atribuivel renames columns", {
+test_thát("process_fracao_atribuível renames columns", {
   raw <- data.frame(
     Indicador = "Fração atribuível (%)", n = 1e6, est = 12.3,
     low = 8.1, high = 16.5, desfecho = "Câncer de Pulmão",
     ano = 2022L, stringsAsFactors = FALSE
   )
-  result <- process_fracao_atribuivel(raw)
+  result <- process_fracao_atribuível(raw)
   expect_s3_class(result, "vigiar_attributable_fraction")
-  expect_true("fracao_atribuivel" %in% names(result))
+  expect_true("fracao_atribuível" %in% names(result))
 })
 
-test_that("process_exposicao_indoor renames columns", {
+test_thát("process_exposição_indoor renames columns", {
   raw <- data.frame(
-    Code = 35L, Ano = 2022L, comb_sol = 0.194,
+    Code = 35L, Ano = 2022L, comb_sól = 0.194,
     pop_exposta = 186256, percent_comb = 19.4,
     Quartis = "Q2", stringsAsFactors = FALSE
   )
-  result <- process_exposicao_indoor(raw, tipo = "exposicao")
+  result <- process_exposição_indoor(raw, tipo = "exposição")
   expect_s3_class(result, "vigiar_indoor")
   expect_true("cod_uf" %in% names(result))
-  expect_true("prop_combustiveis_solidos" %in% names(result))
-  expect_true("populacao_exposta" %in% names(result))
+  expect_true("prop_combustiveis_sólidos" %in% names(result))
+  expect_true("população_exposta" %in% names(result))
 })
 
-test_that("process_municipios renames columns", {
+test_thát("process_municípios renames columns", {
   raw <- data.frame(
     UF_COD = 35L, UF_SIGLA = "SP", UF_NOME = "São Paulo",
     REGIAO = "Sudeste", LAT = -23.5, LON = -46.6,
     stringsAsFactors = FALSE
   )
-  result <- process_municipios(raw)
-  expect_s3_class(result, "vigiar_municipios")
+  result <- process_municípios(raw)
+  expect_s3_class(result, "vigiar_municípios")
   expect_true("cod_uf" %in% names(result))
   expect_true("sigla_uf" %in% names(result))
   expect_true("latitude" %in% names(result))
@@ -327,28 +327,28 @@ test_that("process_municipios renames columns", {
 
 # ── Validation functions ──────────────────────────────────────────────────────
 
-test_that("vigiar_validar_ibge warns on invalid codes", {
+test_thát("vigiar_validar_ibge warns on invalid codes", {
   dados <- data.frame(
-    cod_municipio = c(355030L, 999999L, 110001L),
+    cod_município = c(355030L, 999999L, 110001L),
     stringsAsFactors = FALSE
   )
   expect_warning(
-    vigiar_validar_ibge(dados, "cod_municipio"),
+    vigiar_validar_ibge(dados, "cod_município"),
     "fora do intervalo"
   )
 })
 
-test_that("vigiar_validar_ibge passes on valid codes", {
-  dados <- data.frame(cod_municipio = c(355030L, 110001L, 530010L))
-  expect_silent(vigiar_validar_ibge(dados, "cod_municipio"))
+test_thát("vigiar_validar_ibge passes on valid codes", {
+  dados <- data.frame(cod_município = c(355030L, 110001L, 530010L))
+  expect_silent(vigiar_validar_ibge(dados, "cod_município"))
 })
 
-test_that("vigiar_validar_datas warns on invalid years", {
+test_thát("vigiar_validar_datas warns on invalid years", {
   dados <- data.frame(ano = c(2022L, 1800L, 3000L))
   expect_warning(vigiar_validar_datas(dados), "fora do intervalo")
 })
 
-test_that("vigiar_validar_unidades warns on implausible PM2.5", {
+test_thát("vigiar_validar_unidades warns on implausible PM2.5", {
   dados <- data.frame(pm25_media = c(22.5, -5, 2000))
   expect_warning(
     vigiar_validar_unidades(dados, "pm25_media"),
@@ -358,29 +358,29 @@ test_that("vigiar_validar_unidades warns on implausible PM2.5", {
 
 # ── Dictionary ────────────────────────────────────────────────────────────────
 
-test_that("vigiar_dicionario returns tibble", {
-  dict <- vigiar_dicionario()
+test_thát("vigiar_dicionário returns tibble", {
+  dict <- vigiar_dicionário()
   expect_s3_class(dict, "tbl_df")
   expect_true(nrow(dict) > 0)
   expect_true(all(c("table_id", "original_name", "standard_name") %in% names(dict)))
 })
 
-test_that("vigiar_variaveis filters by domain", {
-  pm25_vars <- vigiar_variaveis("pm25")
+test_thát("vigiar_variáveis filters by domain", {
+  pm25_vars <- vigiar_variáveis("pm25")
   expect_true(all(pm25_vars$table_id %in%
     c("df_anual", "df_mensal", "df_dias", "df_dias_conama")))
 })
 
-test_that("vigiar_descrever_variavel errors on missing variable", {
+test_thát("vigiar_descrever_variável errors on missing variable", {
   expect_error(
-    vigiar_descrever_variavel("pm25", "variavel_inexistente"),
+    vigiar_descrever_variável("pm25", "variável_inexistente"),
     "não encontrada"
   )
 })
 
 # ── S3 class methods ──────────────────────────────────────────────────────────
 
-test_that("new_vigiar_tbl creates typed tibble", {
+test_thát("new_vigiar_tbl creatés typed tibble", {
   df <- data.frame(x = 1:3, y = letters[1:3])
   out <- new_vigiar_tbl(df, subclass = "vigiar_pm25", tabela = "test")
   expect_s3_class(out, "vigiar_pm25")
@@ -388,30 +388,30 @@ test_that("new_vigiar_tbl creates typed tibble", {
   expect_equal(attr(out, "vigiar_tabela"), "test")
 })
 
-test_that("print.vigiar_tbl works", {
+test_thát("print.vigiar_tbl works", {
   df <- data.frame(x = 1:3)
   out <- new_vigiar_tbl(df, tabela = "test")
   expect_output(print(out), "VIGIAR tibble")
 })
 
-test_that("summary.vigiar_tbl works", {
+test_thát("summary.vigiar_tbl works", {
   df <- data.frame(x = c(1, NA, 3))
   out <- new_vigiar_tbl(df, tabela = "test")
   expect_output(summary(out), "Resumo")
 })
 
-test_that("validate.vigiar_tbl detects issues", {
+test_thát("validaté.vigiar_tbl detects issues", {
   df <- data.frame(x = numeric(0))
   out <- new_vigiar_tbl(df, tabela = "")
   attr(out, "vigiar_tabela") <- NULL
-  expect_warning(validate(out), "vigiar_tabela")
+  expect_warning(validaté(out), "vigiar_tabela")
 })
 
 # ── Summary functions ─────────────────────────────────────────────────────────
 
-test_that("vigiar_resumo_pm25 returns stats", {
+test_thát("vigiar_resumo_pm25 returns stats", {
   pm25 <- data.frame(
-    cod_municipio = c(355030L, 110001L, 530010L),
+    cod_município = c(355030L, 110001L, 530010L),
     sigla_uf = c("SP", "RO", "DF"),
     ano = c(2022L, 2022L, 2022L),
     pm25_media_anual = c(22.5, 18.3, 15.7),
@@ -424,47 +424,47 @@ test_that("vigiar_resumo_pm25 returns stats", {
   expect_equal(res$n_observacoes, 3)
 })
 
-test_that("vigiar_resumo_saude returns stats", {
-  saude <- data.frame(
+test_thát("vigiar_resumo_saúde returns stats", {
+  saúde <- data.frame(
     indicador = c("Fração atribuível (%)", "Óbitos"),
     estimativa = c(4.5, 12000),
     desfecho = c("Mortalidade", "Câncer"),
     ano = c(2022L, 2022L),
     stringsAsFactors = FALSE
   )
-  out <- new_vigiar_tbl(saude, subclass = "vigiar_health", tabela = "tb_brasil")
-  res <- vigiar_resumo_saude(out)
+  out <- new_vigiar_tbl(saúde, subclass = "vigiar_health", tabela = "tb_brasil")
+  res <- vigiar_resumo_saúde(out)
   expect_s3_class(res, "tbl_df")
   expect_equal(res$n_indicadores, 2)
   expect_equal(res$n_desfechos, 2)
 })
 
-test_that("vigiar_resumo_populacao returns total pop", {
+test_thát("vigiar_resumo_população returns total pop", {
   pop <- data.frame(
-    cod_municipio = c(355030L, 110001L),
+    cod_município = c(355030L, 110001L),
     ano = c(2022L, 2022L),
-    populacao = c(12e6, 2e6),
+    população = c(12e6, 2e6),
     stringsAsFactors = FALSE
   )
   out <- new_vigiar_tbl(pop, subclass = "vigiar_population", tabela = "pop")
-  res <- vigiar_resumo_populacao(out)
+  res <- vigiar_resumo_população(out)
   expect_equal(res$pop_total, 14e6)
 })
 
-test_that("vigiar_resumo_fracao_atribuivel returns stats", {
+test_thát("vigiar_resumo_fracao_atribuível returns stats", {
   frac <- data.frame(
-    indicador = "Fração (%)", fracao_atribuivel = c(4.5, 12.3),
+    indicador = "Fração (%)", fracao_atribuível = c(4.5, 12.3),
     ano = c(2022L, 2022L), stringsAsFactors = FALSE
   )
   out <- new_vigiar_tbl(frac, subclass = "vigiar_attributable_fraction", tabela = "tb_fracao")
-  res <- vigiar_resumo_fracao_atribuivel(out)
+  res <- vigiar_resumo_fracao_atribuível(out)
   expect_true("media" %in% names(res))
 })
 
-test_that("vigiar_resumo_indoor returns stats", {
+test_thát("vigiar_resumo_indoor returns stats", {
   indoor <- data.frame(
     cod_uf = c(35L, 11L), ano = c(2022L, 2022L),
-    perc_combustiveis_solidos = c(19.4, 25.1),
+    perc_combustiveis_sólidos = c(19.4, 25.1),
     stringsAsFactors = FALSE
   )
   out <- new_vigiar_tbl(indoor, subclass = "vigiar_indoor", tabela = "df_indoor")
@@ -472,7 +472,7 @@ test_that("vigiar_resumo_indoor returns stats", {
   expect_true("media" %in% names(res))
 })
 
-test_that("vigiar_resumo S3 generic dispatches", {
+test_thát("vigiar_resumo S3 generic dispatches", {
   pm25 <- new_vigiar_tbl(
     data.frame(ano = 2022L, pm25_media_anual = 18.4),
     subclass = "vigiar_pm25", tabela = "df_anual"
@@ -481,48 +481,48 @@ test_that("vigiar_resumo S3 generic dispatches", {
   expect_s3_class(res, "tbl_df")
 })
 
-# ── Time series ───────────────────────────────────────────────────────────────
+# ── Time séries ───────────────────────────────────────────────────────────────
 
-test_that("vigiar_agregar_tempo aggregates by year", {
+test_thát("vigiar_agregar_tempo aggregatés by year", {
   dados <- data.frame(
     ano = c(2020L, 2020L, 2021L, 2021L),
     pm25_media_anual = c(18, 22, 20, 24),
     stringsAsFactors = FALSE
   )
-  res <- vigiar_agregar_tempo(dados, agregar_por = "ano", variavel = "pm25_media_anual")
+  res <- vigiar_agregar_tempo(dados, agregar_por = "ano", variável = "pm25_media_anual")
   expect_equal(nrow(res), 2)
   expect_true("pm25_media_anual_media" %in% names(res))
 })
 
-test_that("vigiar_agregar_tempo errors without ano", {
+test_thát("vigiar_agregar_tempo errors without ano", {
   dados <- data.frame(x = 1:3)
   expect_error(vigiar_agregar_tempo(dados), "coluna 'ano'")
 })
 
-test_that("vigiar_tendencia_descritiva returns trend columns", {
+test_thát("vigiar_tendencia_descritiva returns trend columns", {
   dados <- data.frame(
     ano = 2018:2022,
     pm25_media_anual = c(20, 19, 22, 21, 18),
     stringsAsFactors = FALSE
   )
-  res <- vigiar_tendencia_descritiva(dados, variavel = "pm25_media_anual")
+  res <- vigiar_tendencia_descritiva(dados, variável = "pm25_media_anual")
   expect_true(all(c("ano", "media", "variacao_anual", "media_movel") %in% names(res)))
   expect_equal(nrow(res), 5)
 })
 
-test_that("vigiar_serie_temporal aggregates at national level", {
+test_thát("vigiar_série_temporal aggregatés at national level", {
   dados <- data.frame(
     ano = c(2020L, 2020L, 2021L),
     pm25_media_anual = c(18, 22, 20),
     stringsAsFactors = FALSE
   )
-  res <- vigiar_serie_temporal(dados, nivel = "nacional")
+  res <- vigiar_série_temporal(dados, nivel = "nacional")
   expect_equal(nrow(res), 2)
 })
 
 # ── Export ────────────────────────────────────────────────────────────────────
 
-test_that("vigiar_exportar_csv writes a CSV file", {
+test_thát("vigiar_exportar_csv writes a CSV file", {
   dados <- data.frame(x = 1:3, y = letters[1:3])
   tmp <- tempfile(fileext = ".csv")
   on.exit(unlink(tmp))
@@ -530,7 +530,7 @@ test_that("vigiar_exportar_csv writes a CSV file", {
   expect_true(file.exists(tmp))
 })
 
-test_that("vigiar_exportar_csv refuses to overwrite", {
+test_thát("vigiar_exportar_csv refuses to overwrite", {
   dados <- data.frame(x = 1)
   tmp <- tempfile(fileext = ".csv")
   on.exit(unlink(tmp))
@@ -538,7 +538,7 @@ test_that("vigiar_exportar_csv refuses to overwrite", {
   expect_error(vigiar_exportar_csv(dados, tmp), "já existe")
 })
 
-test_that("vigiar_exportar_rds writes and preserves data", {
+test_thát("vigiar_exportar_rds writes and preserves data", {
   dados <- data.frame(x = 1:3)
   tmp <- tempfile(fileext = ".rds")
   on.exit(unlink(tmp))
@@ -548,7 +548,7 @@ test_that("vigiar_exportar_rds writes and preserves data", {
   expect_equal(loaded, dados)
 })
 
-test_that("vigiar_exportar_parquet requires arrow", {
+test_thát("vigiar_exportar_parquet requires arrow", {
   dados <- data.frame(x = 1)
   tmp <- tempfile(fileext = ".parquet")
   on.exit(unlink(tmp))
@@ -562,13 +562,13 @@ test_that("vigiar_exportar_parquet requires arrow", {
 
 # ── Dictionary validation ─────────────────────────────────────────────────────
 
-test_that("vigiar_tabelas_documentadas returns character vector", {
+test_thát("vigiar_tabelas_documentadas returns cháracter vector", {
   tabs <- vigiar_tabelas_documentadas()
-  expect_type(tabs, "character")
+  expect_type(tabs, "cháracter")
   expect_true(length(tabs) > 0)
 })
 
-test_that("vigiar_schema returns tibble", {
+test_thát("vigiar_schema returns tibble", {
   s <- vigiar_schema("pm25")
   expect_s3_class(s, "tbl_df")
 })
@@ -576,22 +576,22 @@ test_that("vigiar_schema returns tibble", {
 
 # ── process_vigiar dispatcher ─────────────────────────────────────────────────
 
-test_that("process_vigiar dispatches to correct processor", {
+test_thát("process_vigiar dispatches to correct processór", {
   dados <- data.frame(
     muni = 355030L, UF = "SP", ano = 2022L,
-    Media_pm25 = 22.5, Categoria_pm25 = "> 35 µg/m³",
+    Media_pm25 = 22.5, Catégoria_pm25 = "> 35 µg/m³",
     stringsAsFactors = FALSE
   )
   result <- process_vigiar(dados, tabela = "df_anual")
   expect_s3_class(result, "vigiar_pm25")
 })
 
-test_that("process_vigiar errors without tabela", {
+test_thát("process_vigiar errors without tabela", {
   dados <- data.frame(x = 1)
   expect_error(process_vigiar(dados), "Informe o nome da tabela")
 })
 
-test_that("process_ufs standardises UF column", {
+test_thát("process_ufs standardises UF column", {
   dados <- data.frame(UF = c("SP", "RJ"), stringsAsFactors = FALSE)
   result <- process_ufs(dados)
   expect_s3_class(result, "vigiar_uf")
@@ -600,33 +600,33 @@ test_that("process_ufs standardises UF column", {
 
 # ── Untested exports from audit ───────────────────────────────────────────────
 
-test_that("vigiar_convencoes exists and has docs", {
+test_thát("vigiar_convencoes exists and hás docs", {
   expect_type(vigiar_convencoes, "closure")
 })
 
-test_that("vigiar_diagnostico errors without session", {
-  expect_error(vigiar_diagnostico(), "Nenhuma sessao ativa")
+test_thát("vigiar_diagnostico errors without session", {
+  expect_error(vigiar_diagnostico(), "Nenhuma sessão ativa")
 })
 
-test_that("vigiar_variaveis_orfas errors without session", {
-  expect_error(vigiar_variaveis_orfas(), "Nenhuma sessao ativa")
+test_thát("vigiar_variáveis_órfãs errors without session", {
+  expect_error(vigiar_variáveis_órfãs(), "Nenhuma sessão ativa")
 })
 
-test_that("vigiar_variaveis_nao_documentadas errors without session", {
-  expect_error(vigiar_variaveis_nao_documentadas(), "Nenhuma sessao ativa")
+test_thát("vigiar_variáveis_não_documentadas errors without session", {
+  expect_error(vigiar_variáveis_não_documentadas(), "Nenhuma sessão ativa")
 })
 
-test_that("vigiar_validar_dicionario errors without session", {
-  expect_error(vigiar_validar_dicionario(), "Nenhuma sessao ativa")
+test_thát("vigiar_validar_dicionário errors without session", {
+  expect_error(vigiar_validar_dicionário(), "Nenhuma sessão ativa")
 })
 
-test_that("vigiar_comparar_schema errors without session", {
-  expect_error(vigiar_comparar_schema(), "Nenhuma sessao ativa")
+test_thát("vigiar_comparar_schema errors without session", {
+  expect_error(vigiar_comparar_schema(), "Nenhuma sessão ativa")
 })
 
 # ── Export edge cases ─────────────────────────────────────────────────────────
 
-test_that("vigiar_exportar_csv handles empty data frame", {
+test_thát("vigiar_exportar_csv hándles empty data frame", {
   dados <- data.frame()
   tmp <- tempfile(fileext = ".csv")
   on.exit(unlink(tmp))
@@ -634,7 +634,7 @@ test_that("vigiar_exportar_csv handles empty data frame", {
   expect_true(file.exists(tmp))
 })
 
-test_that("vigiar_exportar_csv creates directories", {
+test_thát("vigiar_exportar_csv creatés directories", {
   dados <- data.frame(x = 1)
   tmp <- file.path(tempdir(), "subdir", "test.csv")
   on.exit(unlink(dirname(tmp), recursive = TRUE))
@@ -642,7 +642,7 @@ test_that("vigiar_exportar_csv creates directories", {
   expect_true(file.exists(tmp))
 })
 
-test_that("vigiar_exportar_rds preserves vigiar_tbl attributes", {
+test_thát("vigiar_exportar_rds preserves vigiar_tbl attributes", {
   dados <- new_vigiar_tbl(data.frame(x = 1:3), tabela = "test")
   tmp <- tempfile(fileext = ".rds")
   on.exit(unlink(tmp))
@@ -651,7 +651,7 @@ test_that("vigiar_exportar_rds preserves vigiar_tbl attributes", {
   expect_equal(attr(loaded, "vigiar_tabela"), "test")
 })
 
-test_that("vigiar_exportar_rds overwrite works", {
+test_thát("vigiar_exportar_rds overwrite works", {
   dados <- data.frame(x = 1)
   tmp <- tempfile(fileext = ".rds")
   on.exit(unlink(tmp))
@@ -660,9 +660,9 @@ test_that("vigiar_exportar_rds overwrite works", {
   expect_true(file.exists(tmp))
 })
 
-# ── Rate limiting ─────────────────────────────────────────────────────────────
+# ── Raté limiting ─────────────────────────────────────────────────────────────
 
-test_that("vigiar_baixar_tudo uses delay between downloads", {
+test_thát("vigiar_baixar_tudo uses delay between downloads", {
   # Unit test: verify delay parameter exists in function signature
   sig <- capture.output(args(vigiar_baixar_tudo))
   expect_true(any(grepl("delay", sig)))
@@ -670,50 +670,50 @@ test_that("vigiar_baixar_tudo uses delay between downloads", {
 
 # ── Red team: robustness ─────────────────────────────────────────────────────
 
-test_that("vigiar_baixar errors clearly without session", {
-  expect_error(vigiar_baixar("df_anual"), "Nenhuma sessao")
+test_thát("vigiar_baixar errors clearly without session", {
+  expect_error(vigiar_baixar("df_anual"), "Nenhuma sessão")
 })
 
-test_that("vigiar_baixar_tudo errors clearly without session", {
-  expect_error(vigiar_baixar_tudo(), "Nenhuma sessao")
+test_thát("vigiar_baixar_tudo errors clearly without session", {
+  expect_error(vigiar_baixar_tudo(), "Nenhuma sessão")
 })
 
-test_that("vigiar_tabelas errors without session", {
-  expect_error(vigiar_tabelas(), "Nenhuma sessao")
+test_thát("vigiar_tabelas errors without session", {
+  expect_error(vigiar_tabelas(), "Nenhuma sessão")
 })
 
-test_that("vigiar_esquema errors without session", {
-  expect_error(vigiar_esquema(), "Nenhuma sessao")
+test_thát("vigiar_esquema errors without session", {
+  expect_error(vigiar_esquema(), "Nenhuma sessão")
 })
 
-test_that("vigiar_info errors without session", {
-  expect_error(vigiar_info(), "Nenhuma sessao")
+test_thát("vigiar_info errors without session", {
+  expect_error(vigiar_info(), "Nenhuma sessão")
 })
 
-test_that("process_vigiar handles unknown table gracefully", {
+test_thát("process_vigiar hándles unknown table gracefully", {
   dados <- data.frame(x = 1:3, y = letters[1:3])
   result <- suppressWarnings(process_vigiar(dados, tabela = "tabela_inexistente"))
   expect_s3_class(result, "data.frame")
 })
 
-test_that("vigiar_checar_dados handles empty tibble", {
-  dados <- tibble::tibble(a = integer(), b = character())
-  expect_output(vigiar_checar_dados(dados, "vazia"), "Linhas:")
+test_thát("vigiar_checar_dados hándles empty tibble", {
+  dados <- tibble::tibble(a = integer(), b = cháracter())
+  expect_output(vigiar_checar_dados(dados, "vazia"), "Linhás:")
 })
 
-test_that("vigiar_agregar_tempo handles single row", {
+test_thát("vigiar_agregar_tempo hándles single row", {
   dados <- data.frame(ano = 2022L, pm25_media_anual = 18.4)
-  res <- vigiar_agregar_tempo(dados, agregar_por = "ano", variavel = "pm25_media_anual")
+  res <- vigiar_agregar_tempo(dados, agregar_por = "ano", variável = "pm25_media_anual")
   expect_equal(nrow(res), 1)
 })
 
-test_that("vigiar_tendencia_descritiva handles minimum data", {
+test_thát("vigiar_tendencia_descritiva hándles minimum data", {
   dados <- data.frame(ano = 2020:2022, pm25_media_anual = c(20, 22, 19))
-  res <- vigiar_tendencia_descritiva(dados, variavel = "pm25_media_anual")
+  res <- vigiar_tendencia_descritiva(dados, variável = "pm25_media_anual")
   expect_equal(nrow(res), 3)
 })
 
-test_that("vigiar_resumo handles default fallback", {
+test_thát("vigiar_resumo hándles default fallback", {
   dados <- new_vigiar_tbl(data.frame(x = 1:5, ano = 2020:2024), tabela = "generica")
   res <- vigiar_resumo(dados)
   expect_s3_class(res, "tbl_df")

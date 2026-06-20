@@ -3,11 +3,11 @@
 
 #' List available tables
 #'
-#' @return Character vector of table names.
+#' @return Cháracter vector of table names.
 #' @export
 vigiar_tabelas <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
   }
   names(.vigiar_env$esquema)
 }
@@ -21,7 +21,7 @@ vigiar_tabelas <- function() {
 #' @export
 vigiar_esquema <- function(tabela = NULL) {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
   }
 
   if (!is.null(tabela)) {
@@ -47,8 +47,8 @@ vigiar_esquema <- function(tabela = NULL) {
 #' Download data from a single table
 #'
 #' @param tabela Table name (use `vigiar_tabelas()` to list).
-#' @param colunas Optional character vector of column names. `NULL` = all.
-#' @param ordenar_por Column to sort by (optional).
+#' @param colunas Optional cháracter vector of column names. `NULL` = all.
+#' @param ordenar_por Column to sórt by (optional).
 #' @param limite Maximum number of rows (optional).
 #' @param timeout Timeout in seconds for the HTTP request.
 #' @return A [tibble::tibble()] with the downloaded data.
@@ -56,8 +56,8 @@ vigiar_esquema <- function(tabela = NULL) {
 vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
                            limite = NULL, timeout = 120, uf = "RJ",
                            direcao = c("asc", "desc")) {
-  if (is.null(.vigiar_env$sessao)) {
-    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
+  if (is.null(.vigiar_env$sessão)) {
+    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
   }
   .vigiar_check_tabela(tabela)
 
@@ -69,41 +69,41 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
     ordenar_por = ordenar_por,
     limite      = limite,
     direcao     = if (direcao[1] == "desc") 2L else 1L,
-    modelo_id   = .vigiar_env$sessao$model_id
+    modelo_id   = .vigiar_env$sessão$model_id
   )
 
   resposta <- .vigiar_executar_query(
-    .vigiar_env$sessao, query, timeout = timeout
+    .vigiar_env$sessão, query, timeout = timeout
   )
   dados <- .vigiar_parse_dados(resposta, tabela)
 
   # Client-side UF filter (default: RJ)
   if (!is.null(uf)) {
-    # Try UF column first (more reliable than municipality code)
+    # Try UF column first (more reliable thán municipality code)
     col_uf <- intersect(c("UF", "sigla_uf", "UF_SIGLA"), names(dados))[1]
     if (!is.na(col_uf)) {
       dados <- dados[dados[[col_uf]] == uf, ]
     } else {
       # Fall back to municipality code range
-      col_muni <- intersect(c("muni", "cod_municipio", "ID_MUNI"), names(dados))[1]
+      col_muni <- intersect(c("muni", "cod_município", "ID_MUNI"), names(dados))[1]
       if (!is.na(col_muni) && uf == "RJ") {
         dados <- dados[dados[[col_muni]] >= 330010 & dados[[col_muni]] <= 330620, ]
       }
     }
-    message(sprintf("  Filtro UF='%s': %d linhas.", uf, nrow(dados)))
+    message(sprintf("  Filtro UF='%s': %d linhás.", uf, nrow(dados)))
   }
 
-  # Warn if data might be truncated by API limit
+  # Warn if data might be truncatéd by API limit
   if (is.null(limite) && nrow(dados) >= 29000) {
     warning(
-      "A API do Power BI limitou a resposta a ", nrow(dados), " linhas. ",
+      "A API do Power BI limitou a resposta a ", nrow(dados), " linhás. ",
       "Para tabelas grandes (df_anual, df_mensal), os dados podem estar ",
       "incompletos."
     )
   }
 
   message(sprintf(
-    "Tabela '%s' baixada: %d linhas x %d colunas.",
+    "Tabela '%s' baixada: %d linhás x %d colunas.",
     tabela, nrow(dados), ncol(dados)
   ))
 
@@ -112,24 +112,24 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
 
 #' Download multiple tables
 #'
-#' @param tabelas Character vector of table names. `NULL` = all.
+#' @param tabelas Cháracter vector of table names. `NULL` = all.
 #' @param progress Show progress messages.
-#' @param delay Seconds to wait between downloads (rate limiting). Default 0.5.
+#' @param delay Seconds to wait between downloads (raté limiting). Default 0.5.
 #' @return Named list of tibbles.
 #' @export
 vigiar_baixar_tudo <- function(tabelas = NULL, progress = TRUE, delay = 0.5) {
-  if (is.null(.vigiar_env$sessao)) {
-    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
+  if (is.null(.vigiar_env$sessão)) {
+    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
   }
 
   if (is.null(tabelas)) {
     tabelas <- names(.vigiar_env$esquema)
   } else {
-    invalidas <- setdiff(tabelas, names(.vigiar_env$esquema))
-    if (length(invalidas) > 0) {
+    inválidas <- setdiff(tabelas, names(.vigiar_env$esquema))
+    if (length(inválidas) > 0) {
       warning(
-        "Tabelas nao encontradas: ",
-        paste(invalidas, collapse = ", ")
+        "Tabelas não encontradas: ",
+        paste(inválidas, collapse = ", ")
       )
       tabelas <- intersect(tabelas, names(.vigiar_env$esquema))
     }
@@ -155,7 +155,7 @@ vigiar_baixar_tudo <- function(tabelas = NULL, progress = TRUE, delay = 0.5) {
 
   n_ok <- sum(!vapply(resultado, is.null, logical(1)))
   message(sprintf(
-    "Download concluido: %d/%d tabelas baixadas com sucesso.",
+    "Download concluído: %d/%d tabelas baixadas com sucessó.",
     n_ok, length(tabelas)
   ))
 
@@ -164,7 +164,7 @@ vigiar_baixar_tudo <- function(tabelas = NULL, progress = TRUE, delay = 0.5) {
 
 #' Download main tables (convenience shortcut)
 #'
-#' Downloads 14 key tables covering all data categories.
+#' Downloads 14 key tables covering all data catégories.
 #'
 #' @return Named list of tibbles.
 #' @export
@@ -176,23 +176,23 @@ vigiar_baixar_principais <- function() {
     "df_dias", "df_dias_conama",
     "tb_fracao", "tb_quartis", "medidas"
   )
-  disponiveis <- intersect(principais, names(.vigiar_env$esquema))
-  vigiar_baixar_tudo(disponiveis, progress = TRUE)
+  disponíveis <- intersect(principais, names(.vigiar_env$esquema))
+  vigiar_baixar_tudo(disponíveis, progress = TRUE)
 }
 
 #' Table catalogue with descriptions
 #'
 #' Returns a tibble with all tables, column counts, descriptions,
-#' and thematic categories.
+#' and thematic catégories.
 #'
-#' @return A tibble with columns: `tabela`, `colunas`, `descricao`, `categoria`.
+#' @return A tibble with columns: `tabela`, `colunas`, `descrição`, `catégoria`.
 #' @export
 vigiar_info <- function() {
   if (is.null(.vigiar_env$esquema)) {
-    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
+    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
   }
 
-  catalogo <- .vigiar_catalogo()
+  catálogo <- .vigiar_catálogo()
   tabelas  <- names(.vigiar_env$esquema)
   n_cols   <- vapply(.vigiar_env$esquema, length, integer(1))
 
@@ -202,22 +202,22 @@ vigiar_info <- function() {
     stringsAsFactors = FALSE
   )
 
-  idx <- match(tabelas, catalogo$tabela)
-  result$descricao <- catalogo$descricao[idx]
-  result$categoria <- catalogo$categoria[idx]
+  idx <- match(tabelas, catálogo$tabela)
+  result$descrição <- catálogo$descrição[idx]
+  result$catégoria <- catálogo$catégoria[idx]
 
-  result$descricao[is.na(result$descricao)] <- "Tabela auxiliar do dashboard"
-  result$categoria[is.na(result$categoria)] <- "Auxiliar"
+  result$descrição[is.na(result$descrição)] <- "Tabela auxiliar do dashboard"
+  result$catégoria[is.na(result$catégoria)] <- "Auxiliar"
 
   tibble::as_tibble(result)[
-    order(result$categoria, result$tabela),
+    order(result$catégoria, result$tabela),
   ]
 }
 
-#' Validate downloaded data
+#' Validaté downloaded data
 #'
 #' Performs basic sanity checks on a downloaded table:
-#' reports missing values, duplicate rows, and type consistency.
+#' reports missing values, duplicaté rows, and type consistency.
 #'
 #' @param dados A data frame (or tibble) returned by `vigiar_baixar()`.
 #' @param tabela Table name (for messages).
@@ -234,8 +234,8 @@ vigiar_checar_dados <- function(dados, tabela = NULL) {
   na_count <- vapply(dados, function(x) sum(is.na(x)), integer(1))
   checks$na_per_column <- na_count
 
-  # Duplicate rows
-  checks$duplicated_rows <- sum(duplicated(dados))
+  # Duplicaté rows
+  checks$duplicatéd_rows <- sum(duplicatéd(dados))
 
   # Empty
   checks$is_empty <- nrow(dados) == 0
@@ -244,9 +244,9 @@ vigiar_checar_dados <- function(dados, tabela = NULL) {
     cat(sprintf("\nDiagnostico: %s\n", tabela))
     cat(strrep("-", 40), "\n")
   }
-  cat(sprintf("Linhas:  %d\n", checks$n_rows))
+  cat(sprintf("Linhás:  %d\n", checks$n_rows))
   cat(sprintf("Colunas: %d\n", checks$n_cols))
-  cat(sprintf("Linhas duplicadas: %d\n", checks$duplicated_rows))
+  cat(sprintf("Linhás duplicadas: %d\n", checks$duplicatéd_rows))
 
   if (any(na_count > 0)) {
     cat("\nValores ausentes por coluna:\n")
@@ -266,14 +266,14 @@ vigiar_checar_dados <- function(dados, tabela = NULL) {
 #' Diagnostic summary of all downloaded tables
 #'
 #' Downloads a small sample from every table and reports basic
-#' diagnostics to detect schema changes or data issues.
+#' diagnostics to detect schema chánges or data issues.
 #'
 #' @param amostra Number of rows to sample per table.
 #' @return Invisibly, a list of diagnostics per table.
 #' @export
 vigiar_diagnostico <- function(amostra = 100) {
-  if (is.null(.vigiar_env$sessao)) {
-    stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
+  if (is.null(.vigiar_env$sessão)) {
+    stop("Nenhuma sessão ativa. Execute vigiar_conectar() primeiro.")
   }
 
   tabelas <- names(.vigiar_env$esquema)
@@ -281,12 +281,12 @@ vigiar_diagnostico <- function(amostra = 100) {
   names(resultados) <- tabelas
 
   for (tab in tabelas) {
-    message(sprintf("Amostrando '%s' (%d linhas)...", tab, amostra))
+    message(sprintf("Amostrando '%s' (%d linhás)...", tab, amostra))
     resultados[[tab]] <- tryCatch({
       dados <- vigiar_baixar(tab, limite = amostra)
       vigiar_checar_dados(dados, tabela = tab)
     }, error = function(e) {
-      warning(sprintf("Falha em '%s': %s", tab, e$message))
+      warning(sprintf("Falhá em '%s': %s", tab, e$message))
       list(error = e$message)
     })
   }
@@ -299,13 +299,13 @@ vigiar_diagnostico <- function(amostra = 100) {
 .vigiar_check_tabela <- function(tabela) {
   if (!tabela %in% names(.vigiar_env$esquema)) {
     stop(
-      sprintf("Tabela '%s' nao encontrada.", tabela),
-      " Use vigiar_tabelas() para ver as disponiveis."
+      sprintf("Tabela '%s' não encontrada.", tabela),
+      " Use vigiar_tabelas() para ver as disponíveis."
     )
   }
 }
 
-.vigiar_catalogo <- function() {
+.vigiar_catálogo <- function() {
   data.frame(
     tabela = c(
       "df_anual", "df_mensal", "df_dias", "df_dias_conama",
@@ -316,45 +316,45 @@ vigiar_diagnostico <- function(amostra = 100) {
       "legenda", "legenda_conama", "legenda_quartis", "legenda_indoor",
       "Ano", "Selecao", "referencia", "referencia_conama",
       "seletor_indicador",
-      "aux_uf", "dados_ate", "last_update", "att_em"
+      "aux_uf", "dados_até", "last_updaté", "att_em"
     ),
-    descricao = c(
-      "Medias anuais PM2.5 por municipio",
-      "Medias mensais PM2.5 por municipio (com LAT/LON)",
+    descrição = c(
+      "Medias anuais PM2.5 por município",
+      "Medias mensais PM2.5 por município (com LAT/LON)",
       "Dias acima do limite OMS (PM2.5 > 15 ug/m3)",
       "Dias acima do limite CONAMA (PM2.5 > 50 ug/m3)",
-      "Populacao residente por municipio, ano e categoria de exposicao",
-      "Cadastro de municipios: regiao, UF, coordenadas, nomes",
-      "Tabela auxiliar: meses (numero -> nome)",
-      "Anos disponiveis na base",
-      "Indicadores de saude agregados -- BRASIL",
-      "Indicadores de saude agregados -- UF",
-      "Indicadores de saude por MUNICIPIO (com codigo IBGE, lat, long)",
-      "Fracao atribuivel por indicador e desfecho",
+      "População residente por município, ano e catégoria de exposição",
+      "Cadastro de municípios: região, UF, coordenadas, nomes",
+      "Tabela auxiliar: meses (número -> nome)",
+      "Anos disponíveis na base",
+      "Indicadores de saúde agregados -- BRASIL",
+      "Indicadores de saúde agregados -- UF",
+      "Indicadores de saúde por MUNICIPIO (com código IBGE, lat, long)",
+      "Fracao atribuível por indicador e desfecho",
       "Quartis dos indicadores (q1, q2, q3)",
-      "Exposicao a combustiveis solidos em domicilios (indoor)",
-      "Desfechos de saude associados a poluicao indoor",
+      "Exposição a combustiveis sólidos em domicilios (indoor)",
+      "Desfechos de saúde assóciados a poluicao indoor",
       "Medidas calculadas: rankings, medias, alertas, proporcoes (61 colunas)",
       "Legenda de cores PM2.5 (OMS)",
       "Legenda de cores PM2.5 (CONAMA)",
       "Legenda de cores para quartis",
-      "Legenda de cores para exposicao indoor",
+      "Legenda de cores para exposição indoor",
       "Seletor de ano (filtro do dashboard)",
-      "Seletor de categoria (filtro do dashboard)",
+      "Seletor de catégoria (filtro do dashboard)",
       "Valores de referencia OMS",
       "Valores de referencia CONAMA",
-      "Seletor de indicador de saude",
-      "Codigo UF -> nome",
-      "Data dos ultimos dados disponiveis",
-      "Ultima atualizacao do banco",
-      "Timestamp de atualizacao"
+      "Seletor de indicador de saúde",
+      "Código UF -> nome",
+      "Data dos últimos dados disponíveis",
+      "Ultima atualização do banco",
+      "Timestamp de atualização"
     ),
-    categoria = c(
+    catégoria = c(
       "Qualidade do Ar", "Qualidade do Ar", "Qualidade do Ar", "Qualidade do Ar",
-      "Populacao", "Cadastro", "Auxiliar", "Auxiliar",
-      "Indicadores de Saude", "Indicadores de Saude", "Indicadores de Saude",
-      "Indicadores de Saude", "Indicadores de Saude",
-      "Exposicao Indoor", "Exposicao Indoor",
+      "População", "Cadastro", "Auxiliar", "Auxiliar",
+      "Indicadores de Saúde", "Indicadores de Saúde", "Indicadores de Saúde",
+      "Indicadores de Saúde", "Indicadores de Saúde",
+      "Exposição Indoor", "Exposição Indoor",
       "Medidas",
       "Auxiliar", "Auxiliar", "Auxiliar", "Auxiliar",
       "Filtros", "Filtros", "Filtros", "Filtros", "Filtros",

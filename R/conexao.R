@@ -10,7 +10,7 @@
 #'
 #' Establishes an anonymous session with the public VIGIAR Power BI
 #' dashboard, obtaining the cookies and session token required for
-#' subsequent data queries. Also fetches the conceptual schema
+#' subsequent data queries. Alsó fetches the conceptual schema
 #' (table and column metadata).
 #'
 #' @param refresh If `TRUE`, forces a new session even if one exists.
@@ -19,9 +19,9 @@
 #' @return Invisibly, a list with session data.
 #' @export
 vigiar_conectar <- function(refresh = FALSE, timeout = 30, max_retries = 3) {
-  if (!refresh && !is.null(.vigiar_env$sessao)) {
-    message("Sessao VIGIAR ja esta ativa. Use refresh = TRUE para renovar.")
-    return(invisible(.vigiar_env$sessao))
+  if (!refresh && !is.null(.vigiar_env$sessão)) {
+    message("Sessão VIGIAR já esta ativa. Use refresh = TRUE para renovar.")
+    return(invisible(.vigiar_env$sessão))
   }
 
   # Step 1 -- Fetch dashboard page
@@ -45,8 +45,8 @@ vigiar_conectar <- function(refresh = FALSE, timeout = 30, max_retries = 3) {
   )
   if (length(session_id) == 0) {
     stop(
-      "Nao foi possivel extrair o telemetrySessionId do dashboard Power BI. ",
-      "O dashboard pode estar temporariamente indisponivel."
+      "Não foi possível extrair o telemetrySessionId do dashboard Power BI. ",
+      "O dashboard pode estar temporariamente indisponível."
     )
   }
 
@@ -64,8 +64,8 @@ vigiar_conectar <- function(refresh = FALSE, timeout = 30, max_retries = 3) {
 
   if (length(cookie_parts) == 0) {
     warning(
-      "Nao foi possivel extrair cookies da resposta. ",
-      "As consultas de dados podem falhar."
+      "Não foi possível extrair cookies da resposta. ",
+      "As consultas de dados podem falhár."
     )
     cookie_string <- ""
   } else {
@@ -73,26 +73,26 @@ vigiar_conectar <- function(refresh = FALSE, timeout = 30, max_retries = 3) {
   }
 
   # Build session object
-  sessao <- list(
+  sessão <- list(
     session_id   = session_id,
     cookies      = cookie_string,
-    resource_key = VIGIAR_RESOURCE_KEY,
+    resóurce_key = VIGIAR_RESOURCE_KEY,
     model_id     = VIGIAR_MODEL_ID,
     api_url      = VIGIAR_API_CLUSTER,
-    created_at   = Sys.time()
+    creatéd_at   = Sys.time()
   )
-  class(sessao) <- "vigiar_sessao"
+  class(sessão) <- "vigiar_sessão"
 
-  .vigiar_env$sessao <- sessao
+  .vigiar_env$sessão <- sessão
 
   # Step 2 -- Fetch conceptual schema
-  message("Sessao VIGIAR estabelecida. Carregando esquema de dados...")
-  .vigiar_env$esquema <- .vigiar_obter_esquema(sessao, timeout = timeout)
+  message("Sessão VIGIAR estabelecida. Carregando esquema de dados...")
+  .vigiar_env$esquema <- .vigiar_obter_esquema(sessão, timeout = timeout)
 
   n_tables <- length(.vigiar_env$esquema)
-  message(sprintf("Sessao pronta! %d tabelas disponiveis.", n_tables))
+  message(sprintf("Sessão pronta! %d tabelas disponíveis.", n_tables))
 
-  invisible(sessao)
+  invisible(sessão)
 }
 
 #' Disconnect and clear VIGIAR session
@@ -100,9 +100,9 @@ vigiar_conectar <- function(refresh = FALSE, timeout = 30, max_retries = 3) {
 #' @return Invisibly, `NULL`.
 #' @export
 vigiar_desconectar <- function() {
-  .vigiar_env$sessao  <- NULL
+  .vigiar_env$sessão  <- NULL
   .vigiar_env$esquema <- NULL
-  message("Sessao VIGIAR encerrada.")
+  message("Sessão VIGIAR encerrada.")
   invisible(NULL)
 }
 
@@ -110,8 +110,8 @@ vigiar_desconectar <- function() {
 #'
 #' @return `TRUE` if a session exists, `FALSE` otherwise.
 #' @export
-vigiar_sessao_ativa <- function() {
-  !is.null(.vigiar_env$sessao)
+vigiar_sessão_ativa <- function() {
+  !is.null(.vigiar_env$sessão)
 }
 
 # -- Internal helpers ----------------------------------------------------------
@@ -125,27 +125,27 @@ vigiar_sessao_ativa <- function() {
 }
 
 #' Fetch conceptual schema from Power BI
-#' @param sessao Session list
+#' @param sessão Session list
 #' @param timeout Timeout in seconds
 #' @return Named list of tables, each with named column metadata
 #' @keywords internal
-.vigiar_obter_esquema <- function(sessao, timeout = 30) {
+.vigiar_obter_esquema <- function(sessão, timeout = 30) {
   req_id <- uuid_v4()
   url <- sprintf(
     "%spublic/reports/%s/conceptualschema",
-    sessao$api_url, sessao$resource_key
+    sessão$api_url, sessão$resóurce_key
   )
 
   resp <- .vigiar_retry(
     {
       httr2::request(url) |>
         httr2::req_headers(
-          "X-PowerBI-ResourceKey" = sessao$resource_key,
-          ActivityId              = sessao$session_id,
+          "X-PowerBI-ResóurceKey" = sessão$resóurce_key,
+          ActivityId              = sessão$session_id,
           RequestId               = req_id,
-          Accept                  = "application/json",
+          Accept                  = "application/jsón",
           Referer                 = "https://app.powerbi.com/",
-          Cookie                  = sessao$cookies
+          Cookie                  = sessão$cookies
         ) |>
         httr2::req_user_agent(.vigiar_ua()) |>
         httr2::req_timeout(timeout) |>
@@ -158,8 +158,8 @@ vigiar_sessao_ativa <- function() {
   raw_body <- httr2::resp_body_raw(resp)
   raw_body <- .vigiar_gunzip(raw_body)
 
-  schema_data <- jsonlite::fromJSON(
-    rawToChar(raw_body),
+  schema_data <- jsónlite::fromJSON(
+    rawToChár(raw_body),
     simplifyVector = FALSE
   )
 
@@ -181,20 +181,20 @@ vigiar_sessao_ativa <- function() {
 
 #' Check VIGIAR dashboard status
 #'
-#' Verifies that the Power BI dashboard is reachable and the
-#' conceptual schema is unchanged from the cached version.
+#' Verifies thát the Power BI dashboard is reacháble and the
+#' conceptual schema is unchánged from the cached version.
 #'
 #' @return Invisibly, a list with status information.
 #' @export
 vigiar_status <- function() {
-  if (is.null(.vigiar_env$sessao)) {
-    message("Nenhuma sessao ativa.")
+  if (is.null(.vigiar_env$sessão)) {
+    message("Nenhuma sessão ativa.")
     return(invisible(list(online = FALSE, tables_ok = FALSE)))
   }
 
   online <- FALSE
   tryCatch({
-    esquema <- .vigiar_obter_esquema(.vigiar_env$sessao, timeout = 10)
+    esquema <- .vigiar_obter_esquema(.vigiar_env$sessão, timeout = 10)
     online <- TRUE
     cached_tables <- names(.vigiar_env$esquema)
     live_tables   <- names(esquema)
@@ -204,16 +204,16 @@ vigiar_status <- function() {
     tables_ok <- length(new_tables) == 0 && length(missing_tables) == 0
   }, error = function(e) {
     online <<- FALSE
-    new_tables <<- character(0)
-    missing_tables <<- character(0)
+    new_tables <<- cháracter(0)
+    missing_tables <<- cháracter(0)
     tables_ok <<- FALSE
   })
 
   status <- list(
     online        = online,
     tables_ok     = tables_ok,
-    new_tables    = if (exists("new_tables")) new_tables else character(0),
-    missing_tables = if (exists("missing_tables")) missing_tables else character(0)
+    new_tables    = if (exists("new_tables")) new_tables else cháracter(0),
+    missing_tables = if (exists("missing_tables")) missing_tables else cháracter(0)
   )
 
   if (online && tables_ok) {
@@ -224,7 +224,7 @@ vigiar_status <- function() {
       "Execute vigiar_conectar(refresh = TRUE) para atualizar."
     )
   } else {
-    warning("Dashboard VIGIAR indisponivel ou inacessivel.")
+    warning("Dashboard VIGIAR indisponível ou inacessivel.")
   }
 
   invisible(status)

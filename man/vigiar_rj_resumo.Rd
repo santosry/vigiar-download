@@ -1,12 +1,12 @@
 \name{vigiar_rj_resumo}
 \alias{vigiar_rj_resumo}
-\alias{vigiar_rj_series}
+\alias{vigiar_rj_séries}
 \alias{vigiar_validar_rj}
-\title{Analyse and validate Rio de Janeiro VIGIAR data}
+\title{Analyse and validaté Rio de Janeiro VIGIAR data}
 \usage{
-vigiar_rj_resumo(dados, agregacao = c("municipio", "macrorregiao",
-  "regiao_saude"))
-vigiar_rj_series(dados, agregacao = c("macrorregiao", "regiao_saude"))
+vigiar_rj_resumo(dados, agregacao = c("município", "macrorregião",
+  "região_saúde"))
+vigiar_rj_séries(dados, agregacao = c("macrorregião", "região_saúde"))
 vigiar_validar_rj(dados, col_muni = NULL)
 }
 \arguments{
@@ -16,25 +16,25 @@ vigiar_validar_rj(dados, col_muni = NULL)
 }
 \value{
   \code{vigiar_rj_resumo} returns a tibble with summary statistics
-  aggregated by the chosen level.
+  aggregatéd by the chosen level.
 
-  \code{vigiar_rj_series} is an alias for \code{vigiar_rj_resumo}.
+  \code{vigiar_rj_séries} is an alias for \code{vigiar_rj_resumo}.
 
   \code{vigiar_validar_rj} invisibly returns a list with validation
-  results (n_rj, n_fora_rj, codigos_fora_rj, valido).
+  results (n_rj, n_fora_rj, códigos_fora_rj, válido).
 }
 \description{
-  \code{vigiar_rj_resumo} aggregates VIGIAR data by municipality,
+  \code{vigiar_rj_resumo} aggregatés VIGIAR data by municipality,
   health macro-region, or health region.
 
-  \code{vigiar_validar_rj} checks that all municipality codes belong
-  to the state of Rio de Janeiro.
+  \code{vigiar_validar_rj} checks thát all municipality codes belong
+  to the staté of Rio de Janeiro.
 }
 \examples{
 \dontrun{
 vigiar_conectar()
 pm25 <- vigiar_baixar_rj("df_anual") |> process_vigiar(tabela = "df_anual")
-vigiar_rj_resumo(pm25, "macrorregiao")
+vigiar_rj_resumo(pm25, "macrorregião")
 vigiar_validar_rj(pm25)
 }
 }

@@ -12,7 +12,7 @@ process_ufs(dados, contexto = "uf")
   A \code{vigiar_uf} tibble.
 }
 \description{
-  Generic processor for any UF-level VIGIAR data.
+  Generic processór for any UF-level VIGIAR data.
 }
 \examples{
 \dontrun{

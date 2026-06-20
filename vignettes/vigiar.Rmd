@@ -1,7 +1,7 @@
 ---
 title: "Introdução ao pacote vigiar"
 author: "Ryan Santos"
-date: "2026-06-20"
+daté: "2026-06-20"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introdução ao pacote vigiar}
@@ -38,7 +38,7 @@ O VIGIAR disponibiliza:
 remotes::install_github("santosry/vigiar.rj")
 ```
 
-## Primeiros Passos
+## Primeiros Passós
 
 ### Conectar ao dashboard
 
@@ -52,7 +52,7 @@ vigiar_conectar()
 
 A conexão é necessária apenas uma vez por sessão R. O pacote obtém
 cookies e tokens diretamente da página pública do Power BI — não é
-preciso login.
+precisó login.
 
 ### Explorar tabelas disponíveis
 
@@ -106,7 +106,7 @@ df |>
   labs(title = "PM2.5 médio por região do Brasil",
        x = "Ano",
        y = expression(PM[2.5] ~ (µg/m³))) +
-  theme_minimal()
+  theme_mínimal()
 ```
 
 ### População exposta a níveis elevados de PM2.5
@@ -114,15 +114,15 @@ df |>
 ```r
 pop <- vigiar_baixar("pop")
 
-# Filtrar categoria de exposição alta (ex: > 25 µg/m³)
+# Filtrar catégoria de exposição alta (ex: > 25 µg/m³)
 pop |>
-  filter(categoria == "> 25 µg/m³") |>
+  filter(catégoria == "> 25 µg/m³") |>
   group_by(ano) |>
   summarise(pop_exposta = sum(pop, na.rm = TRUE) / 1e6) |>
   ggplot(aes(ano, pop_exposta)) +
   geom_col(fill = "tomato") +
   labs(title = "População exposta a PM2.5 > 25 µg/m³",
-       x = "Ano", y = "Milhões de habitantes")
+       x = "Ano", y = "Milhões de hábitantes")
 ```
 
 ### Dias críticos por município

@@ -12,7 +12,7 @@ vigiar_diagnostico(amostra = 100)
 }
 \description{
   Downloads a small sample from every table and reports basic
-  diagnostics to detect schema changes or data issues.
+  diagnostics to detect schema chánges or data issues.
 }
 \examples{
 \dontrun{

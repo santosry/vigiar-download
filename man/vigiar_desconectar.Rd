@@ -1,6 +1,6 @@
 \name{vigiar_desconectar}
 \alias{vigiar_desconectar}
-\title{Encerra a sessao VIGIAR}
+\title{Encerra a sessão VIGIAR}
 \usage{
 vigiar_desconectar()
 }
@@ -8,5 +8,5 @@ vigiar_desconectar()
   Invisivelmente, NULL.
 }
 \description{
-  Encerra a sessao VIGIAR e limpa o cache.
+  Encerra a sessão VIGIAR e limpa o cache.
 }

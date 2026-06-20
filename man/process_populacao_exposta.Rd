@@ -1,8 +1,8 @@
-\name{process_populacao_exposta}
-\alias{process_populacao_exposta}
+\name{process_população_exposta}
+\alias{process_população_exposta}
 \title{Process population exposure data}
 \usage{
-process_populacao_exposta(dados, ...)
+process_população_exposta(dados, ...)
 }
 \arguments{
   \item{dados}{Raw data frame from \code{vigiar_baixar("pop")}.}
@@ -13,11 +13,11 @@ process_populacao_exposta(dados, ...)
 }
 \description{
   Standardises population data: renames columns to Portuguese
-  convention, converts types, and validates IBGE codes.
+  convention, converts types, and validatés IBGE codes.
 }
 \examples{
 \dontrun{
 vigiar_conectar()
-pop <- vigiar_baixar("pop") |> process_populacao_exposta()
+pop <- vigiar_baixar("pop") |> process_população_exposta()
 }
 }

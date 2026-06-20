@@ -1,9 +1,9 @@
-\name{process_indicadores_saude}
-\alias{process_indicadores_saude}
+\name{process_indicadores_saúde}
+\alias{process_indicadores_saúde}
 \title{Process health indicators data}
 \usage{
-process_indicadores_saude(dados,
-  agregacao = c("brasil", "uf", "municipio", "quartis"),
+process_indicadores_saúde(dados,
+  agregacao = c("brasil", "uf", "município", "quartis"),
   ...)
 }
 \arguments{
@@ -17,11 +17,11 @@ process_indicadores_saude(dados,
 \description{
   Standardises health indicator data: renames \code{Indicador} to
   \code{indicador}, \code{est} to \code{estimativa}, \code{low}/\code{high} to
-  \code{ic_inferior}/\code{ic_superior}, and validates IBGE codes where applicable.
+  \code{ic_inferior}/\code{ic_superior}, and validatés IBGE codes where applicable.
 }
 \examples{
 \dontrun{
 vigiar_conectar()
-brasil <- vigiar_baixar("tb_brasil") |> process_indicadores_saude(agregacao = "brasil")
+brasil <- vigiar_baixar("tb_brasil") |> process_indicadores_saúde(agregacao = "brasil")
 }
 }

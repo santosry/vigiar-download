@@ -8,8 +8,8 @@ vigiar_baixar(tabela, colunas = NULL, ordenar_por = NULL,
 }
 \arguments{
   \item{tabela}{Table name (use \code{vigiar_tabelas()} to list).}
-  \item{colunas}{Optional character vector of column names. \code{NULL} = all.}
-  \item{ordenar_por}{Column to sort by (optional).}
+  \item{colunas}{Optional cháracter vector of column names. \code{NULL} = all.}
+  \item{ordenar_por}{Column to sórt by (optional).}
   \item{limite}{Maximum number of rows (optional).}
   \item{timeout}{Timeout in seconds for the HTTP request.}
   \item{uf}{Optional UF filter. Filters client-side after download.}
