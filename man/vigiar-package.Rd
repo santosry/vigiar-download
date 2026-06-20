@@ -1,6 +1,6 @@
-\name{vigiar.rj-package}
-\alias{vigiar.rj-package}
-\alias{vigiar.rj}
+\name{vigiar-package}
+\alias{vigiar-package}
+\alias{vigiar}
 \docType{package}
 \title{VIGIAR Environmental Health Data for Rio de Janeiro}
 \description{
@@ -10,7 +10,7 @@
 }
 \details{
   \tabular{ll}{
-    Package: \tab vigiar.rj \cr
+    Package: \tab vigiar \cr
     Type:    \tab Package \cr
     Version: \tab 0.4.0 \cr
     License: \tab MIT \cr

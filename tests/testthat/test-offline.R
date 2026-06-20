@@ -2,7 +2,7 @@
 # These tests do NOT require internet access.
 
 library(testthat)
-library(vigiar.rj)
+library(vigiar)
 
 # ── Utility functions ─────────────────────────────────────────────────────────
 

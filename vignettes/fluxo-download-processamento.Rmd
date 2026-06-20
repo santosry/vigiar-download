@@ -34,7 +34,7 @@ vigiar_baixar("tabela")          # raw data
 ## Passó 1 — Download Bruto
 
 ```{r}
-library(vigiar.rj)
+library(vigiar)
 
 vigiar_conectar()
 

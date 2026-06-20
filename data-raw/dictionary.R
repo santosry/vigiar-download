@@ -8,7 +8,7 @@
 # Run manually after schema changes:
 #   source("data-raw/dictionary.R")
 
-library(vigiar.rj)
+library(vigiar)
 
 # ── Connect ───────────────────────────────────────────────────────────────────
 message("Connecting to VIGIAR dashboard...")

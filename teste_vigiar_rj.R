@@ -3,14 +3,14 @@
 # Salve este arquivo e rode:  source("teste_vigiar_rj.R")
 # =============================================================================
 
-library(vigiar.rj)
+library(vigiar)
 
 cat("\n============================================================\n")
 cat("  TESTE INDEPENDENTE DO vigiar.rj\n")
 cat("============================================================\n")
 
 # ---- 1. Pacote carregado ----
-cat("\n[1] Pacote carregado: vigiar.rj v", as.character(packageVersion("vigiar.rj")), "\n")
+cat("\n[1] Pacote carregado: vigiar v", as.character(packageVersion("vigiar")), "\n")
 
 # ---- 2. Funcoes internas ----
 cat("\n[2] Funcoes internas:\n")

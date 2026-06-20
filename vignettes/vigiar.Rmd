@@ -35,7 +35,7 @@ O VIGIAR disponibiliza:
 
 ```r
 # install.packages("remotes")
-remotes::install_github("santosry/vigiar.rj")
+remotes::install_github("santosry/vigiar")
 ```
 
 ## Primeiros Passós
@@ -43,7 +43,7 @@ remotes::install_github("santosry/vigiar.rj")
 ### Conectar ao dashboard
 
 ```r
-library(vigiar.rj)
+library(vigiar)
 
 # Estabelece sessão e carrega o esquema de dados
 vigiar_conectar()
