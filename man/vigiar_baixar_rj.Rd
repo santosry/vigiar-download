@@ -2,7 +2,7 @@
 \alias{vigiar_baixar_rj}
 \title{Download Rio de Janeiro VIGIAR data}
 \usage{
-vigiar_baixar_rj(tabela, ...)
+vigiar_baixar_rj(tabela, strategy = c("auto", "direct", "year"), ...)
 }
 \arguments{
   \item{tabela}{Table name.}
