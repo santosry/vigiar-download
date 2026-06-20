@@ -15,6 +15,14 @@ export(vigiar_baixar_tudo)
 export(vigiar_baixar_principais)
 export(vigiar_baixar_rj)
 
+# -- Rio de Janeiro ----------------------------------------------------------
+export(vigiar_rj_municipios)
+export(vigiar_rj_macrorregioes)
+export(vigiar_rj_regioes_saude)
+export(vigiar_rj_resumo)
+export(vigiar_rj_series)
+export(vigiar_validar_rj)
+
 # ── Processing ────────────────────────────────────────────────────────────────
 export(process_vigiar)
 export(process_pm25)
