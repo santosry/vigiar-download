@@ -1,5 +1,29 @@
 # vigiar 0.3.0
 
+## Fixed (hardening)
+
+* **BUG**: Duplicate `Regiao` entry in `process_pm25()` rename_map.
+* **BUG**: Case mismatch in rename_maps — `vigiar_padronizar_colunas()`
+  lowercases column names but some rename_map keys used capital letters
+  (`Regiao`, `Municipio`). Added lowercase variants.
+* **BUG**: `vigiar_variaveis_orfas()` exported in Rd but missing from
+  NAMESPACE.
+* Rate limiting: `vigiar_baixar_tudo()` now accepts `delay` parameter
+  (default 0.5s) to respect Power BI API.
+* Governance: Issue templates (bug, feature, schema change) and PR
+  checklist added.
+* `process_vigiar()` fallback for unknown tables now returns a usable
+  data.frame instead of erroring.
+
+## Documentation
+
+* README: added complete 12-step example (connect → download → process
+  → validate → summarise → plot → export → dictionary → disconnect).
+* README: expanded function reference table with all processing,
+  summary, dictionary, and export functions.
+
+# vigiar 0.3.0 (original)
+
 ## New: Summary functions
 
 * `vigiar_resumo()`: S3 generic dispatcher for descriptive summaries.

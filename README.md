@@ -36,22 +36,63 @@ remotes::install_github("santosry/vigiar-download")
 
 **Dependências**: `httr2`, `jsonlite`, `tibble` · **R ≥ 4.0.0**
 
-## Uso rápido
+## Exemplo completo
 
 ```r
 library(vigiar)
+library(dplyr)
+library(ggplot2)
 
-# Conectar e explorar
+# 1. Conectar ao dashboard
 vigiar_conectar()
-vigiar_info()         # catálogo com descrições e categorias
 
-# Baixar dados
-pm25 <- vigiar_baixar("df_anual")         # qualidade do ar
-saude <- vigiar_baixar("tb_brasil")        # indicadores de saúde
-indoor <- vigiar_baixar("df_indoor")       # exposição indoor
+# 2. Explorar o catalogo
+vigiar_info()
+vigiar_esquema("df_anual")
 
-# Baixar tudo de uma vez
-tudo <- vigiar_baixar_principais()
+# 3. Baixar e processar dados
+pm25 <- vigiar_baixar("df_anual") |>
+  process_pm25()
+
+saude <- vigiar_baixar("tb_brasil") |>
+  process_indicadores_saude(agregacao = "brasil")
+
+indoor <- vigiar_baixar("df_indoor") |>
+  process_exposicao_indoor()
+
+# 4. Validar dados
+vigiar_checar_dados(pm25, "df_anual")
+
+# 5. Resumos descritivos
+vigiar_resumo_pm25(pm25)
+
+# 6. Serie temporal (nacional)
+serie <- vigiar_serie_temporal(pm25, nivel = "nacional")
+
+# 7. Tendencia descritiva
+tendencia <- vigiar_tendencia_descritiva(pm25)
+
+# 8. Grafico simples
+pm25 |>
+  group_by(ano) |>
+  summarise(pm25_medio = mean(pm25_media_anual, na.rm = TRUE)) |>
+  ggplot(aes(ano, pm25_medio)) +
+  geom_line() + geom_point() +
+  labs(title = "PM2.5 medio no Brasil", y = expression(PM[2.5] ~ (mu*g/m^3))) +
+  theme_minimal()
+
+# 9. Exportar
+vigiar_exportar_csv(pm25, "pm25_anual.csv")
+
+# 10. Consultar dicionario
+vigiar_variaveis("pm25")
+vigiar_descrever_variavel("pm25", "pm25_media_anual")
+
+# 11. Validar schema
+vigiar_validar_dicionario()
+
+# 12. Encerrar
+vigiar_desconectar()
 ```
 
 ## Funções
@@ -66,10 +107,26 @@ tudo <- vigiar_baixar_principais()
 | `vigiar_info()` | Catálogo com descrições e categorias |
 | `vigiar_esquema(tabela)` | Mostra colunas e tipos |
 | `vigiar_baixar(tabela, ...)` | Baixa uma tabela |
-| `vigiar_baixar_tudo(tabelas)` | Baixa múltiplas tabelas |
+| `vigiar_baixar_tudo(tabelas, delay)` | Baixa múltiplas tabelas com intervalo |
 | `vigiar_baixar_principais()` | Baixa 14 tabelas principais |
-| `vigiar_checar_dados(dados)` | Diagnóstico de qualidade |
+| `process_vigiar(dados, tabela)` | Processa dados (dispatcher automatico) |
+| `process_pm25(dados)` | Padroniza dados de PM2.5 |
+| `process_indicadores_saude(dados)` | Padroniza indicadores de saude |
+| `process_populacao_exposta(dados)` | Padroniza dados populacionais |
+| `process_fracao_atribuivel(dados)` | Padroniza fracao atribuivel |
+| `process_exposicao_indoor(dados)` | Padroniza exposicao indoor |
+| `process_municipios(dados)` | Padroniza cadastro de municipios |
+| `vigiar_checar_dados(dados)` | Diagnostico de qualidade |
 | `vigiar_diagnostico()` | Amostra e diagnostica todas as tabelas |
+| `vigiar_resumo(x)` | Resumo descritivo (S3 generico) |
+| `vigiar_serie_temporal(dados)` | Serie temporal descritiva |
+| `vigiar_agregar_tempo(dados)` | Agregacao temporal |
+| `vigiar_dicionario()` | Dicionario completo de variaveis |
+| `vigiar_variaveis(dominio)` | Variaveis por dominio |
+| `vigiar_validar_dicionario()` | Valida cobertura do dicionario |
+| `vigiar_exportar_csv(dados, path)` | Exporta para CSV |
+| `vigiar_exportar_rds(dados, path)` | Exporta para RDS |
+| `vigiar_exportar_parquet(dados, path)` | Exporta para Parquet |
 
 ## Catálogo de dados
 
