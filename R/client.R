@@ -61,7 +61,7 @@ vigiar_client <- function(timeout = 30, max_retries = 3) {
 
 #' @export
 print.vigiar_client <- function(x, ...) {
-  cat(sprintf("VIGIAR client — %d tabelas\n", length(x$schema)))
+  cat(sprintf("VIGIAR client -- %d tabelas\n", length(x$schema)))
   cat(sprintf("  Criado em: %s\n", format(x$created)))
   cat(sprintf("  Tabelas:   %s\n",
               paste(names(x$schema)[1:5], collapse = ", ")))
