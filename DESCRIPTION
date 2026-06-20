@@ -7,10 +7,9 @@ Authors@R: c(
            family = "Santos",
            role = c("aut", "cre"),
            email = "santosry@protonmail.com",
-           comment = c(ORCID = "0000-0000-0000-0000")),
-    person(given = "vigiar",
-           family = "team",
-           role = "ctb"))
+           comment = NULL))
+Author: Ryan Santos
+Maintainer: Ryan Santos <santosry@protonmail.com>
 Description: Provides a programmatic interface to download, process,
     and explore the complete dataset from Brazil's VIGIAR (Vigilancia
     em Saude Ambiental) public Power BI dashboard, maintained by the
@@ -24,8 +23,7 @@ Description: Provides a programmatic interface to download, process,
     population exposure, health indicators, attributable fractions,
     and indoor solid fuel exposure.
 License: MIT + file LICENSE
-URL: https://github.com/santosry/vigiar-download,
-     https://santosry.github.io/vigiar-download/
+URL: https://github.com/santosry/vigiar-download
 BugReports: https://github.com/santosry/vigiar-download/issues
 Encoding: UTF-8
 Language: pt-BR
@@ -49,10 +47,8 @@ Suggests:
     knitr,
     rmarkdown,
     withr,
-    cli,
-    pkgdown
+    cli
 VignetteBuilder: knitr
-Config/Needs/website: pkgdown
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 SystemRequirements: Internet access for data download

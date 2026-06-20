@@ -1,20 +1,17 @@
 citHeader("Para citar o pacote vigiar em publicações, use:")
 
-citEntry(
-  entry = "Manual",
-  title = "vigiar: Download Data from Brazil's VIGIAR Power BI Dashboard",
-  author = personList(
-    person("Ryan", "Santos")
-  ),
-  year = "2026",
-  note = paste("R package version 0.1.0,",
-               "https://github.com/santosry/vigiar-download"),
+bibentry(
+  bibtype    = "Manual",
+  title      = "vigiar: Download and Process VIGIAR Environmental Health Surveillance Data",
+  author     = c(person("Ryan", "Santos")),
+  year       = "2026",
+  note       = "R package version 0.3.0, https://github.com/santosry/vigiar-download",
   textVersion = paste(
     "Ryan Santos (2026).",
-    "vigiar: Download Data from Brazil's VIGIAR Power BI Dashboard.",
-    "R package version 0.1.0.",
+    "vigiar: Download and Process VIGIAR Environmental Health Surveillance Data.",
+    "R package version 0.3.0.",
     "https://github.com/santosry/vigiar-download"
   )
 )
 
-citFooter("Os dados são do Ministério da Saúde — VIGIAR (Vigilância em Saúde Ambiental).")
+citFooter("Dados: Ministério da Saúde — VIGIAR (Vigilância em Saúde Ambiental).")

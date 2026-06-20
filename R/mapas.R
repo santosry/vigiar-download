@@ -91,7 +91,7 @@ vigiar_mapa_pm25 <- function(dados, nivel = c("municipio", "uf"),
     ggplot2::geom_sf(ggplot2::aes(fill = .data[[variavel]]),
                      colour = NA, size = 0.05) +
     ggplot2::scale_fill_viridis_c(
-      name = expression(PM[2.5] ~ (µg/m³)),
+      name = "PM2.5 (µg/m³)",
       option = "plasma", na.value = "grey90"
     ) +
     ggplot2::labs(title = titulo) +
