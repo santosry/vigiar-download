@@ -26,7 +26,7 @@ BugReports: https://github.com/santosry/vigiar.rj/issues
 Encoding: UTF-8
 Language: pt-BR
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports:
     dplyr,
     httr2,

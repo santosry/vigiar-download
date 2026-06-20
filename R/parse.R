@@ -73,7 +73,7 @@
     if (!is.null(entry$S)) {
       # First / schema-carrying entry -- full row
       values <- entry$C
-    } else {
+    } else if (!is.null(entry$R)) {
       r        <- entry$R        # 1-based: keep (R - 1) columns from prev
       new_vals <- entry$C
       keep     <- as.integer(r) - 1L
@@ -89,6 +89,11 @@
           values <- new_vals
         }
       }
+    } else if (!is.null(entry$C)) {
+      # Entry with only C (no S, no R) -- treat as full row
+      values <- entry$C
+    } else {
+      next  # skip empty entries
     }
 
     # Pad / truncate to expected column count
