@@ -6,6 +6,7 @@ vigiar_baixar_rj(tabela, strategy = c("auto", "direct", "year"), ...)
 }
 \arguments{
   \item{tabela}{Table name.}
+  \item{strategy}{Download strategy: \code{"auto"} (default), \code{"direct"}, or \code{"year"}.}
   \item{...}{Additional arguments passed to \code{vigiar_baixar()}.}
 }
 \value{
