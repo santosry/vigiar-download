@@ -2,7 +2,9 @@
 \alias{process_indicadores_saude}
 \title{Process health indicators data}
 \usage{
-process_indicadores_saude(dados, agregacao = c("brasil", "uf", "municipio", "quartis"), ...)
+process_indicadores_saude(dados,
+  agregacao = c("brasil", "uf", "municipio", "quartis"),
+  ...)
 }
 \arguments{
   \item{dados}{Raw data from \code{vigiar_baixar("tb_brasil")}, \code{"tb_uf"}, \code{"tb_muni"}, or \code{"tb_quartis"}.}

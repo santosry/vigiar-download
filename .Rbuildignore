@@ -2,6 +2,8 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^\.github$
+^data-raw$
+^_pkgdown\.yml$
 ^codecov\.yml$
 ^codemeta\.json$
 ^CITATION\.cff$

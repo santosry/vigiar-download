@@ -125,7 +125,7 @@ process_pm25 <- function(dados, tipo = c("anual", "mensal", "dias", "dias_conama
       dias        = "df_dias",
       dias_conama = "df_dias_conama"
     ),
-    unidade_pm25 = "µg/m³",
+    unidade_pm25 = "\u00b5g/m\u00b3",
     processador  = "process_pm25"
   )
 
