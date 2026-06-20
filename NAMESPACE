@@ -38,6 +38,36 @@ export(vigiar_variaveis)
 export(vigiar_descrever_variavel)
 export(vigiar_convencoes)
 export(vigiar_schema)
+export(vigiar_tabelas_documentadas)
+export(vigiar_variaveis_nao_documentadas)
+export(vigiar_validar_dicionario)
+export(vigiar_comparar_schema)
+
+# ── Summary ───────────────────────────────────────────────────────────────────
+export(vigiar_resumo)
+export(vigiar_resumo_pm25)
+export(vigiar_resumo_saude)
+export(vigiar_resumo_populacao)
+export(vigiar_resumo_fracao_atribuivel)
+export(vigiar_resumo_indoor)
+
+# ── Time series ───────────────────────────────────────────────────────────────
+export(vigiar_serie_temporal)
+export(vigiar_tendencia_descritiva)
+export(vigiar_agregar_tempo)
+
+# ── Maps ──────────────────────────────────────────────────────────────────────
+export(vigiar_join_geobr)
+export(vigiar_mapa_pm25)
+export(vigiar_mapa_populacao_exposta)
+export(vigiar_mapa_indicadores_saude)
+export(vigiar_mapa_fracao_atribuivel)
+export(vigiar_mapa_indoor)
+
+# ── Export ────────────────────────────────────────────────────────────────────
+export(vigiar_exportar_csv)
+export(vigiar_exportar_rds)
+export(vigiar_exportar_parquet)
 
 # ── S3 methods ────────────────────────────────────────────────────────────────
 export(print.vigiar_tbl)
@@ -51,3 +81,6 @@ importFrom(httr2, request, req_headers, req_user_agent, req_timeout,
            resp_body_string, resp_body_raw, resp_headers)
 importFrom(jsonlite, fromJSON, toJSON)
 importFrom(tibble, as_tibble)
+importFrom(utils, write.csv, browseURL, read.csv)
+importFrom(stats, median, sd, quantile, filter)
+importFrom(grDevices, na.value)

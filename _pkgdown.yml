@@ -7,25 +7,36 @@ navbar:
     left:  [intro, reference, articles, news]
     right: [search, github]
   components:
+    intro:
+      text: Get started
+      href: articles/introducao-vigiar.html
     reference:
       text: Reference
       href: reference/index.html
     articles:
       text: Articles
       menu:
-      - text: "Vignettes"
-      - text: "Introdução ao pacote"
-        href: articles/vigiar.html
+      - text: "Getting Started"
+      - text: "Introdução ao VIGIAR"
+        href: articles/introducao-vigiar.html
+      - text: "Fluxo Download → Processamento"
+        href: articles/fluxo-download-processamento.html
+      - text: "-------"
+      - text: "Data Dictionary"
       - text: "Dicionário de Variáveis"
         href: articles/variaveis-vigiar.html
-      - text: "Fluxo de Download e Processamento"
-        href: articles/fluxo-download-processamento.html
-      - text: "PM2.5 — Qualidade do Ar"
-        href: articles/pm25.html
-      - text: "Indicadores de Saúde"
-        href: articles/indicadores-saude.html
       - text: "Convenções VIGIAR"
         href: articles/convencoes-vigiar.html
+      - text: "-------"
+      - text: "Exploratory Analysis"
+      - text: "Séries Temporais"
+        href: articles/series-temporais-vigiar.html
+      - text: "Mapas"
+        href: articles/mapas-vigiar.html
+      - text: "-------"
+      - text: "Responsible Use"
+      - text: "Uso Responsável dos Dados"
+        href: articles/uso-responsavel-dados.html
     news:
       text: News
       href: news/index.html
@@ -61,7 +72,7 @@ reference:
   - process_municipios
   - process_ufs
 
-- title: "Validation"
+- title: "Validation & Quality"
   desc: "Validate data quality and schema integrity."
   contents:
   - vigiar_padronizar_colunas
@@ -72,13 +83,51 @@ reference:
   - vigiar_diagnostico
 
 - title: "Dictionary"
-  desc: "Query the variable dictionary."
+  desc: "Query and validate the variable dictionary."
   contents:
   - vigiar_dicionario
   - vigiar_variaveis
   - vigiar_descrever_variavel
   - vigiar_convencoes
   - vigiar_schema
+  - vigiar_tabelas_documentadas
+  - vigiar_variaveis_nao_documentadas
+  - vigiar_validar_dicionario
+  - vigiar_comparar_schema
+
+- title: "Summary Statistics"
+  desc: "Descriptive summaries for each data domain."
+  contents:
+  - vigiar_resumo
+  - vigiar_resumo_pm25
+  - vigiar_resumo_saude
+  - vigiar_resumo_populacao
+  - vigiar_resumo_fracao_atribuivel
+  - vigiar_resumo_indoor
+
+- title: "Time Series"
+  desc: "Descriptive temporal aggregation and trends (no models)."
+  contents:
+  - vigiar_serie_temporal
+  - vigiar_tendencia_descritiva
+  - vigiar_agregar_tempo
+
+- title: "Maps"
+  desc: "Exploratory choropleth maps via ggplot2 + optional geobr."
+  contents:
+  - vigiar_join_geobr
+  - vigiar_mapa_pm25
+  - vigiar_mapa_populacao_exposta
+  - vigiar_mapa_indicadores_saude
+  - vigiar_mapa_fracao_atribuivel
+  - vigiar_mapa_indoor
+
+- title: "Export"
+  desc: "Export processed data to CSV, RDS, or Parquet."
+  contents:
+  - vigiar_exportar_csv
+  - vigiar_exportar_rds
+  - vigiar_exportar_parquet
 
 - title: "S3 Classes and Methods"
   desc: "Typed data objects for VIGIAR domains."

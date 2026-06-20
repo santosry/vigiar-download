@@ -1,7 +1,7 @@
 Package: vigiar
 Type: Package
 Title: Download and Process VIGIAR Environmental Health Surveillance Data
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
     person(given = "Ryan",
            family = "Santos",
@@ -11,17 +11,18 @@ Authors@R: c(
     person(given = "vigiar",
            family = "team",
            role = "ctb"))
-Description: Provides a programmatic interface to download and process
-    the complete dataset from Brazil's VIGIAR (Vigilancia em Saude
-    Ambiental) public Power BI dashboard, maintained by the Brazilian
-    Ministry of Health. The package follows the microdatasus architecture
-    with separate download and processing layers. It handles Power BI
-    anonymous session management, automatic decompression of the DSR
-    (Data Shape Response) format, standardises column names, validates
-    IBGE municipality codes, and returns typed tibbles (vigiar_tbl) with
-    metadata. Data includes PM2.5 air quality, population exposure,
-    epidemiological health indicators, attributable fractions, and
-    indoor solid fuel exposure. Includes a complete variable dictionary.
+Description: Provides a programmatic interface to download, process,
+    and explore the complete dataset from Brazil's VIGIAR (Vigilancia
+    em Saude Ambiental) public Power BI dashboard, maintained by the
+    Brazilian Ministry of Health. Follows the microdatasus architecture
+    with separate download and processing layers plus exploratory
+    visualisation. Includes: Power BI anonymous session management,
+    DSR (Data Shape Response) decompression, column standardisation,
+    IBGE code validation, typed S3 tibbles with metadata, a complete
+    variable dictionary, descriptive time series, choropleth maps via
+    geobr, and export to CSV/RDS/Parquet. Data covers PM2.5 air quality,
+    population exposure, health indicators, attributable fractions,
+    and indoor solid fuel exposure.
 License: MIT + file LICENSE
 URL: https://github.com/santosry/vigiar-download,
      https://santosry.github.io/vigiar-download/
@@ -41,6 +42,10 @@ Suggests:
     dplyr,
     ggplot2,
     sf,
+    geobr,
+    arrow,
+    scales,
+    viridisLite,
     knitr,
     rmarkdown,
     withr,
