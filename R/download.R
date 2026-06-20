@@ -54,7 +54,8 @@ vigiar_esquema <- function(tabela = NULL) {
 #' @return A [tibble::tibble()] with the downloaded data.
 #' @export
 vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
-                           limite = NULL, timeout = 120, uf = NULL) {
+                           limite = NULL, timeout = 120, uf = NULL,
+                           direcao = c("asc", "desc")) {
   if (is.null(.vigiar_env$sessao)) {
     stop("Nenhuma sessao ativa. Execute vigiar_conectar() primeiro.")
   }
@@ -67,6 +68,7 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
     colunas     = colunas,
     ordenar_por = ordenar_por,
     limite      = limite,
+    direcao     = if (direcao[1] == "desc") 2L else 1L,
     modelo_id   = .vigiar_env$sessao$model_id
   )
 

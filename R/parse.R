@@ -82,12 +82,24 @@
         warning(sprintf("Tabela '%s': DM0[%d] tem R mas sem linha anterior.",
                         tabela, i))
         values <- new_vals
-      } else {
-        if (keep > 0L) {
-          values <- c(prev_row[seq_len(keep)], new_vals)
+      } else if (keep >= n_cols) {
+        # R >= n_cols: C values overwrite columns starting at
+        # position (keep - n_cols). All columns from prev are kept,
+        # then C replaces the tail.
+        overwrite_start <- keep - n_cols + 1L
+        if (overwrite_start > 0 && overwrite_start <= n_cols) {
+          values <- prev_row
+          for (k in seq_along(new_vals)) {
+            idx <- overwrite_start + k - 1L
+            if (idx <= n_cols) values[[idx]] <- new_vals[[k]]
+          }
         } else {
-          values <- new_vals
+          values <- c(prev_row, new_vals)
         }
+      } else if (keep > 0L) {
+        values <- c(prev_row[seq_len(keep)], new_vals)
+      } else {
+        values <- new_vals
       }
     } else if (!is.null(entry$C)) {
       # Entry with only C (no S, no R) -- treat as full row

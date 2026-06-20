@@ -14,7 +14,7 @@
 #' @return A nested list ready for JSON serialisation.
 #' @keywords internal
 .vigiar_construir_query <- function(tabela, colunas = NULL, ordenar_por = NULL,
-                                     limite = NULL, modelo_id) {
+                                     limite = NULL, modelo_id, direcao = 1L) {
   if (is.null(colunas)) {
     colunas <- names(.vigiar_env$esquema[[tabela]])
   }
@@ -49,7 +49,7 @@
 
   if (!is.null(ordenar_por)) {
     query_cmd$SemanticQueryDataShapeCommand$Query$OrderBy <- list(list(
-      Direction  = 1L,
+      Direction  = direcao,
       Expression = list(
         Column = list(
           Expression = list(SourceRef = list(Source = tabela)),

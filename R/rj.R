@@ -264,28 +264,82 @@ vigiar_validar_rj <- function(dados, col_muni = NULL) {
 #' @param ... Additional arguments passed to vigiar_baixar().
 #' @return A tibble with RJ-only data.
 #' @export
-vigiar_baixar_rj <- function(tabela, ...) {
-  dados <- vigiar_baixar(tabela, ...)
+vigiar_baixar_rj <- function(tabela, strategy = c("auto", "direct", "year"), ...) {
+  strategy <- match.arg(strategy)
 
-  col_muni <- intersect(c("cod_municipio", "muni", "id_muni", "ID_MUNI", "MUN_COD", "codigo_ibge"), names(dados))[1]
-  col_uf <- intersect(c("sigla_uf", "UF", "UF_SIGLA"), names(dados))[1]
+  # For small tables: direct download works fine
+  tabelas_pequenas <- c("df_muni", "df_mes", "df_ano", "pop",
+                        "tb_brasil", "tb_uf", "tb_fracao", "tb_quartis",
+                        "legenda", "medidas", "aux_uf")
 
-  # Filter by municipality code range (RJ: 330010-330620)
-  if (!is.na(col_muni)) {
-    dados <- dados[dados[[col_muni]] >= RJ_MUNI_RANGE[1] &
-                   dados[[col_muni]] <= RJ_MUNI_RANGE[2], ]
-    message(sprintf("Filtrado para RJ: %d linhas.", nrow(dados)))
-  } else if (!is.na(col_uf)) {
-    dados <- dados[toupper(dados[[col_uf]]) == "RJ", ]
-    message(sprintf("Filtrado para RJ (por UF): %d linhas.", nrow(dados)))
+  if (strategy == "auto") {
+    if (tabela %in% tabelas_pequenas) {
+      strategy <- "direct"
+    } else {
+      strategy <- "year"
+    }
   }
 
-  # Validate only if we have data
+  if (strategy == "direct") {
+    return(.vigiar_baixar_rj_direct(tabela, ...))
+  }
+
+  if (strategy == "year") {
+    return(.vigiar_baixar_rj_year(tabela, ...))
+  }
+}
+
+#' Direct download + RJ filter
+#' @keywords internal
+.vigiar_baixar_rj_direct <- function(tabela, ...) {
+  dados <- vigiar_baixar(tabela, ...)
+  dados <- .vigiar_filtrar_rj(dados)
+  dados
+}
+
+#' Year-partitioned download for large tables
+#' @keywords internal
+.vigiar_baixar_rj_year <- function(tabela, ...) {
+  # Query 1: ASC order (earliest years, all municipalities)
+  message("Baixando primeiros anos (ASC)...")
+  d1 <- vigiar_baixar(tabela, ordenar_por = "ano", direcao = "asc", ...)
+  d1 <- .vigiar_filtrar_rj(d1)
+
+  # Query 2: DESC order (latest years, all municipalities)
+  message("Baixando ultimos anos (DESC)...")
+  d2 <- vigiar_baixar(tabela, ordenar_por = "ano", direcao = "desc", ...)
+  d2 <- .vigiar_filtrar_rj(d2)
+
+  # Combine and deduplicate
+  dados <- rbind(d1, d2)
+  dados <- dados[!duplicated(dados), ]
+  rownames(dados) <- NULL
+
+  message(sprintf("Total RJ: %d linhas (%d + %d).", nrow(dados), nrow(d1), nrow(d2)))
+  tibble::as_tibble(dados)
+}
+
+#' Filter data frame to RJ municipalities
+#' @keywords internal
+.vigiar_filtrar_rj <- function(dados) {
+  col_muni <- intersect(c("cod_municipio", "muni", "id_muni", "ID_MUNI", "MUN_COD"), names(dados))[1]
+  col_uf <- intersect(c("sigla_uf", "UF", "UF_SIGLA"), names(dados))[1]
+
+  if (!is.na(col_muni)) {
+    n_antes <- nrow(dados)
+    dados <- dados[dados[[col_muni]] >= 330010 & dados[[col_muni]] <= 330620, ]
+    message(sprintf("  Filtro RJ: %d -> %d linhas.", n_antes, nrow(dados)))
+  } else if (!is.na(col_uf)) {
+    n_antes <- nrow(dados)
+    dados <- dados[toupper(dados[[col_uf]]) == "RJ", ]
+    message(sprintf("  Filtro RJ (UF): %d -> %d linhas.", n_antes, nrow(dados)))
+  }
+
   if (nrow(dados) > 0) {
     vigiar_validar_rj(dados, col_muni)
   } else {
-    message("Nenhum municipio do RJ encontrado. Verifique se a tabela contem dados do RJ.")
+    message("  Nenhum municipio do RJ nesta consulta.")
   }
 
-  tibble::as_tibble(dados)
+  dados
 }
