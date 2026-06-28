@@ -1,78 +1,74 @@
-# vigiar 0.3.0
+# vigiar 0.7.0
 
-## Fixed (hárdening)
+## New: Benchmark & Performance
 
-* **BUG**: Duplicaté `Região` entry in `process_pm25()` rename_map.
-* **BUG**: Case mismatch in rename_maps — `vigiar_padronizar_colunas()`
-  lowercases column names but sóme rename_map keys used capital letters
-  (`Região`, `Município`). Added lowercase variants.
-* **BUG**: `vigiar_variaveis_órfãs()` exported in Rd but missing from
-  NAMESPACE.
-* Raté limiting: `vigiar_baixar_tudo()` now accepts `delay` parameter
-  (default 0.5s) to respect Power BI API.
-* Governance: Issue templatés (bug, feature, schema chánge) and PR
-  checklist added.
-* `process_vigiar()` fallback for unknown tables now returns a usable
-  data.frame instead of erroring.
+* `vigiar_benchmark()`: compare download strategies (direct, year_asc_desc,
+  minimal_columns) with timing, row counts, and success rates.
+* `vigiar_benchmark_tabelas()`: multi-table benchmark for API health monitoring.
+* `vigiar_health_check()`: comprehensive health check (connection, schema,
+  benchmark, compliance) returning a structured report.
 
-## Documentation
+## New: Compliance & Auditing
 
-* README: added complete 12-step example (connect → download → process
-  → validaté → summarise → plot → export → dictionary → disconnect).
-* README: expanded function reference table with all processing,
-  summary, dictionary, and export functions.
+* `vigiar_auditar()`: full data audit covering schema, IBGE codes, temporal
+  consistency, units, coverage, and checksums. Returns structured `vigiar_audit`
+  object with S3 print method.
+* `vigiar_auditar_tudo()`: batch audit across multiple tables.
+* `vigiar_compliance_check()`: multi-profile compliance (basico, rigoroso, rj,
+  corrupcao) with outlier detection and integrity checks.
+* `vigiar_checksum()`: deterministic SHA256 checksum for any data frame.
+* `vigiar_exportar_auditoria()`: export audit report as JSON for archiving.
+* S3 classes: `vigiar_audit`, `vigiar_audit_list`, `vigiar_compliance` with
+  print methods.
 
-# vigiar 0.3.0 (original)
+## New: Structured Logging
 
-## New: Summary functions
+* `.vigiar_log()`: internal structured logger with INFO/WARN/ERROR/DEBUG levels.
+* `vigiar_log()`: retrieve complete operation log as tibble.
+* `vigiar_limpar_log()`: clear operation log.
+* `vigiar_exportar_log()`: export log to CSV or JSON.
+* `vigiar_resumo_log()`: summary statistics by level and table.
+* `vigiar_historico_downloads()`: download history with timestamps and row counts.
+* `vigiar_resumo_downloads()`: summary of all downloads in session.
+* Automatic logging integrated into `vigiar_baixar()` via `.vigiar_registrar_download()`.
 
-* `vigiar_resumo()`: S3 generic dispatcher for descriptive summaries.
-* `vigiar_resumo_pm25()`: mean, median, SD, percentiles, out-of-range count.
-* `vigiar_resumo_saude()`: n_indicadores, n_desfechos, descriptive stats.
-* `vigiar_resumo_populacao()`: total population, spatial coverage.
-* `vigiar_resumo_fracao_atribuível()`: mean, min, max of fractions.
-* `vigiar_resumo_indoor()`: mean, min, max of sólid fuel exposure.
+## New: Reproducibility & Snapshots
 
-## New: Time séries (descriptive only, no models)
+* `vigiar_snapshot()`: create data snapshots with SHA256 checksums, session info,
+  and parameter provenance.
+* `vigiar_verificar_snapshot()`: verify snapshot integrity.
+* `vigiar_salvar_snapshot()` / `vigiar_carregar_snapshot()`: save/load snapshots.
+* `vigiar_comparar_snapshots()`: diff two snapshots (dimensions, columns, checksums).
 
-* `vigiar_serie_temporal()`: aggregaté by year (national/UF/município).
-* `vigiar_tendencia_descritiva()`: year-over-year chánge + moving average.
-* `vigiar_agregar_tempo()`: flexible time aggregation with custom functions.
+## New: Local Cache
 
-## New: Maps (ggplot2 + optional geobr)
+* `vigiar_cache_dir()`: configure cache directory (defaults to platform-appropriate
+  location).
+* `vigiar_baixar_com_cache()`: download with automatic caching and TTL.
+* `vigiar_cache_info()`: list cached tables with age and checksums.
+* `vigiar_limpar_cache()`: clear cache by table or age.
 
-* `vigiar_join_geobr()`: join VIGIAR data with geobr geometries.
-* `vigiar_mapa_pm25()`: choropleth of PM2.5 concentrations.
-* `vigiar_mapa_população_exposta()`: population exposure map.
-* `vigiar_mapa_indicadores_saúde()`: health indicator estimatés map.
-* `vigiar_mapa_fracao_atribuível()`: attributable fraction map.
-* `vigiar_mapa_indoor()`: indoor sólid fuel exposure map.
+## New: Schema Version Locking
 
-## New: Export functions
+* `vigiar_esquema_lock()`: freeze current schema to JSON for reproducibility.
+* `vigiar_esquema_carregar_lock()`: load a schema lock file.
+* `vigiar_esquema_verificar()`: compare live schema against a lock, detect changes.
 
-* `vigiar_exportar_csv()`: export to CSV with UTF-8 encoding.
-* `vigiar_exportar_rds()`: export to RDS (preserves all metadata).
-* `vigiar_exportar_parquet()`: export to Parquet (requires arrow).
+## Changed
 
-## New: Dictionary validation
+* `vigiar_baixar()` UF filter now tries multiple column names (UF, sigla_uf,
+  UF_SIGLA, uf, cod_uf) and falls back to IBGE code range for RJ.
+* `vigiar_baixar()` now uses `cli` for messages and integrates with logging.
+* DESCRIPTION: added `cli`, `openssl`, `tools` to Imports. Bumped version to 0.7.0.
+* NAMESPACE: added 30+ new exports for benchmark, audit, logging, cache, snapshots.
+* Removed `stats::filter` import to avoid masking `dplyr::filter`.
+* Fixed man page for `vigiar_baixar.Rd` to match `uf = "RJ"` default.
+* Fixed non-ASCII characters in documentation files.
 
-* `vigiar_tabelas_documentadas()`: list documented tables.
-* `vigiar_variaveis_não_documentadas()`: find undocumented variables.
-* `vigiar_validar_dicionario()`: full dictionary coverage report.
-* `vigiar_comparar_schema()`: live vs documented column comparisón.
+## Tests
 
-## Documentation
+* Added comprehensive offline tests for all new features (test-new-features.R).
+* Added `tests/testthat.R` for proper testthat integration.
 
-* `convencoes-vigiar.Rmd`: complete variable conventions (microdatasus style).
-* `mapas-vigiar.Rmd`: map-making tutorial.
-* `séries-temporais-vigiar.Rmd`: time séries exploration.
-* `usó-responsavel-dados.Rmd`: ethical use and limitations.
-* pkgdown site with 11 reference sections and 9 articles.
-
-## Benchmark
-
-* Feature parity with microdatasus: download/process/document/visualise.
-* No DLNM, GAM, or causal inference — descriptive exploration only.
-
-# vigiar 0.2.0
+# vigiar 0.6.0
 ...

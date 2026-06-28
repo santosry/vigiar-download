@@ -61,7 +61,9 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
   }
   .vigiar_check_tabela(tabela)
 
-  message(sprintf("Baixando tabela '%s'...", tabela))
+  t_start <- Sys.time()
+  .vigiar_log("INFO", sprintf("Iniciando download: %s", tabela), table = tabela)
+  cli::cli_alert_info("Baixando tabela '{tabela}'...")
 
   query <- .vigiar_construir_query(
     tabela      = tabela,
@@ -79,22 +81,28 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
 
   # Client-side UF filter (default: RJ)
   if (!is.null(uf)) {
-    # Try UF column first (more reliable than municipality code)
-    col_uf <- intersect(c("UF", "sigla_uf", "UF_SIGLA"), names(dados))[1]
+    # Try UF columns in order of preference
+    col_uf <- intersect(c("UF", "sigla_uf", "UF_SIGLA", "uf", "cod_uf"), names(dados))[1]
     if (!is.na(col_uf)) {
-      dados <- dados[dados[[col_uf]] == uf, ]
+      n_antes <- nrow(dados)
+      dados <- dados[toupper(dados[[col_uf]]) == toupper(uf), ]
+      cli::cli_alert_info("Filtro UF='{uf}' ({col_uf}): {nrow(dados)} linhas (de {n_antes}).")
     } else {
       # Fall back to municipality code range
-      col_muni <- intersect(c("muni", "cod_municipio", "ID_MUNI"), names(dados))[1]
-      if (!is.na(col_muni) && uf == "RJ") {
-        dados <- dados[dados[[col_muni]] >= 330010 & dados[[col_muni]] <= 330620, ]
+      col_muni <- intersect(c("muni", "cod_municipio", "ID_MUNI", "codigo_ibge", "MUN_COD"), names(dados))[1]
+      if (!is.na(col_muni) && toupper(uf) == "RJ") {
+        n_antes <- nrow(dados)
+        dados <- dados[as.integer(dados[[col_muni]]) >= 330010 &
+                       as.integer(dados[[col_muni]]) <= 330620, ]
+        cli::cli_alert_info("Filtro RJ (IBGE range via '{col_muni}'): {nrow(dados)} linhas (de {n_antes}).")
       }
     }
-    message(sprintf("  Filtro UF='%s': %d linhas.", uf, nrow(dados)))
   }
 
   # Warn if data might be truncated by API limit
   if (is.null(limite) && nrow(dados) >= 29000) {
+    .vigiar_log("WARN", sprintf("Possivel truncamento: %d linhas (limite API ~30K)", nrow(dados)),
+                table = tabela)
     warning(
       "A API do Power BI limitou a resposta a ", nrow(dados), " linhas. ",
       "Para tabelas grandes (df_anual, df_mensal), os dados podem estar ",
@@ -102,10 +110,19 @@ vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,
     )
   }
 
-  message(sprintf(
-    "Tabela '%s' baixada: %d linhas x %d colunas.",
-    tabela, nrow(dados), ncol(dados)
-  ))
+  elapsed <- as.numeric(difftime(Sys.time(), t_start, units = "secs"))
+
+  .vigiar_registrar_download(
+    tabela  = tabela,
+    n_rows  = nrow(dados),
+    n_cols  = ncol(dados),
+    elapsed = elapsed,
+    url     = .vigiar_env$sessao$api_url
+  )
+
+  cli::cli_alert_success(
+    "Tabela '{tabela}' baixada: {nrow(dados)} linhas x {ncol(dados)} colunas ({round(elapsed, 1)}s)"
+  )
 
   tibble::as_tibble(dados)
 }

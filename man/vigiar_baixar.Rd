@@ -3,16 +3,16 @@
 \title{Download data from a single VIGIAR table}
 \usage{
 vigiar_baixar(tabela, colunas = NULL, ordenar_por = NULL,
-               limite = NULL, timeout = 120, uf = NULL,
+               limite = NULL, timeout = 120, uf = "RJ",
                direcao = c("asc", "desc"))
 }
 \arguments{
   \item{tabela}{Table name (use \code{vigiar_tabelas()} to list).}
-  \item{colunas}{Optional cháracter vector of column names. \code{NULL} = all.}
-  \item{ordenar_por}{Column to sórt by (optional).}
+  \item{colunas}{Optional character vector of column names. \code{NULL} = all.}
+  \item{ordenar_por}{Column to sort by (optional).}
   \item{limite}{Maximum number of rows (optional).}
   \item{timeout}{Timeout in seconds for the HTTP request.}
-  \item{uf}{Optional UF filter. Filters client-side after download.}
+  \item{uf}{UF filter. Filters client-side after download. Default \code{"RJ"}.}
   \item{direcao}{Sort direction: \code{"asc"} (default) or \code{"desc"}.}
 }
 \value{
@@ -20,6 +20,7 @@ vigiar_baixar(tabela, colunas = NULL, ordenar_por = NULL,
 }
 \description{
   Queries the Power BI API and returns a single table as a tidy tibble.
+  Defaults to filtering for Rio de Janeiro (UF = "RJ").
 }
 \examples{
 \dontrun{

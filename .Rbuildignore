@@ -16,3 +16,4 @@
 ^\.lintr$
 ^testar_vigiar\.R$
 ^teste_vigiar_rj\.R$
+^\.\.Rcheck$
