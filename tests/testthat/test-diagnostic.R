@@ -41,7 +41,7 @@ library(vigiar)
 
 # Full RJ coverage (all 92 municipalities, 1 year each)
 .make_pm25_full <- function() {
-  municipios <- RJ_MUNICIPIOS$codigo_ibge
+  municipios <- vigiar_rj_municipios()$codigo_ibge
   rows <- list()
   for (m in municipios) {
     rows[[length(rows) + 1]] <- data.frame(
