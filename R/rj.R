@@ -261,6 +261,8 @@ vigiar_validar_rj <- function(dados, col_muni = NULL) {
 #' Shortcut that downloads a table and filters for RJ municipalities.
 #'
 #' @param tabela Table name.
+#' @param strategy Download strategy: \code{"auto"} (default, chooses best),
+#'   \code{"direct"} (single download), or \code{"year"} (ASC+DESC partition).
 #' @param ... Additional arguments passed to vigiar_baixar().
 #' @return A tibble with RJ-only data.
 #' @export

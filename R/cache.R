@@ -65,6 +65,8 @@ vigiar_snapshot <- function(dados = NULL, tabela = NULL, ...,
 }
 
 #' Print method for vigiar_snapshot
+#' @param x A vigiar_snapshot object.
+#' @param ... Additional arguments (ignored).
 #' @export
 print.vigiar_snapshot <- function(x, ...) {
   cli::cli_h1("VIGIAR Snapshot")
@@ -150,7 +152,8 @@ vigiar_carregar_snapshot <- function(caminho) {
 #' Compares two snapshots (e.g., old vs new) and reports
 #' differences in dimensions, columns, and checksums.
 #'
-#' @param snapshot1, snapshot2 VIGIAR snapshots.
+#' @param snapshot1 A vigiar_snapshot object.
+#' @param snapshot2 Another vigiar_snapshot object to compare against.
 #' @return Invisibly, a list of differences.
 #' @export
 vigiar_comparar_snapshots <- function(snapshot1, snapshot2) {

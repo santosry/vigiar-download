@@ -51,6 +51,8 @@ vigiar_esquema <- function(tabela = NULL) {
 #' @param ordenar_por Column to sort by (optional).
 #' @param limite Maximum number of rows (optional).
 #' @param timeout Timeout in seconds for the HTTP request.
+#' @param uf UF filter. Filters data client-side. Use `NULL` for no filter. Default `"RJ"`.
+#' @param direcao Sort direction: `"asc"` (ascending) or `"desc"` (descending).
 #' @return A [tibble::tibble()] with the downloaded data.
 #' @export
 vigiar_baixar <- function(tabela, colunas = NULL, ordenar_por = NULL,

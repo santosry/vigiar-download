@@ -651,12 +651,16 @@ vigiar_relatorio_diagnostico <- function(diag) {
 # ===============================================================================
 
 #' Print a vigiar_diagnostic object
+#' @param x A vigiar_diagnostic object.
+#' @param ... Additional arguments (ignored).
 #' @export
 print.vigiar_diagnostic <- function(x, ...) {
   vigiar_relatorio_diagnostico(x)
 }
 
 #' Summary method for vigiar_diagnostic
+#' @param object A vigiar_diagnostic object.
+#' @param ... Additional arguments (ignored).
 #' @export
 summary.vigiar_diagnostic <- function(object, ...) {
   cat(sprintf("VIGIAR Diagnostic: %s\n", object$tabela))

@@ -69,6 +69,13 @@ summary.vigiar_tbl <- function(object, ...) {
 
 # -- Validation method ---------------------------------------------------------
 
+#' Validate a VIGIAR tibble
+#'
+#' Checks for required metadata attributes and empty data.
+#'
+#' @param x A vigiar_tbl object.
+#' @param ... Additional arguments (ignored).
+#' @return Invisibly, a list of validation issues (empty if valid).
 #' @export
 validate.vigiar_tbl <- function(x, ...) {
   issues <- list()

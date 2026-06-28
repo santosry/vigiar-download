@@ -1,6 +1,26 @@
 # Package: vigiar
 # Core constants, internal environment, and utility functions
 
+#' @keywords internal
+"_PACKAGE"
+
+## usethis namespace: start
+#' @importFrom cli cli_h1 cli_h2 cli_text cli_rule cli_alert_success
+#' @importFrom cli cli_alert_info cli_alert_warning cli_alert_danger
+#' @importFrom cli cli_progress_step col_green col_red col_yellow col_cyan
+#' @importFrom dplyr across all_of filter group_by summarise mutate left_join
+#' @importFrom dplyr n_distinct count
+#' @importFrom httr2 request req_headers req_user_agent req_timeout req_body_raw
+#' @importFrom httr2 req_method req_perform resp_body_string resp_body_raw
+#' @importFrom httr2 resp_headers
+#' @importFrom jsonlite fromJSON toJSON write_json
+#' @importFrom openssl sha256
+#' @importFrom tibble as_tibble
+#' @importFrom utils write.csv read.csv browseURL head packageVersion
+#' @importFrom stats median sd quantile
+## usethis namespace: end
+NULL
+
 # Suppress R CMD check NOTE about ggplot2's .data pronoun
 
 # vigiar: Download Data from the VIGIAR Environmental Health Surveillance Dashboard
@@ -31,6 +51,18 @@ VIGIAR_API_CLUSTER <- paste0(
 
 # -- NULL-coalesce operator ----------------------------------------------------
 
+#' @title NULL-coalesce operator
+#' @description
+#' Returns the left-hand value unless it is NULL, in which case
+#' the right-hand value is returned.
+#'
+#' @param x A value.
+#' @param y Fallback value if \code{x} is NULL.
+#' @return \code{x} unless \code{x} is NULL, then \code{y}.
+#' @name null-coalesce
+#' @rdname null-coalesce
+#' @aliases %||%
+#' @export
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
 # -- UUID v4 generator (no external dependency) --------------------------------

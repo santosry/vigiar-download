@@ -76,6 +76,8 @@ vigiar_auditar <- function(dados, tabela = NULL, verbose = TRUE) {
 }
 
 #' Print method for vigiar_audit
+#' @param x A vigiar_audit object.
+#' @param ... Additional arguments (ignored).
 #' @export
 print.vigiar_audit <- function(x, ...) {
   cli::cli_h1("Relatorio de Auditoria VIGIAR")
@@ -156,6 +158,8 @@ vigiar_auditar_tudo <- function(dados_list, verbose = TRUE) {
 }
 
 #' Print method for vigiar_audit_list
+#' @param x A vigiar_audit_list object.
+#' @param ... Additional arguments (ignored).
 #' @export
 print.vigiar_audit_list <- function(x, ...) {
   n <- length(x)
@@ -249,6 +253,8 @@ vigiar_compliance_check <- function(dados, tabela = NULL,
 }
 
 #' Print method for vigiar_compliance
+#' @param x A vigiar_compliance object.
+#' @param ... Additional arguments (ignored).
 #' @export
 print.vigiar_compliance <- function(x, ...) {
   cli::cli_h1("Relatorio de Compliance VIGIAR")
