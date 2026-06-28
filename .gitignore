@@ -21,7 +21,8 @@ revdep/
 Thumbs.db
 
 # Vignettes
-inst/doc/
+inst/doc/*
+!inst/doc/.gitkeep
 vignettes/*.html
 vignettes/*.pdf
 
