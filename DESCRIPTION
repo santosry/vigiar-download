@@ -1,7 +1,7 @@
 Package: vigiar
 Type: Package
 Title: VIGIAR Environmental Health Data for Rio de Janeiro
-Version: 0.7.0
+Version: 0.7.1.9000
 Authors@R: c(
     person(given = "Ryan",
            family = "Santos",

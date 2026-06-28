@@ -1,10 +1,10 @@
 ---
-title: "Variáveis VIGIAR — Dicionário de Dados"
+title: "Variaveis VIGIAR - Dicionario de Dados"
 author: "Ryan Santos"
-daté: "2026-06-20"
+date: "2026-06-20"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Variáveis VIGIAR — Dicionário de Dados}
+  %\VignetteIndexEntry{Variaveis VIGIAR - Dicionario de Dados}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

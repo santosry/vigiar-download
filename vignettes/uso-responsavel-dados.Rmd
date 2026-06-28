@@ -1,9 +1,9 @@
 ---
-title: "Usó Responsável dos Dados VIGIAR"
+title: "Uso Responsavel dos Dados VIGIAR"
 author: "Ryan Santos"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Usó Responsável dos Dados}
+  %\VignetteIndexEntry{Uso Responsavel dos Dados}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

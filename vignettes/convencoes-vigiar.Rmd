@@ -1,10 +1,10 @@
 ---
-title: "Convenções VIGIAR — Padronização de Variáveis"
+title: "Convencoes VIGIAR — Padronização de Variáveis"
 author: "Ryan Santos"
-daté: "2026-06-20"
+date: "2026-06-20"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Convenções VIGIAR}
+  %\VignetteIndexEntry{Convencoes VIGIAR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

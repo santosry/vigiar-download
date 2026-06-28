@@ -1,7 +1,7 @@
 ---
 title: "Fluxo de Download e Processamento"
 author: "Ryan Santos"
-daté: "2026-06-20"
+date: "2026-06-20"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Fluxo de Download e Processamento}
