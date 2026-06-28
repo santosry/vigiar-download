@@ -10,7 +10,7 @@ vigiar_exportar_parquet(dados, caminho, overwrite = FALSE)
 }
 \arguments{
   \item{dados}{A processed VIGIAR tibble.}
-  \item{caminho}{File path (directories creatéd automátically).}
+  \item{caminho}{File path (directories created automátically).}
   \item{overwrite}{If \code{FALSE}, errors if file exists.}
   \item{...}{Extra arguments passed to \code{write.csv()}.}
 }

@@ -2,18 +2,18 @@
 \alias{process_exposicao_indoor}
 \title{Process indoor exposure data}
 \usage{
-process_exposicao_indoor(dados, tipo = c("exposição", "desfecho"), ...)
+process_exposicao_indoor(dados, tipo = c("exposicao", "desfecho"), ...)
 }
 \arguments{
   \item{dados}{Raw data from \code{vigiar_baixar("df_indoor")} or \code{"df_indoor_desfecho"}.}
-  \item{tipo}{One of \code{"exposição"} or \code{"desfecho"}.}
+  \item{tipo}{One of \code{"exposicao"} or \code{"desfecho"}.}
   \item{...}{Additional arguments (ignored).}
 }
 \value{
   A \code{vigiar_indoor} tibble.
 }
 \description{
-  Standardises household sólid fuel exposure data.
+  Standardises household solid fuel exposure data.
 }
 \examples{
 \dontrun{

@@ -7,16 +7,16 @@
 \title{Query the VIGIAR variable dictionary}
 \usage{
 vigiar_dicionario()
-vigiar_variaveis(dominio = c("pm25", "população_exposta", "indicadores_saúde",
-  "fracao_atribuível", "exposição_indoor", "municípios", "all"))
+vigiar_variaveis(dominio = c("pm25", "populacao_exposta", "indicadores_saude",
+  "fracao_atribuivel", "exposicao_indoor", "municipios", "all"))
 vigiar_descrever_variavel(dominio, variável)
 vigiar_convencoes()
 vigiar_schema(dominio = "all")
 }
 \arguments{
-  \item{dominio}{Data domain. One of \code{"pm25"}, \code{"população_exposta"},
-    \code{"indicadores_saúde"}, \code{"fracao_atribuível"},
-    \code{"exposição_indoor"}, \code{"municípios"}, or \code{"all"}.}
+  \item{dominio}{Data domain. One of \code{"pm25"}, \code{"populacao_exposta"},
+    \code{"indicadores_saude"}, \code{"fracao_atribuivel"},
+    \code{"exposicao_indoor"}, \code{"municipios"}, or \code{"all"}.}
   \item{variável}{Standard variable name.}
 }
 \value{
@@ -38,6 +38,6 @@ vigiar_schema(dominio = "all")
 vigiar_dicionario()
 vigiar_variaveis("pm25")
 vigiar_descrever_variavel("pm25", "pm25_media_anual")
-vigiar_schema("indicadores_saúde")
+vigiar_schema("indicadores_saude")
 }
 }

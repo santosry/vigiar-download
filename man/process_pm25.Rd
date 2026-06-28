@@ -13,7 +13,7 @@ process_pm25(dados, tipo = c("anual", "mensal", "dias", "dias_conama"), ...)
   A \code{vigiar_pm25} tibble with standardised columns.
 }
 \description{
-  Standardises column names, converts types, validatés IBGE codes,
+  Standardises column names, converts types, validates IBGE codes,
   and adds metadata to PM2.5 data. Supports annual averages,
   monthly averages, and critical days (OMS and CONAMA).
 }

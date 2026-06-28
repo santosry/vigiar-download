@@ -4,9 +4,9 @@
 \docType{package}
 \title{VIGIAR Environmental Health Data for Rio de Janeiro}
 \description{
-  Specialized package to download, process, validaté and analyse
+  Specialized package to download, process, validate and analyse
   environmental health surveillance data from VIGIAR with focus
-  on the staté of Rio de Janeiro (92 municipalities).
+  on the state of Rio de Janeiro (92 municipalities).
 }
 \details{
   \tabular{ll}{
@@ -22,7 +22,7 @@
     \item \code{\link{vigiar_baixar_rj}} — download RJ data
     \item \code{\link{vigiar_rj_municipios}} — list 92 municipalities
     \item \code{\link{vigiar_rj_resumo}} — summarise by health region
-    \item \code{\link{vigiar_validar_rj}} — validaté RJ data
+    \item \code{\link{vigiar_validar_rj}} — validate RJ data
   }
 }
 \author{

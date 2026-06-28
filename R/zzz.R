@@ -160,7 +160,7 @@ uuid_v4 <- function() {
   }
 
   stop(sprintf(
-    "[%s] Todas as %d tentativas falharam. Último erro: %s",
+    "[%s] Todas as %d tentativas falharam. Ultimo erro: %s",
     context, max_tries,
     conditionMessage(last_error) %||% "desconhecido"
   ))

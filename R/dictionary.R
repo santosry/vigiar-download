@@ -114,7 +114,7 @@ vigiar_descrever_variavel <- function(dominio, variavel) {
 #'
 #' @export
 vigiar_convencoes <- function() {
-  url <- "https://santosry.github.io/vigiar-download/articles/convencoes-vigiar.html"
+  url <- "https://santosry.github.io/vigiar/articles/convencoes-vigiar.html"
   utils::browseURL(url)
 }
 

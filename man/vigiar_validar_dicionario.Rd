@@ -1,14 +1,14 @@
 \name{vigiar_validar_dicionario}
 \alias{vigiar_validar_dicionario}
 \alias{vigiar_tabelas_documentadas}
-\alias{vigiar_variaveis_não_documentadas}
-\alias{vigiar_variaveis_órfãs}
+\alias{vigiar_variaveis_nao_documentadas}
+\alias{vigiar_variaveis_orfas}
 \alias{vigiar_comparar_schema}
 \title{Dictionary validation tools}
 \usage{
 vigiar_tabelas_documentadas()
-vigiar_variaveis_não_documentadas()
-vigiar_variaveis_órfãs()
+vigiar_variaveis_nao_documentadas()
+vigiar_variaveis_orfas()
 vigiar_validar_dicionario()
 vigiar_comparar_schema()
 }

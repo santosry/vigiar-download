@@ -27,6 +27,7 @@ jobs:
           extra-packages: |
             any::pkgdown
             local::.
+          needs: website
 
       - name: Build pkgdown
         run: pkgdown::build_site()

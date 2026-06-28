@@ -2,9 +2,9 @@
 \alias{vigiar_serie_temporal}
 \alias{vigiar_tendencia_descritiva}
 \alias{vigiar_agregar_tempo}
-\title{Descriptive time séries helpers}
+\title{Descriptive time series helpers}
 \usage{
-vigiar_serie_temporal(dados, nivel = c("nacional", "uf", "município"))
+vigiar_serie_temporal(dados, nivel = c("nacional", "uf", "municipio"))
 vigiar_tendencia_descritiva(dados, variável = NULL, jánela_media_movel = 3)
 vigiar_agregar_tempo(dados, agregar_por = c("ano"), variável = NULL,
   funcoes = list(media = function(x) mean(x, na.rm = TRUE), n = length))
@@ -18,10 +18,10 @@ vigiar_agregar_tempo(dados, agregar_por = c("ano"), variável = NULL,
   \item{funcoes}{Named list of summary functions.}
 }
 \value{
-  A tibble with aggregatéd time séries data.
+  A tibble with aggregated time series data.
 }
 \description{
-  These functions aggregaté VIGIAR data along the time dimension
+  These functions aggregate VIGIAR data along the time dimension
   and compute simple descriptive statistics. No models (DLNM, GAM,
   ARIMA) are fitted — these are purely exploratory.
 }
@@ -29,7 +29,7 @@ vigiar_agregar_tempo(dados, agregar_por = c("ano"), variável = NULL,
 \dontrun{
 vigiar_conectar()
 pm25 <- vigiar_baixar("df_anual") |> process_pm25()
-série <- vigiar_serie_temporal(pm25, nivel = "nacional")
+serie <- vigiar_serie_temporal(pm25, nivel = "nacional")
 tendencia <- vigiar_tendencia_descritiva(pm25)
 }
 }

@@ -88,9 +88,9 @@ print.vigiar_audit <- function(x, ...) {
   sections <- c("schema", "ibge", "temporal", "units", "coverage")
   labels <- c(
     schema   = "Conformidade de Esquema",
-    ibge     = "Validação de Códigos IBGE",
-    temporal = "Consistência Temporal",
-    units    = "Validação de Unidades",
+    ibge     = "Validacao de Codigos IBGE",
+    temporal = "Consistencia Temporal",
+    units    = "Validacao de Unidades",
     coverage = "Cobertura Espacial"
   )
 

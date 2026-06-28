@@ -1,0 +1,11 @@
+linters: linters_with_defaults(
+    line_length_linter(120),
+    object_name_linter(styles = c("snake_case", "dotted.case", "ALL_CAPS")),
+    commented_code_linter = NULL,
+    T_and_F_symbol_linter,
+    undesirable_function_linter(modify_defaults(
+      defaults = default_undesirable_functions,
+      library = NULL,
+      require = NULL
+    ))
+  )

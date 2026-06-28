@@ -2,15 +2,15 @@
 \alias{vigiar_validar_ibge}
 \alias{vigiar_validar_datas}
 \alias{vigiar_validar_unidades}
-\title{Validaté VIGIAR data columns}
+\title{Validate VIGIAR data columns}
 \usage{
-vigiar_validar_ibge(dados, col_código = "cod_município")
+vigiar_validar_ibge(dados, col_codigo = "cod_municipio")
 vigiar_validar_datas(dados)
 vigiar_validar_unidades(dados, col_pm25 = "pm25_media")
 }
 \arguments{
   \item{dados}{A data frame.}
-  \item{col_código}{Name of the column containing IBGE municipality codes.}
+  \item{col_codigo}{Name of the column containing IBGE municipality codes.}
   \item{col_pm25}{Name of the PM2.5 column.}
 }
 \value{

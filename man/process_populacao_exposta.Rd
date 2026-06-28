@@ -13,7 +13,7 @@ process_populacao_exposta(dados, ...)
 }
 \description{
   Standardises population data: renames columns to Portuguese
-  convention, converts types, and validatés IBGE codes.
+  convention, converts types, and validates IBGE codes.
 }
 \examples{
 \dontrun{

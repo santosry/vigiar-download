@@ -73,6 +73,19 @@ export(vigiar_serie_temporal)
 export(vigiar_tendencia_descritiva)
 export(vigiar_agregar_tempo)
 
+# ── Diagnostic ────────────────────────────────────────────────────────────────
+export(vigiar_diagnosticar_serie)
+export(vigiar_checar_cobertura_temporal)
+export(vigiar_checar_cobertura_espacial)
+export(vigiar_checar_pm25)
+export(vigiar_checar_ibge)
+export(vigiar_checar_duplicatas)
+export(vigiar_checar_quebra_serie)
+export(vigiar_classificar_alertas)
+export(vigiar_relatorio_diagnostico)
+export(print.vigiar_diagnostic)
+export(summary.vigiar_diagnostic)
+
 # ── Export ────────────────────────────────────────────────────────────────────
 export(vigiar_exportar_csv)
 export(vigiar_exportar_rds)

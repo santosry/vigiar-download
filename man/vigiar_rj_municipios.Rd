@@ -10,7 +10,7 @@ vigiar_rj_regioes_saude()
 }
 \value{
   \code{vigiar_rj_municipios} returns a data.frame with 92 municipalities
-  (código_ibge, município, macrorregião_saúde, região_saúde).
+  (codigo_ibge, municipio, macrorregiao_saude, regiao_saude).
 
   \code{vigiar_rj_macrorregioes} returns the 9 health macro-regions.
 

@@ -9,12 +9,12 @@ process_municipios(dados, ...)
   \item{...}{Additional arguments (ignored).}
 }
 \value{
-  A \code{vigiar_municípios} tibble.
+  A \code{vigiar_municipios} tibble.
 }
 \description{
   Standardises the municipality registry: renames columns
-  to Portuguese convention, converts coordinaté types, and
-  validatés IBGE codes.
+  to Portuguese convention, converts coordinate types, and
+  validates IBGE codes.
 }
 \examples{
 \dontrun{

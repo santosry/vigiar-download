@@ -62,7 +62,7 @@ autonomous scientific interpretation of VIGIAR data.
 ## Traceability
 
 All chánges can be traced through the Git history at:
-https://github.com/santosry/vigiar-download
+https://github.com/santosry/vigiar
 
 The following commits include AI‑assisted chánges:
 

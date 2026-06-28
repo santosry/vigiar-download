@@ -3,7 +3,7 @@
 \title{Process health indicators data}
 \usage{
 process_indicadores_saude(dados,
-  agregacao = c("brasil", "uf", "município", "quartis"),
+  agregacao = c("brasil", "uf", "municipio", "quartis"),
   ...)
 }
 \arguments{
@@ -17,7 +17,7 @@ process_indicadores_saude(dados,
 \description{
   Standardises health indicator data: renames \code{Indicador} to
   \code{indicador}, \code{est} to \code{estimativa}, \code{low}/\code{high} to
-  \code{ic_inferior}/\code{ic_superior}, and validatés IBGE codes where applicable.
+  \code{ic_inferior}/\code{ic_superior}, and validates IBGE codes where applicable.
 }
 \examples{
 \dontrun{

@@ -1,8 +1,8 @@
-\name{process_fracao_atribuível}
-\alias{process_fracao_atribuível}
+\name{process_fracao_atribuivel}
+\alias{process_fracao_atribuivel}
 \title{Process attributable fraction data}
 \usage{
-process_fracao_atribuível(dados, ...)
+process_fracao_atribuivel(dados, ...)
 }
 \arguments{
   \item{dados}{Raw data from \code{vigiar_baixar("tb_fracao")}.}
@@ -18,6 +18,6 @@ process_fracao_atribuível(dados, ...)
 \examples{
 \dontrun{
 vigiar_conectar()
-fracao <- vigiar_baixar("tb_fracao") |> process_fracao_atribuível()
+fracao <- vigiar_baixar("tb_fracao") |> process_fracao_atribuivel()
 }
 }

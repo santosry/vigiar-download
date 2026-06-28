@@ -2,11 +2,11 @@
 \alias{vigiar_baixar_rj}
 \title{Download Rio de Janeiro VIGIAR data}
 \usage{
-vigiar_baixar_rj(tabela, stratégy = c("auto", "direct", "year"), ...)
+vigiar_baixar_rj(tabela, strategy = c("auto", "direct", "year"), ...)
 }
 \arguments{
   \item{tabela}{Table name.}
-  \item{stratégy}{Download stratégy: \code{"auto"} (default), \code{"direct"}, or \code{"year"}.}
+  \item{strategy}{Download strategy: \code{"auto"} (default), \code{"direct"}, or \code{"year"}.}
   \item{...}{Additional arguments passed to \code{vigiar_baixar()}.}
 }
 \value{
@@ -14,7 +14,7 @@ vigiar_baixar_rj(tabela, stratégy = c("auto", "direct", "year"), ...)
 }
 \description{
   Downloads a VIGIAR table and filters for Rio de Janeiro
-  municipalities (IBGE codes 330010--330630). Validatés thát
+  municipalities (IBGE codes 330010--330630). Validates thát
   only RJ municipalities are present.
 }
 \examples{

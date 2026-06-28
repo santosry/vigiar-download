@@ -29,6 +29,14 @@ vignettes/*.pdf
 covr_*
 *.lcov
 
+# renv
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/staging/
+
 # pkgdown
 docs/
 _site/

@@ -33,8 +33,8 @@ vigiar_benchmark <- function(tabela,
 
   cli::cli_h1("VIGIAR Benchmark")
   cli::cli_text("Tabela: {.strong {tabela}}")
-  cli::cli_text("Repetições por estratégia: {repeticoes}")
-  cli::cli_text("Sessão criada em: {format(.vigiar_env$sessao$created_at)}")
+  cli::cli_text("Repeticoes por estrategia: {repeticoes}")
+  cli::cli_text("Sessao criada em: {format(.vigiar_env$sessao$created_at)}")
   cli::cli_rule()
 
   all_strategies <- c("direct", "year_asc_desc", "minimal_columns")

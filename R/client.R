@@ -1,4 +1,4 @@
-# Package: vigiar.rj
+# Package: vigiar
 # Power BI client abstraction
 #
 # Encapsulates session management and API communication

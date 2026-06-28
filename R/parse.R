@@ -8,9 +8,9 @@
 #   - "R": bitmask indicating which columns REPEAT from previous row
 #          (bit i set => column i repeats).  R=3 (0b011) means cols 0,1
 #          repeat; R=6 (0b110) means cols 1,2 repeat.
-#   - ValueDicts: integer indices into a string dictionary (0‑based).
+#   - ValueDicts: integer indices into a string dictionary (0-based).
 #
-# This is a reverse‑engineered format — no official specification exists.
+# This is a reverse-engineered format -- no official specification exists.
 # It may change without notice.  The parser validates structural
 # assumptions and fails loudly on mismatch.
 
@@ -20,7 +20,7 @@
 #' @param tabela Table name for diagnostic messages.
 #' @param raw If TRUE, return unprocessed rows list for debugging.
 #' @param schema_check If TRUE, warn on column count mismatch.
-#' @return A data.frame with decoded, type‑converted columns.
+#' @return A data.frame with decoded, type-converted columns.
 #' @keywords internal
 .vigiar_parse_dados <- function(resposta, tabela,
                                  raw = FALSE, schema_check = TRUE) {
@@ -56,7 +56,7 @@
     }
   }
 
-  # ---- Row reconstruction (bitmask‑based) ----
+  # ---- Row reconstruction (bitmask-based) ----
   prev_row <- rep(NA, n_cols)
   rows     <- vector("list", length(dm0))
   out_idx  <- 0L
@@ -69,7 +69,10 @@
     if (is.null(entry$C) && !is.null(entry$S)) next
 
     repeat_mask <- as.integer(entry$R %||% 0L)
-    null_mask   <- as.integer(entry$`Ø` %||% entry[["S0"]] %||% 0L)
+    # Power BI uses a special null-mask key (unicode null symbol).
+    # Find it by position or fall back to S0
+    null_key <- if ("S0" %in% names(entry)) "S0" else setdiff(names(entry), c("R", "C", "S"))[1]
+    null_mask <- as.integer(entry[[null_key]] %||% 0L)
     changed     <- entry$C %||% list()
 
     row_vals <- vector("list", n_cols)

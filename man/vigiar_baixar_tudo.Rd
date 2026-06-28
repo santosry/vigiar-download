@@ -6,12 +6,12 @@ vigiar_baixar_tudo(tabelas = NULL, progress = TRUE, delay = 0.5)
 }
 \arguments{
   \item{tabelas}{Vetor opcional com os nomes das tabelas. NULL = todas.}
-  \item{progress}{Se TRUE, mostra barra de progressó.}
-  \item{delay}{Segundos de espera entre downloads (raté limiting).}
+  \item{progress}{Se TRUE, mostra barra de progresso.}
+  \item{delay}{Segundos de espera entre downloads (rate limiting).}
 }
 \value{Uma lista nomeada de data.frames (tibbles).}
 \description{
-Baixa todas as tabelas disponíveis (ou as especificadas) do VIGIAR.
+Baixa todas as tabelas disponiveis (ou as especificadas) do VIGIAR.
 }
 \examples{
 \dontrun{
