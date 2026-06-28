@@ -159,7 +159,6 @@ reference:
   - starts_with("print.vigiar")
   - starts_with("summary.vigiar")
   - starts_with("validate.vigiar")
-  - starts_with("plot.vigiar")
 - title: Utilities
   contents:
   - pipe-null
