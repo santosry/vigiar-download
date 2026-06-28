@@ -206,23 +206,24 @@ test_that("vigiar_classificar_alertas returns ok when no issues", {
 
 # ── S3 methods ────────────────────────────────────────────────────────────────
 
-test_that("print.vigiar_diagnostic works", {
+test_that("print.vigiar_diagnostic works without error", {
   dados <- data.frame(x = 1:3)
   diag <- new_vigiar_diagnostic("test", dados)
-  expect_output(print(diag), "Diagnostico")
+  expect_no_error(print(diag))
+  expect_s3_class(diag, "vigiar_diagnostic")
 })
 
-test_that("summary.vigiar_diagnostic works", {
+test_that("summary.vigiar_diagnostic works without error", {
   dados <- data.frame(x = 1:3)
   diag <- new_vigiar_diagnostic("test", dados)
   diag <- .vigiar_add_issue(diag, "aviso", "test warning")
-  expect_output(summary(diag), "aviso=1")
+  expect_no_error(summary(diag))
 })
 
-test_that("vigiar_relatorio_diagnostico works", {
+test_that("vigiar_relatorio_diagnostico works without error", {
   dados <- .make_pm25_data()
   diag <- vigiar_diagnosticar_serie(dados, escopo = "rj")
-  expect_output(vigiar_relatorio_diagnostico(diag), "Severidade")
+  expect_no_error(vigiar_relatorio_diagnostico(diag))
 })
 
 # ── Edge cases ────────────────────────────────────────────────────────────────

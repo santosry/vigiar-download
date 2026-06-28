@@ -211,13 +211,13 @@ test_that(".vigiar_parse_dados warns on DM0 with R but no previous row", {
   schema[[1]]$Name <- "x"
 
   dm0 <- list(
-    list(R = 2L, C = list(1L))  # R but no S entry before — abnormal
+    list(R = 1L, C = list(1L))  # bitmask: col 0 repeats; first row triggers warning
   )
 
   resp <- .make_dsr_response(schema, dm0)
   expect_warning(
     df <- .vigiar_parse_dados(resp, "teste"),
-    "sem linha anterior"
+    "Linha 1 com mascara"
   )
   expect_equal(nrow(df), 1)
 })
@@ -405,7 +405,7 @@ test_that("validate.vigiar_tbl detects issues", {
   df <- data.frame(x = numeric(0))
   out <- new_vigiar_tbl(df, tabela = "")
   attr(out, "vigiar_tabela") <- NULL
-  expect_warning(validate.vigiar_tbl(out), "vigiar_tabela")
+  expect_warning(validate.vigiar_tbl(out), "missing_table_attr")
 })
 
 # ── Summary functions ─────────────────────────────────────────────────────────

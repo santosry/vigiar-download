@@ -80,11 +80,13 @@ vigiar_diagnosticar_serie <- function(dados,
   if (is.na(col_muni)) {
     diag <- .vigiar_add_issue(diag, "critico",
       "Coluna de codigo municipal nao encontrada. Verifique os nomes das colunas.")
+    diag <- vigiar_classificar_alertas(diag)
     return(diag)
   }
   if (is.na(col_pm25)) {
     diag <- .vigiar_add_issue(diag, "critico",
       "Coluna de PM2.5 nao encontrada. Verifique os nomes das colunas.")
+    diag <- vigiar_classificar_alertas(diag)
     return(diag)
   }
 
