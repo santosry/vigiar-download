@@ -21,7 +21,10 @@
 ## usethis namespace: end
 NULL
 
-# Suppress R CMD check NOTE about ggplot2's .data pronoun
+# Suppress R CMD check NOTE about dplyr's data-mask pronouns.
+if (getRversion() >= "2.15.1") {
+  utils::globalVariables(c(".data", "tabela"))
+}
 
 # vigiar: Download Data from the VIGIAR Environmental Health Surveillance Dashboard
 # Copyright (C) 2026 Ryan Santos

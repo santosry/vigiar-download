@@ -17,47 +17,47 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Dicionário de Variáveis
+## Dicionario de Variaveis
 
-O pacote `vigiar` mantém um dicionário completo de todas as variáveis
-disponíveis no dashboard VIGIAR. O dicionário documenta:
+O pacote `vigiar` mantem um dicionario completo de todas as variaveis
+disponiveis no dashboard VIGIAR. O dicionario documenta:
 
-- **Nome original** da variável no Power BI
-- **Nome padronizado** usado pelo pacote após processamento
+- **Nome original** da variavel no Power BI
+- **Nome padronizado** usado pelo pacote apos processamento
 - **Tipo de dado** (raw e processado)
-- **Descrição** do conteúdo
+- **Descricao** do conteudo
 - **Unidade** de medida
-- **Valores aceitos** e intervalos plausíveis
+- **Valores aceitos** e intervalos plausiveis
 
 ```{r}
 library(vigiar)
 
-# Carregar o dicionário completo
+# Carregar o dicionario completo
 dict <- vigiar_dicionario()
 head(dict)
 ```
 
-## Estrutura do Dicionário
+## Estrutura do Dicionario
 
 ```{r}
 names(dict)
 ```
 
-- `table_id` — nome da tabela no Power BI
-- `table_name` — descrição da tabela
-- `catégory` — catégoria temática
-- `original_name` — nome da coluna no banco original
-- `standard_name` — nome padronizado pelo pacote
-- `type_raw` — tipo original (Power BI)
-- `type_processed` — tipo após processamento (R)
-- `description` — descrição da variável
-- `unit` — unidade de medida
-- `allowed_values` — domínio de valores aceitos
-- `example` — exemplo de valor
-- `validation_rule` — regra de validação
-- `notes` — observações adicionais
+- `table_id` - nome da tabela no Power BI
+- `table_name` - descricao da tabela
+- `category` - categoria tematica
+- `original_name` - nome da coluna no banco original
+- `standard_name` - nome padronizado pelo pacote
+- `type_raw` - tipo original (Power BI)
+- `type_processed` - tipo apos processamento (R)
+- `description` - descricao da variavel
+- `unit` - unidade de medida
+- `allowed_values` - dominio de valores aceitos
+- `example` - exemplo de valor
+- `validation_rule` - regra de validacao
+- `notes` - observacoes adicionais
 
-## Variáveis por Domínio
+## Variaveis por Dominio
 
 ### PM2.5 (Qualidade do Ar)
 
@@ -65,28 +65,28 @@ names(dict)
 vigiar_variaveis("pm25")
 ```
 
-### População Exposta
+### Populacao Exposta
 
 ```{r}
-vigiar_variaveis("população_exposta")
+vigiar_variaveis("populacao_exposta")
 ```
 
-### Indicadores de Saúde
+### Indicadores de Saude
 
 ```{r}
-vigiar_variaveis("indicadores_saúde")
+vigiar_variaveis("indicadores_saude")
 ```
 
-## Consultar uma Variável Específica
+## Consultar uma Variavel Especifica
 
 ```{r}
 vigiar_descrever_variavel("pm25", "pm25_media_anual")
-vigiar_descrever_variavel("indicadores_saúde", "estimativa")
+vigiar_descrever_variavel("indicadores_saude", "estimativa")
 ```
 
-## Schema de um Domínio
+## Schema de um Dominio
 
 ```{r}
 vigiar_schema("pm25")
-vigiar_schema("exposição_indoor")
+vigiar_schema("exposicao_indoor")
 ```

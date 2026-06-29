@@ -7,7 +7,8 @@
 vigiar_compliance_check(
   dados,
   tabela = NULL,
-  profiles = c("basico", "rigoroso", "rj")
+  profiles = c("basico", "rigoroso", "rj"),
+  verbose = TRUE
 )
 }
 \arguments{
@@ -18,6 +19,8 @@ vigiar_compliance_check(
 \item{profiles}{Character vector of audit profiles:
 \code{"basico"} (default), \code{"rigoroso"}, \code{"rj"},
 \code{"corrupcao"}. Use \code{"all"} for everything.}
+
+\item{verbose}{If \code{TRUE}, prints progress and detailed results.}
 }
 \value{
 A list of per-profile audit results.

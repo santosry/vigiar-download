@@ -182,10 +182,12 @@ print.vigiar_audit_list <- function(x, ...) {
 #' @param profiles Character vector of audit profiles:
 #'   \code{"basico"} (default), \code{"rigoroso"}, \code{"rj"},
 #'   \code{"corrupcao"}. Use \code{"all"} for everything.
+#' @param verbose If \code{TRUE}, prints progress and detailed results.
 #' @return A list of per-profile audit results.
 #' @export
 vigiar_compliance_check <- function(dados, tabela = NULL,
-                                     profiles = c("basico", "rigoroso", "rj")) {
+                                     profiles = c("basico", "rigoroso", "rj"),
+                                     verbose = TRUE) {
   tabela <- tabela %||% attr(dados, "vigiar_tabela") %||% "desconhecida"
 
   all_profiles <- c("basico", "rigoroso", "rj", "corrupcao")
@@ -196,34 +198,39 @@ vigiar_compliance_check <- function(dados, tabela = NULL,
   names(results) <- profiles
 
   for (p in profiles) {
-    cli::cli_h2("Perfil: {p}")
+    if (verbose) cli::cli_h2("Perfil: {p}")
     results[[p]] <- switch(p,
       basico = {
         # Basic: schema + IBGE + temporal
         list(
-          schema   = .vigiar_auditar_schema(dados, tabela, TRUE),
-          ibge     = .vigiar_auditar_ibge(dados, TRUE),
-          temporal = .vigiar_auditar_temporal(dados, TRUE),
+          schema   = .vigiar_auditar_schema(dados, tabela, verbose),
+          ibge     = .vigiar_auditar_ibge(dados, verbose),
+          temporal = .vigiar_auditar_temporal(dados, verbose),
           ok       = TRUE  # evaluated below
         )
       },
       rigoroso = {
         # Strict: everything + outlier detection
         base <- vigiar_auditar(dados, tabela, verbose = FALSE)
-        base$outliers <- .vigiar_detectar_outliers(dados, verbose = TRUE)
+        base$outliers <- .vigiar_detectar_outliers(dados, verbose = verbose)
         base
       },
       rj = {
         # RJ-specific compliance
+        validar_rj <- function() vigiar_validar_rj(dados)
         list(
-          rj_municipios = vigiar_validar_rj(dados),
-          rj_cobertura  = .vigiar_auditar_cobertura_rj(dados, verbose = TRUE),
+          rj_municipios = if (verbose) {
+            validar_rj()
+          } else {
+            suppressWarnings(suppressMessages(validar_rj()))
+          },
+          rj_cobertura  = .vigiar_auditar_cobertura_rj(dados, verbose = verbose),
           ok            = TRUE
         )
       },
       corrupcao = {
         # Data integrity / corruption checks
-        .vigiar_auditar_integridade(dados, tabela, verbose = TRUE)
+        .vigiar_auditar_integridade(dados, tabela, verbose = verbose)
       }
     )
 
@@ -240,12 +247,14 @@ vigiar_compliance_check <- function(dados, tabela = NULL,
 
   all_ok <- all(vapply(results, function(x) isTRUE(x$ok), logical(1)))
 
-  cli::cli_rule()
-  if (all_ok) {
-    cli::cli_alert_success("COMPLIANCE: Todos os perfis aprovados")
-  } else {
-    fails <- names(results)[!vapply(results, function(x) isTRUE(x$ok), logical(1))]
-    cli::cli_alert_danger("COMPLIANCE FALHOU nos perfis: {paste(fails, collapse=', ')}")
+  if (verbose) {
+    cli::cli_rule()
+    if (all_ok) {
+      cli::cli_alert_success("COMPLIANCE: Todos os perfis aprovados")
+    } else {
+      fails <- names(results)[!vapply(results, function(x) isTRUE(x$ok), logical(1))]
+      cli::cli_alert_danger("COMPLIANCE FALHOU nos perfis: {paste(fails, collapse=', ')}")
+    }
   }
 
   class(results) <- "vigiar_compliance"

@@ -13,54 +13,54 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = FALSE  # Não executar durante build (requer internet)
+  eval = FALSE
 )
 ```
 
-## Visão Geral
+## Visao Geral
 
 O pacote `vigiar` permite baixar todos os dados do dashboard VIGIAR
-(Vigilância em Saúde Ambiental) do Ministério da Saúde, hospedado no
+(Vigilancia em Saude Ambiental) do Ministerio da Saude, hospedado no
 Power BI, diretamente para o R.
 
 O VIGIAR disponibiliza:
 
-- Concentração de PM2.5 por município (séries anuais e mensais)
+- Concentracao de PM2.5 por municipio (series anuais e mensais)
 - Dias acima dos limites da OMS e CONAMA
-- População exposta por faixa de concentração
-- Indicadores de saúde: fração atribuível, internações
-- Exposição indoor a combustíveis sólidos
+- Populacao exposta por faixa de concentracao
+- Indicadores de saude: fracao atribuivel, internacoes
+- Exposicao indoor a combustiveis solidos
 
-## Instalação
+## Instalacao
 
 ```r
 # install.packages("remotes")
 remotes::install_github("santosry/vigiar")
 ```
 
-## Primeiros Passós
+## Primeiros Passos
 
 ### Conectar ao dashboard
 
 ```r
 library(vigiar)
 
-# Estabelece sessão e carrega o esquema de dados
+# Estabelece sessao e carrega o esquema de dados
 vigiar_conectar()
-#> Sessão pronta! 32 tabelas disponíveis.
+#> Sessao pronta! 32 tabelas disponiveis.
 ```
 
-A conexão é necessária apenas uma vez por sessão R. O pacote obtém
-cookies e tokens diretamente da página pública do Power BI — não é
-precisó login.
+A conexao e necessaria apenas uma vez por sessao R. O pacote obtem
+cookies e tokens diretamente da pagina publica do Power BI; nao e
+preciso login.
 
-### Explorar tabelas disponíveis
+### Explorar tabelas disponiveis
 
 ```r
 # Listar todas as tabelas
 vigiar_tabelas()
 
-# Ver estrutura de uma tabela específica
+# Ver estrutura de uma tabela especifica
 vigiar_esquema("df_anual")
 ```
 
@@ -73,15 +73,15 @@ head(df_anual)
 
 # Baixar apenas algumas colunas
 df_mensal <- vigiar_baixar("df_mensal",
-  colunas = c("ano", "mes", "UF", "Município", "pm25"))
+  colunas = c("ano", "mes", "UF", "Municipio", "pm25"))
 
 # Baixar as tabelas principais de uma vez
 tudo <- vigiar_baixar_principais()
 ```
 
-## Exemplos de Análise
+## Exemplos de Analise
 
-### Tendência de PM2.5 por região
+### Tendencia de PM2.5 por regiao
 
 ```r
 library(dplyr)
@@ -90,47 +90,47 @@ library(ggplot2)
 vigiar_conectar()
 df <- vigiar_baixar("df_anual")
 
-# Juntar com cadastro de municípios para obter região
+# Juntar com cadastro de municipios para obter regiao
 muni <- vigiar_baixar("df_muni",
   colunas = c("UF_COD", "REGIAO"))
 
 df <- df |>
   left_join(muni, by = c("muni" = "UF_COD"))
 
-# Média por região e ano
+# Media por regiao e ano
 df |>
   group_by(REGIAO, ano) |>
   summarise(pm25 = mean(Media_pm25, na.rm = TRUE), .groups = "drop") |>
   ggplot(aes(ano, pm25, color = REGIAO)) +
   geom_line(linewidth = 1) +
-  labs(title = "PM2.5 médio por região do Brasil",
+  labs(title = "PM2.5 medio por regiao do Brasil",
        x = "Ano",
-       y = expression(PM[2.5] ~ (µg/m³))) +
-  theme_mínimal()
+       y = "PM2.5 (ug/m3)") +
+  theme_minimal()
 ```
 
-### População exposta a níveis elevados de PM2.5
+### Populacao exposta a niveis elevados de PM2.5
 
 ```r
 pop <- vigiar_baixar("pop")
 
-# Filtrar catégoria de exposição alta (ex: > 25 µg/m³)
+# Filtrar categoria de exposicao alta
 pop |>
-  filter(catégoria == "> 25 µg/m³") |>
+  filter(categoria == "> 25 ug/m3") |>
   group_by(ano) |>
   summarise(pop_exposta = sum(pop, na.rm = TRUE) / 1e6) |>
   ggplot(aes(ano, pop_exposta)) +
   geom_col(fill = "tomato") +
-  labs(title = "População exposta a PM2.5 > 25 µg/m³",
-       x = "Ano", y = "Milhões de hábitantes")
+  labs(title = "Populacao exposta a PM2.5 > 25 ug/m3",
+       x = "Ano", y = "Milhoes de habitantes")
 ```
 
-### Dias críticos por município
+### Dias criticos por municipio
 
 ```r
 dias <- vigiar_baixar("df_dias")
 
-# Municípios com mais dias críticos no último ano
+# Municipios com mais dias criticos no ultimo ano
 dias |>
   filter(ano == max(ano)) |>
   group_by(ID_MUNI) |>
@@ -138,34 +138,34 @@ dias |>
   slice_max(total_dias, n = 20)
 ```
 
-## Tabelas de Indicadores de Saúde
+## Tabelas de Indicadores de Saude
 
-As tabelas `tb_brasil`, `tb_uf`, `tb_muni` e `tb_fracao` contêm
-indicadores epidemiológicos:
+As tabelas `tb_brasil`, `tb_uf`, `tb_muni` e `tb_fracao` contem
+indicadores epidemiologicos:
 
 ```r
 tb_brasil <- vigiar_baixar("tb_brasil")
 
-# A coluna 'Indicador' contém o nome do indicador
-# Ex: "Internações por doenças respiratórias"
+# A coluna 'Indicador' contem o nome do indicador
+# Ex: "Internacoes por doencas respiratorias"
 unique(tb_brasil$Indicador)
 
-# 'est' é a estimativa pontual, 'low' e 'high' são IC 95%
+# 'est' e a estimativa pontual, 'low' e 'high' sao IC 95%
 tb_brasil |>
-  filter(Indicador == "Fração atribuível (%)")
+  filter(Indicador == "Fracao atribuivel (%)")
 ```
 
-## Encerrando a Sessão
+## Encerrando a Sessao
 
 ```r
 vigiar_desconectar()
 ```
 
-## Solução de Problemas
+## Solucao de Problemas
 
-| Problema | Solução |
+| Problema | Solucao |
 |----------|---------|
-| Sessão expirou | `vigiar_conectar(atualizar = TRUE)` |
+| Sessao expirou | `vigiar_conectar(atualizar = TRUE)` |
 | Timeout | Aumente o timeout: `vigiar_conectar(timeout = 60)` |
-| Erro 403 | O dashboard pode estar temporariamente indisponível |
-| Tabela vazia | Algumas tabelas são auxiliares e não têm dados |
+| Erro 403 | O dashboard pode estar temporariamente indisponivel |
+| Tabela vazia | Algumas tabelas sao auxiliares e nao tem dados |

@@ -17,23 +17,23 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Visão Geral
+## Visao Geral
 
 O pacote `vigiar` segue a arquitetura do `microdatasus`:
 
-1. **Download** — dados brutos do Power BI
-2. **Processamento** — padronização e validação
-3. **Usó** — análise com dados limpos
+1. **Download** - dados brutos do Power BI
+2. **Processamento** - padronizacao e validacao
+3. **Uso** - analise com dados limpos
 
+```r
+vigiar_baixar("df_anual") |>
+  process_vigiar(tabela = "df_anual") |>
+  vigiar_checar_dados("df_anual")
 ```
-vigiar_baixar("tabela")          # raw data
-  |> process_vigiar(tabela = )   # standardised + validatéd
-  |> vigiar_checar_dados()       # quality report
-```
 
-## Passó 1 — Download Bruto
+## Passo 1 - Download Bruto
 
-```{r}
+```{r, eval=FALSE}
 library(vigiar)
 
 vigiar_conectar()
@@ -41,105 +41,105 @@ vigiar_conectar()
 # Download de dados brutos
 dados_brutos <- vigiar_baixar("df_anual")
 
-# Os dados brutos têm nomes de colunas originais do Power BI
+# Os dados brutos tem nomes de colunas originais do Power BI
 names(dados_brutos)
-# [1] "muni"       "UF"         "ano"        "Media_pm25" "Catégoria_pm25" ...
+# [1] "muni"       "UF"         "ano"        "Media_pm25" "Categoria_pm25" ...
 ```
 
-## Passó 2 — Processamento
+## Passo 2 - Processamento
 
-```{r}
-# Processamento automático (detecta o tipo pela tabela)
+```{r, eval=FALSE}
+# Processamento automatico (detecta o tipo pela tabela)
 dados_processados <- process_vigiar(dados_brutos, tabela = "df_anual")
 
-# Ou processamento explícito
+# Ou processamento explicito
 pm25 <- vigiar_baixar("df_anual") |> process_pm25()
 
 # Nomes padronizados
 names(pm25)
-# [1] "cod_município"     "sigla_uf"         "ano"
-# [4] "pm25_media_anual"  "catégoria_oms"    "catégoria_conama"
+# [1] "cod_municipio"     "sigla_uf"         "ano"
+# [4] "pm25_media_anual"  "categoria_oms"    "categoria_conama"
 ```
 
-## Passó 3 — Validação
+## Passo 3 - Validacao
 
-```{r}
-# Diagnóstico de qualidade
+```{r, eval=FALSE}
+# Diagnostico de qualidade
 vigiar_checar_dados(pm25, "df_anual")
 
-# Validação de tipos e intervalos
-validaté(pm25)
+# Validacao de tipos e intervalos
+validate.vigiar_tbl(pm25)
 
-# Resumo estatístico
+# Resumo estatistico
 summary(pm25)
 ```
 
 ## Pipeline Completo
 
-```{r}
+```{r, eval=FALSE}
 # PM2.5
 pm25 <- vigiar_baixar("df_anual") |>
   process_pm25()
 
-# Indicadores de saúde — Brasil
-saúde_brasil <- vigiar_baixar("tb_brasil") |>
+# Indicadores de saude - Brasil
+saude_brasil <- vigiar_baixar("tb_brasil") |>
   process_indicadores_saude(agregacao = "brasil")
 
-# Indicadores de saúde — UF
-saúde_uf <- vigiar_baixar("tb_uf") |>
+# Indicadores de saude - UF
+saude_uf <- vigiar_baixar("tb_uf") |>
   process_indicadores_saude(agregacao = "uf")
 
-# Fração atribuível
+# Fracao atribuivel
 fracao <- vigiar_baixar("tb_fracao") |>
-  process_fracao_atribuível()
+  process_fracao_atribuivel()
 
-# Exposição indoor
+# Exposicao indoor
 indoor <- vigiar_baixar("df_indoor") |>
   process_exposicao_indoor()
 
-# População exposta
+# Populacao exposta
 pop <- vigiar_baixar("pop") |>
   process_populacao_exposta()
 
-# Cadastro de municípios
+# Cadastro de municipios
 muni <- vigiar_baixar("df_muni") |>
   process_municipios()
 ```
 
 ## Mapeamento de Nomes
 
-| Original (Power BI) | Padronizado (vigiar) | Descrição |
-|---------------------|---------------------|-----------|
-| `muni` / `ID_MUNI` | `cod_município` | Código IBGE do município |
+| Original (Power BI) | Padronizado (vigiar) | Descricao |
+|---------------------|----------------------|-----------|
+| `muni` / `ID_MUNI` | `cod_municipio` | Codigo IBGE do municipio |
 | `UF` / `UF_SIGLA` | `sigla_uf` | Sigla da UF |
-| `Media_pm25` | `pm25_media_anual` | Média anual PM2.5 |
-| `pm25` | `pm25_media` | Média mensal PM2.5 |
+| `Media_pm25` | `pm25_media_anual` | Media anual PM2.5 |
+| `pm25` | `pm25_media` | Media mensal PM2.5 |
 | `n_dias` | `n_dias_criticos` | Dias acima do limite |
 | `LAT` / `LON` | `latitude` / `longitude` | Coordenadas |
-| `Indicador` | `indicador` | Indicador epidemiológico |
+| `Indicador` | `indicador` | Indicador epidemiologico |
 | `est` | `estimativa` | Estimativa pontual |
 | `low` / `high` | `ic_inferior` / `ic_superior` | IC 95% |
-| `desfecho` | `desfecho` | Desfecho de saúde |
-| `pop` | `população` | População |
-| `Code` | `cod_uf` | Código da UF |
+| `desfecho` | `desfecho` | Desfecho de saude |
+| `pop` | `populacao` | Populacao |
+| `Code` | `cod_uf` | Codigo da UF |
 | `Ano` | `ano` | Ano |
 
 ## Classes S3
 
 O processamento atribui classes S3 aos dados:
 
-| Classe | Domínio |
+| Classe | Dominio |
 |--------|---------|
 | `vigiar_tbl` | Classe base para todos os dados processados |
 | `vigiar_pm25` | Dados de qualidade do ar |
-| `vigiar_health` | Indicadores de saúde |
+| `vigiar_health` | Indicadores de saude |
 | `vigiar_population` | Dados populacionais |
-| `vigiar_attributable_fraction` | Fração atribuível |
-| `vigiar_indoor` | Exposição indoor |
-| `vigiar_municípios` | Cadastro de municípios |
+| `vigiar_attributable_fraction` | Fracao atribuivel |
+| `vigiar_indoor` | Exposicao indoor |
+| `vigiar_municipios` | Cadastro de municipios |
 | `vigiar_uf` | Dados agregados por UF |
 
-```{r}
+```{r, eval=FALSE}
 class(pm25)
 # [1] "vigiar_pm25"  "vigiar_air_quality"  "vigiar_tbl"
 # [4] "tbl_df"       "tbl"                 "data.frame"
@@ -149,14 +149,14 @@ class(pm25)
 
 Cada tibble processado carrega atributos com metadados:
 
-```{r}
+```{r, eval=FALSE}
 attr(pm25, "vigiar_metadados")
 # $fonte
-# [1] "VIGIAR — Ministério da Saúde"
+# [1] "VIGIAR - Ministerio da Saude"
 # $tabela_raw
 # [1] "df_anual"
 # $unidade_pm25
-# [1] "µg/m³"
+# [1] "ug/m3"
 # $processador
 # [1] "process_pm25"
 ```

@@ -219,6 +219,11 @@ vigiar_benchmark_tabelas <- function(tabelas = NULL, repeticoes = 2L,
 #' @return Invisibly, a list with health metrics.
 #' @export
 vigiar_health_check <- function(timeout = 120) {
+  run_online <- Sys.getenv("VIGIAR_RUN_ONLINE_TESTS", unset = NA_character_)
+  if (identical(tolower(run_online), "false")) {
+    stop("Online health check disabled by VIGIAR_RUN_ONLINE_TESTS=false.")
+  }
+
   cli::cli_h1("VIGIAR Health Check")
   start_time <- Sys.time()
 

@@ -155,10 +155,9 @@ reference:
   - vigiar_resumo_indoor
 - title: S3 Classes
   contents:
-  - vigiar_tbl
   - starts_with("print.vigiar")
   - starts_with("summary.vigiar")
   - starts_with("validate.vigiar")
 - title: Utilities
   contents:
-  - pipe-null
+  - null-coalesce

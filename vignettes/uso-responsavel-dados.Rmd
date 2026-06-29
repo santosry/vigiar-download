@@ -3,64 +3,64 @@ title: "Uso Responsavel dos Dados VIGIAR"
 author: "Ryan Santos"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Uso Responsavel dos Dados}
+  %\VignetteIndexEntry{Uso Responsavel dos Dados VIGIAR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include=FALSE}
-knitr::opts_chunk$set(collapse=TRUE, comment="#>", eval=FALSE)
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
 ```
 
 ## Fonte dos Dados
 
-Os dados são do **VIGIAR** (Vigilância em Saúde Ambiental),
-Ministério da Saúde do Brasil, disponibilizados públicamente via
+Os dados sao do **VIGIAR** (Vigilancia em Saude Ambiental),
+Ministerio da Saude do Brasil, disponibilizados publicamente via
 Power BI "Publish to Web".
 
-## Limitações dos Dados
+## Limitacoes dos Dados
 
 ### PM2.5
 
-- Estimado por modelo de satélite, não medido em estações de superfície.
-- Resólução espacial limitada; interpolação pode suavizar hotspots.
-- Médias anuais/mensais mascaram picos diários.
+- Estimado por modelo de satelite, nao medido em estacoes de superficie.
+- Resolucao espacial limitada; interpolacao pode suavizar hotspots.
+- Medias anuais/mensais mascaram picos diarios.
 
-### População Exposta
+### Populacao Exposta
 
-- Usa projeções populacionais do IBGE, não contagens censitárias.
-- Assume distribuição homogênea dentro do município.
-- Não considera mobilidade pendular ou exposição ocupacional.
+- Usa projecoes populacionais do IBGE, nao contagens censitarias.
+- Assume distribuicao homogenea dentro do municipio.
+- Nao considera mobilidade pendular ou exposicao ocupacional.
 
-### Indicadores de Saúde
+### Indicadores de Saude
 
-- Frações atribuíveis são estimativas baseadas em risco relativo
-  de estudos internacionais, não em medidas diretas.
-- Intervalos de confiança refletem incerteza do modelo, não erro amostral.
-- Não estabelecem causalidade individual.
+- Fracoes atribuiveis sao estimativas baseadas em risco relativo
+  de estudos internacionais, nao em medidas diretas.
+- Intervalos de confianca refletem incerteza do modelo, nao erro amostral.
+- Nao estabelecem causalidade individual.
 
-## Riscos de Interpretação
+## Riscos de Interpretacao
 
-- **Não use para inferência causal**: o pacote fornece dados
-  observacionais agregados. Assóciações ecológicas não provam
+- **Nao use para inferencia causal**: o pacote fornece dados
+  observacionais agregados. Associacoes ecologicas nao provam
   causalidade.
-- **Cuidado com rankings municipais**: municípios pequenos têm
+- **Cuidado com rankings municipais**: municipios pequenos tem
   estimativas mais imprecisas.
-- **Não compare anos isólados**: use séries temporais e tendências.
+- **Nao compare anos isolados**: use series temporais e tendencias.
 
 ## LGPD e Privacidade
 
-- Todos os dados são **agregados e anonimizados**.
-- Nenhum dado individual ou identificável está presente.
-- O pacote não coleta, armazena ou transmite dados pessóais.
+- Todos os dados sao **agregados e anonimizados**.
+- Nenhum dado individual ou identificavel esta presente.
+- O pacote nao coleta, armazena ou transmite dados pessoais.
 
-## Citação
+## Citacao
 
 ```r
 citation("vigiar")
 ```
 
-## Declaração de IA
+## Declaracao de IA
 
-Este pacote útilizou DeepSeek v4 Pro e ChátGPT GPT-5.5 para
-revisão de código e documentação. Vejá `AI_USE_DECLARATION.md`.
+Este pacote utilizou DeepSeek v4 Pro e ChatGPT GPT-5.5 para
+revisao de codigo e documentacao. Veja `AI_USE_DECLARATION.md`.

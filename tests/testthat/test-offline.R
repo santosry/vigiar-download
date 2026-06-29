@@ -201,7 +201,10 @@ test_that(".vigiar_parse_dados resolves ValueDicts", {
 
 test_that(".vigiar_parse_dados handles empty response gracefully", {
   resp <- list(results = list(list(result = list(data = list()))))
-  df <- .vigiar_parse_dados(resp, "vazia")
+  expect_warning(
+    df <- .vigiar_parse_dados(resp, "vazia"),
+    "DSR ausente"
+  )
   expect_equal(nrow(df), 0)
 })
 
